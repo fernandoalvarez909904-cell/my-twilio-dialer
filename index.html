@@ -283,9 +283,19 @@
 
 <script>
     const TOKEN_URL = 'https://dialer-1641.twil.io/token';
+
+    // Only 1 real number for now — placeholders for future numbers
     const TWILIO_NUMBERS = [
-        '+18129010600','+18129010601','+18129010602','+18129010603','+18129010604',
-        '+18129010605','+18129010606','+18129010607','+18129010608','+18129010609'
+        '+18129010600', // active
+        '+10000000001', // placeholder
+        '+10000000002', // placeholder
+        '+10000000003', // placeholder
+        '+10000000004', // placeholder
+        '+10000000005', // placeholder
+        '+10000000006', // placeholder
+        '+10000000007', // placeholder
+        '+10000000008', // placeholder
+        '+10000000009'  // placeholder
     ];
 
     const KEY_LEADS = 'leads_v4_system';
@@ -304,7 +314,6 @@
     let device = null;
     let activeCall = null;
 
-    // ── INIT ──────────────────────────────────────────────────────────────
     window.onload = () => {
         document.getElementById('dateLabel').innerText = luxon.DateTime.now().toLocaleString(luxon.DateTime.DATE_HUGE);
         updateClock();
@@ -326,7 +335,6 @@
             if (!res.ok) throw new Error('HTTP ' + res.status);
             const data = await res.json();
             device = new Twilio.Device(data.token, { codecPreferences: ['opus', 'pcmu'], logLevel: 1 });
-
             device.on('registered', () => {
                 statusEl.innerHTML = `<span class="status-dot online"></span><span style="color:#10b981;font-weight:bold;">Device Online & Ready</span>`;
             });
@@ -338,14 +346,12 @@
                 const d = await r.json();
                 device.updateToken(d.token);
             });
-
             await device.register();
         } catch (err) {
             statusEl.innerHTML = `<span class="status-dot"></span><span style="color:#dc3545;">Offline: ${err.message}</span>`;
         }
     }
 
-    // ── QUEUE & DIALER ────────────────────────────────────────────────────
     function startQueue() {
         const freshOnly = document.getElementById('onlyFreshToday').checked;
         let available = leads.filter(l => !l.hidden);
@@ -381,7 +387,7 @@
         document.getElementById('dialerResort').textContent = current.resort || 'Batch';
         document.getElementById('dialerCalls').textContent = (current.calls || 0) + ' Calls';
         document.getElementById('dialerPhone').textContent = formatPhone(current.phone);
-        document.getElementById('twilioCallerId').textContent = formatPhone(current.twilioNumber || TWILIO_NUMBERS[0]);
+        document.getElementById('twilioCallerId').textContent = formatPhone(TWILIO_NUMBERS[0]);
         document.getElementById('dialerNotes').value = '';
         resetDialButton();
         document.getElementById('dialerModal').style.display = 'block';
@@ -395,7 +401,7 @@
         btn.innerText = '⏳ CONNECTING...';
         try {
             activeCall = await device.connect({
-                params: { To: current.phone, From: current.twilioNumber || TWILIO_NUMBERS[0] }
+                params: { To: current.phone, From: TWILIO_NUMBERS[0] }
             });
             activeCall.on('disconnect', resetDialButton);
             activeCall.on('cancel', resetDialButton);
@@ -459,7 +465,6 @@
         save(); renderLeads();
     }
 
-    // ── CUSTOM QUEUE ───────────────────────────────────────────────────────
     function openCustomQueueModal() {
         const sel = document.getElementById('customResortSelect');
         const resorts = [...new Set(leads.map(l => l.resort))].filter(Boolean);
@@ -482,7 +487,6 @@
         openDialerModal();
     }
 
-    // ── IMPORT ────────────────────────────────────────────────────────────
     document.getElementById('fileInput').onchange = (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -517,10 +521,9 @@
         const apptC = document.getElementById('mapApptSelect').value;
         const notesC = document.getElementById('mapNotesSelect').value;
         let added = 0;
-        window.tempData.forEach((row, i) => {
+        window.tempData.forEach((row) => {
             const ph = String(row[pC] || '').replace(/\D/g, '');
             if (!ph || leads.some(l => l.phone === ph)) return;
-            const bucket = Math.floor(i / 100) % 10;
             leads.push({
                 id: 'L-' + Math.random().toString(36).substr(2, 9),
                 name: row[nC] || 'Unknown',
@@ -533,8 +536,8 @@
                 notes: notesC ? (row[notesC] || '') : '',
                 hidden: false,
                 disposition: '',
-                bucket,
-                twilioNumber: TWILIO_NUMBERS[bucket],
+                bucket: 0,
+                twilioNumber: TWILIO_NUMBERS[0],
                 lastCalledDate: null
             });
             added++;
@@ -543,7 +546,6 @@
         alert(`Import complete! Added ${added} leads.`);
     }
 
-    // ── RENDER ────────────────────────────────────────────────────────────
     function renderLeads() {
         const body = document.getElementById('leadBody');
         const query = document.getElementById('searchInput').value.toLowerCase();
@@ -573,7 +575,7 @@
                 <td>${getLocalTimeForLead(l.phone)}</td>
                 <td>${l.city || getCityFromPhone(l.phone)}</td>
                 <td>${l.resort || '-'}</td>
-                <td>${l.appointment ? l.appointment.replace('T', ' ') : '-'}</td>
+                <td>${l.appointment ? l.appointment.replace('T',' ') : '-'}</td>
                 <td><button onclick="event.stopPropagation();logCallAndHide('${l.id}')" class="btn-primary" style="font-size:0.8em;padding:6px 12px;">CALL (${l.calls || 0})</button></td>
             </tr>
         `).join('');
@@ -585,7 +587,6 @@
         renderCallLog();
     }
 
-    // ── PROFILE ───────────────────────────────────────────────────────────
     function openProfile(id) {
         const l = leads.find(x => x.id === id);
         if (!l) return;
@@ -599,7 +600,7 @@
         document.getElementById('profileEmail').value = l.email || '';
         document.getElementById('profileAppt').value = l.appointment || '';
         document.getElementById('profileNotes').value = l.notes || '';
-        document.getElementById('profileTwilioNumber').textContent = l.twilioNumber ? formatPhone(l.twilioNumber) : 'Import 1,000-batch to assign';
+        document.getElementById('profileTwilioNumber').textContent = formatPhone(TWILIO_NUMBERS[0]);
         document.getElementById('emailOutputs').innerHTML = '';
         document.querySelectorAll('input[name="emailTemplate"]').forEach(c => c.checked = false);
         document.getElementById('profileModal').style.display = 'block';
@@ -621,49 +622,48 @@
         if (!l) return;
         const checked = [...document.querySelectorAll('input[name="emailTemplate"]:checked')].map(c => c.value);
         if (!checked.length) return alert('Select at least one template.');
+        const fn = l.name.split(' ')[0];
         const templates = {
-            inquiry: `Subject: Following Up on Your Inquiry\n\nHi ${l.name.split(' ')[0]},\n\nThank you for your interest. I wanted to follow up and answer any questions you may have.\n\nBest regards`,
-            thankyou_quick: `Subject: Thank You for Speaking With Us\n\nHi ${l.name.split(' ')[0]},\n\nThank you for taking my call today. It was great speaking with you. I'll be in touch with more details shortly.\n\nBest regards`,
-            followup_long: `Subject: Checking Back In\n\nHi ${l.name.split(' ')[0]},\n\nI wanted to circle back and see if you had any questions since we last spoke. I'm happy to help with anything you need.\n\nBest regards`
+            inquiry: `Subject: Following Up on Your Inquiry\n\nHi ${fn},\n\nThank you for your interest. I wanted to follow up and answer any questions you may have.\n\nBest regards`,
+            thankyou_quick: `Subject: Thank You for Speaking With Us\n\nHi ${fn},\n\nThank you for taking my call today. It was great speaking with you. I'll be in touch shortly.\n\nBest regards`,
+            followup_long: `Subject: Checking Back In\n\nHi ${fn},\n\nI wanted to circle back and see if you had any questions since we last spoke.\n\nBest regards`
         };
         document.getElementById('emailOutputs').innerHTML = checked.map(k => `
             <div style="margin-bottom:12px;">
                 <label style="text-transform:none;font-size:0.85em;">${k}</label>
-                <textarea readonly style="height:100px;font-size:0.8em;background:rgba(0,0,0,0.03);">${templates[k]}</textarea>
+                <textarea readonly style="height:100px;font-size:0.8em;">${templates[k]}</textarea>
             </div>
         `).join('');
     }
 
-    // ── SIDEBAR ───────────────────────────────────────────────────────────
     function renderApptsSidebar() {
         const list = document.getElementById('appointmentList');
-        const upcoming = leads.filter(l => l.appointment).sort((a, b) => a.appointment.localeCompare(b.appointment));
-        list.innerHTML = upcoming.slice(0, 5).map(l => `
+        const upcoming = leads.filter(l => l.appointment).sort((a,b) => a.appointment.localeCompare(b.appointment));
+        list.innerHTML = upcoming.slice(0,5).map(l => `
             <div onclick="openProfile('${l.id}')" style="background:rgba(0,123,255,0.05);padding:8px;border-radius:8px;margin-bottom:5px;font-size:0.8em;cursor:pointer;">
-                <b>${l.name}</b><br>${l.appointment.replace('T', ' ')}
+                <b>${l.name}</b><br>${l.appointment.replace('T',' ')}
             </div>
         `).join('') || '<div style="font-size:0.8em;color:#718096;">No upcoming appointments.</div>';
     }
 
     function renderCallLog() {
         const list = document.getElementById('callLogList');
-        const logs = leads.filter(l => l.calls > 0).sort((a, b) => (b.lastCalledDate || '').localeCompare(a.lastCalledDate || ''));
-        list.innerHTML = logs.slice(0, 15).map(l => `
+        const logs = leads.filter(l => l.calls > 0).sort((a,b) => (b.lastCalledDate||'').localeCompare(a.lastCalledDate||''));
+        list.innerHTML = logs.slice(0,15).map(l => `
             <div onclick="openProfile('${l.id}')" class="log-entry">
-                <b>${l.name}</b> ${l.disposition === 'no_connect' ? '❌' : l.disposition === 'vm' ? '📬' : '📞'}<br>
-                <small>${l.lastCalledDate || ''} | ${l.resort || '-'}</small>
+                <b>${l.name}</b> ${l.disposition==='no_connect'?'❌':l.disposition==='vm'?'📬':'📞'}<br>
+                <small>${l.lastCalledDate||''} | ${l.resort||'-'}</small>
             </div>
         `).join('') || '<div style="font-size:0.8em;color:#718096;">No calls logged yet.</div>';
     }
 
-    // ── STATS & FILTERS ───────────────────────────────────────────────────
     function updateStats() {
         document.getElementById('statTotal').innerText = leads.length;
-        document.getElementById('statCalled').innerText = leads.filter(l => (l.calls || 0) > 0).length;
-        document.getElementById('statCallsToday').innerText = leads.reduce((s, l) => s + (l.calls || 0), 0);
-        document.getElementById('statZeroDial').innerText = leads.filter(l => !(l.calls || 0) && !l.hidden).length;
+        document.getElementById('statCalled').innerText = leads.filter(l => (l.calls||0) > 0).length;
+        document.getElementById('statCallsToday').innerText = leads.reduce((s,l) => s+(l.calls||0), 0);
+        document.getElementById('statZeroDial').innerText = leads.filter(l => !(l.calls||0) && !l.hidden).length;
         const finished = leads.filter(l => l.hidden).length;
-        const perc = leads.length ? Math.round((finished / leads.length) * 100) : 0;
+        const perc = leads.length ? Math.round((finished/leads.length)*100) : 0;
         document.getElementById('progressLabel').innerText = `LIST PROGRESS: ${perc}%`;
         document.getElementById('progressCount').innerText = `${finished} / ${leads.length} Finished`;
         document.getElementById('progressBar').style.width = perc + '%';
@@ -671,9 +671,9 @@
 
     function updateQueueUI() {
         const bar = document.getElementById('activeQueueBar');
-        if (!callQueue.length) { bar.style.display = 'none'; return; }
+        if (!callQueue.length) { bar.style.display='none'; return; }
         bar.style.display = 'flex';
-        document.getElementById('queueProgress').textContent = `Playing ${queueIndex + 1} of ${callQueue.length}`;
+        document.getElementById('queueProgress').textContent = `Playing ${queueIndex+1} of ${callQueue.length}`;
         document.getElementById('queueCurrentName').textContent = callQueue[queueIndex]?.name || '';
     }
 
@@ -688,16 +688,14 @@
         currentPage = 1; renderLeads();
     }
 
-    function changePage(d) { currentPage = Math.max(1, currentPage + d); renderLeads(); }
+    function changePage(d) { currentPage = Math.max(1, currentPage+d); renderLeads(); }
     function toggleShowHidden() { showHidden = !showHidden; renderLeads(); }
     function toggleTheme() {
-        const body = document.body;
-        const dark = body.getAttribute('data-theme') === 'dark';
-        body.setAttribute('data-theme', dark ? 'light' : 'dark');
+        const dark = document.body.getAttribute('data-theme') === 'dark';
+        document.body.setAttribute('data-theme', dark ? 'light' : 'dark');
         document.getElementById('themeBtn').innerText = dark ? '🌞' : '🌙';
     }
 
-    // ── EXPORTS ───────────────────────────────────────────────────────────
     function exportToExcel(data, filename) {
         const ws = XLSX.utils.json_to_sheet(data);
         const wb = XLSX.utils.book_new();
@@ -706,78 +704,66 @@
     }
 
     function exportWeeklyRecap() {
-        const data = leads.map(l => ({
-            Name: l.name, Phone: formatPhone(l.phone), Resort: l.resort,
-            City: l.city, Calls: l.calls || 0, Disposition: l.disposition || '',
-            LastCalled: l.lastCalledDate || '', Appointment: l.appointment || '',
-            TwilioNumber: l.twilioNumber || '', Notes: l.notes || ''
-        }));
+        const data = leads.map(l => ({ Name:l.name, Phone:formatPhone(l.phone), Resort:l.resort, City:l.city, Calls:l.calls||0, Disposition:l.disposition||'', LastCalled:l.lastCalledDate||'', Appointment:l.appointment||'', Notes:l.notes||'' }));
         exportToExcel(data, `weekly_recap_${luxon.DateTime.now().toISODate()}.xlsx`);
     }
 
     function exportNoConnectOnly() {
-        const data = leads.filter(l => l.disposition === 'no_connect').map(l => ({
-            Name: l.name, Phone: formatPhone(l.phone), Resort: l.resort,
-            City: l.city, Calls: l.calls || 0, LastCalled: l.lastCalledDate || ''
-        }));
+        const data = leads.filter(l => l.disposition==='no_connect').map(l => ({ Name:l.name, Phone:formatPhone(l.phone), Resort:l.resort, City:l.city, Calls:l.calls||0, LastCalled:l.lastCalledDate||'' }));
         if (!data.length) return alert('No no-connect leads to export.');
         exportToExcel(data, `no_connect_${luxon.DateTime.now().toISODate()}.xlsx`);
     }
 
     function exportCarryOverLeads() {
         const today = luxon.DateTime.now().toISODate();
-        const data = leads.filter(l => !l.hidden && l.lastCalledDate !== today && !(l.calls || 0)).map(l => ({
-            Name: l.name, Phone: formatPhone(l.phone), Resort: l.resort,
-            City: l.city, TwilioNumber: l.twilioNumber || ''
-        }));
+        const data = leads.filter(l => !l.hidden && l.lastCalledDate !== today && !(l.calls||0)).map(l => ({ Name:l.name, Phone:formatPhone(l.phone), Resort:l.resort, City:l.city }));
         if (!data.length) return alert('No carry-over leads found.');
         exportToExcel(data, `carry_over_${luxon.DateTime.now().toISODate()}.xlsx`);
     }
 
     function resetHiddenLeads() {
-        if (!confirm('Unhide all leads and reset daily call tracking? This is for a new day.')) return;
-        leads.forEach(l => { l.hidden = false; l.lastCalledDate = null; });
-        save(); renderLeads(); alert('Reset complete. All leads visible for new day.');
+        if (!confirm('Unhide all leads and reset daily tracking for a new day?')) return;
+        leads.forEach(l => { l.hidden=false; l.lastCalledDate=null; });
+        save(); renderLeads(); alert('Reset complete.');
     }
 
     function deleteAllLeads() {
         if (!confirm('DELETE ALL LEADS? This cannot be undone.')) return;
-        leads = []; callQueue = []; queueIndex = 0;
+        leads=[]; callQueue=[]; queueIndex=0;
         save(); saveQueue(); renderLeads(); updateFilterResorts();
     }
 
-    // ── UTILS ─────────────────────────────────────────────────────────────
     function save() { localStorage.setItem(KEY_LEADS, JSON.stringify(leads)); }
     function saveQueue() { localStorage.setItem(KEY_QUEUE, JSON.stringify(callQueue)); localStorage.setItem(KEY_INDEX, String(queueIndex)); }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    function shuffle(arr) { return [...arr].sort(() => 0.5 - Math.random()); }
+    function closeModal(id) { document.getElementById(id).style.display='none'; }
+    function shuffle(arr) { return [...arr].sort(() => 0.5-Math.random()); }
 
     function formatPhone(num) {
-        const s = String(num).replace(/\D/g, '');
-        if (s.length === 11) return `+${s[0]} (${s.slice(1,4)}) ${s.slice(4,7)}-${s.slice(7)}`;
-        if (s.length === 10) return `(${s.slice(0,3)}) ${s.slice(3,6)}-${s.slice(6)}`;
+        const s = String(num).replace(/\D/g,'');
+        if (s.length===11) return `+${s[0]} (${s.slice(1,4)}) ${s.slice(4,7)}-${s.slice(7)}`;
+        if (s.length===10) return `(${s.slice(0,3)}) ${s.slice(3,6)}-${s.slice(6)}`;
         return num;
     }
 
     const areaCodeToCity = {"201":"Jersey City, NJ","202":"Washington, DC","203":"Bridgeport, CT","205":"Birmingham, AL","206":"Seattle, WA","207":"Portland, ME","208":"Boise, ID","209":"Stockton, CA","210":"San Antonio, TX","212":"New York, NY","213":"Los Angeles, CA","214":"Dallas, TX","215":"Philadelphia, PA","216":"Cleveland, OH","217":"Springfield, IL","218":"Duluth, MN","219":"Hammond, IN","224":"Elgin, IL","225":"Baton Rouge, LA","228":"Gulfport, MS","229":"Albany, GA","231":"Muskegon, MI","234":"Akron, OH","239":"Cape Coral, FL","240":"Germantown, MD","248":"Troy, MI","251":"Mobile, AL","252":"Greenville, NC","253":"Tacoma, WA","254":"Killeen, TX","256":"Huntsville, AL","260":"Fort Wayne, IN","262":"Kenosha, WI","267":"Philadelphia, PA","269":"Kalamazoo, MI","270":"Bowling Green, KY","272":"Scranton, PA","276":"Bristol, VA","281":"Houston, TX","301":"Germantown, MD","302":"Wilmington, DE","303":"Denver, CO","304":"Charleston, WV","305":"Miami, FL","307":"Cheyenne, WY","308":"Grand Island, NE","309":"Peoria, IL","310":"Santa Monica, CA","312":"Chicago, IL","313":"Detroit, MI","314":"St. Louis, MO","315":"Syracuse, NY","316":"Wichita, KS","317":"Indianapolis, IN","318":"Shreveport, LA","319":"Cedar Rapids, IA","320":"St. Cloud, MN","321":"Orlando, FL","323":"Los Angeles, CA","325":"Abilene, TX","330":"Akron, OH","331":"Aurora, IL","334":"Montgomery, AL","336":"Greensboro, NC","337":"Lafayette, LA","339":"Saugus, MA","347":"New York, NY","351":"Lowell, MA","352":"Gainesville, FL","360":"Vancouver, WA","361":"Corpus Christi, TX","385":"Salt Lake City, UT","386":"Palm Coast, FL","401":"Providence, RI","402":"Omaha, NE","404":"Atlanta, GA","405":"Oklahoma City, OK","406":"Billings, MT","407":"Orlando, FL","408":"San Jose, CA","409":"Beaumont, TX","410":"Baltimore, MD","412":"Pittsburgh, PA","413":"Springfield, MA","414":"Milwaukee, WI","415":"San Francisco, CA","417":"Springfield, MO","419":"Toledo, OH","423":"Chattanooga, TN","424":"Santa Monica, CA","425":"Bellevue, WA","430":"Tyler, TX","432":"Midland, TX","434":"Lynchburg, VA","435":"St. George, UT","440":"Parma, OH","442":"Oceanside, CA","443":"Baltimore, MD","458":"Eugene, OR","469":"Dallas, TX","470":"Atlanta, GA","475":"Bridgeport, CT","478":"Macon, GA","479":"Fort Smith, AR","480":"Mesa, AZ","484":"Allentown, PA","501":"Little Rock, AR","502":"Louisville, KY","503":"Portland, OR","504":"New Orleans, LA","505":"Albuquerque, NM","507":"Rochester, MN","508":"Worcester, MA","509":"Spokane, WA","510":"Oakland, CA","512":"Austin, TX","513":"Cincinnati, OH","515":"Des Moines, IA","516":"Hempstead, NY","517":"Lansing, MI","518":"Albany, NY","520":"Tucson, AZ","530":"Redding, CA","531":"Omaha, NE","534":"Eau Claire, WI","539":"Tulsa, OK","540":"Roanoke, VA","541":"Eugene, OR","551":"Jersey City, NJ","559":"Fresno, CA","561":"West Palm Beach, FL","562":"Long Beach, CA","563":"Davenport, IA","567":"Toledo, OH","570":"Scranton, PA","571":"Arlington, VA","573":"Columbia, MO","574":"South Bend, IN","575":"Las Cruces, NM","585":"Rochester, NY","586":"Warren, MI","601":"Jackson, MS","602":"Phoenix, AZ","603":"Manchester, NH","605":"Sioux Falls, SD","606":"Ashland, KY","607":"Binghamton, NY","608":"Madison, WI","609":"Trenton, NJ","610":"Allentown, PA","612":"Minneapolis, MN","614":"Columbus, OH","615":"Nashville, TN","616":"Grand Rapids, MI","617":"Boston, MA","618":"Belleville, IL","619":"San Diego, CA","620":"Hutchinson, KS","623":"Glendale, AZ","626":"Pasadena, CA","629":"Nashville, TN","630":"Aurora, IL","631":"Brentwood, NY","636":"O'Fallon, MO","641":"Mason City, IA","646":"New York, NY","650":"San Mateo, CA","651":"St. Paul, MN","657":"Anaheim, CA","660":"Sedalia, MO","661":"Bakersfield, CA","662":"Southaven, MS","667":"Baltimore, MD","669":"San Jose, CA","678":"Atlanta, GA","681":"Charleston, WV","682":"Fort Worth, TX","701":"Fargo, ND","702":"Las Vegas, NV","703":"Arlington, VA","704":"Charlotte, NC","706":"Augusta, GA","707":"Santa Rosa, CA","708":"Cicero, IL","712":"Sioux City, IA","713":"Houston, TX","714":"Anaheim, CA","715":"Eau Claire, WI","716":"Buffalo, NY","717":"Lancaster, PA","718":"New York, NY","719":"Colorado Springs, CO","720":"Denver, CO","724":"New Castle, PA","727":"St. Petersburg, FL","731":"Jackson, TN","732":"Edison, NJ","734":"Ann Arbor, MI","737":"Austin, TX","740":"Newark, OH","747":"Los Angeles, CA","754":"Fort Lauderdale, FL","757":"Virginia Beach, VA","760":"Oceanside, CA","762":"Augusta, GA","763":"Brooklyn Park, MN","765":"Muncie, IN","769":"Jackson, MS","770":"Atlanta, GA","772":"Port St. Lucie, FL","773":"Chicago, IL","774":"Worcester, MA","775":"Reno, NV","779":"Rockford, IL","781":"Waltham, MA","785":"Topeka, KS","786":"Miami, FL","801":"Salt Lake City, UT","802":"Burlington, VT","803":"Columbia, SC","804":"Richmond, VA","805":"Oxnard, CA","806":"Lubbock, TX","808":"Honolulu, HI","810":"Flint, MI","812":"Evansville, IN","813":"Tampa, FL","814":"Erie, PA","815":"Rockford, IL","816":"Kansas City, MO","817":"Fort Worth, TX","818":"Los Angeles, CA","828":"Asheville, NC","830":"New Braunfels, TX","831":"Salinas, CA","832":"Houston, TX","843":"Charleston, SC","845":"New City, NY","847":"Elgin, IL","848":"Edison, NJ","850":"Tallahassee, FL","854":"Charleston, SC","856":"Camden, NJ","857":"Boston, MA","858":"San Diego, CA","859":"Lexington, KY","860":"Hartford, CT","862":"Newark, NJ","863":"Lakeland, FL","864":"Greenville, SC","865":"Knoxville, TN","870":"Jonesboro, AR","872":"Chicago, IL","878":"Pittsburgh, PA","901":"Memphis, TN","903":"Tyler, TX","904":"Jacksonville, FL","907":"Anchorage, AK","908":"Elizabeth, NJ","909":"San Bernardino, CA","910":"Fayetteville, NC","912":"Savannah, GA","913":"Overland Park, KS","914":"Yonkers, NY","915":"El Paso, TX","916":"Sacramento, CA","917":"New York, NY","918":"Tulsa, OK","919":"Raleigh, NC","920":"Green Bay, WI","925":"Concord, CA","928":"Yuma, AZ","929":"New York, NY","931":"Clarksville, TN","936":"Conroe, TX","937":"Dayton, OH","938":"Huntsville, AL","940":"Denton, TX","941":"North Port, FL","947":"Troy, MI","949":"Irvine, CA","951":"Riverside, CA","952":"Bloomington, MN","954":"Fort Lauderdale, FL","956":"Laredo, TX","959":"Hartford, CT","970":"Fort Collins, CO","971":"Portland, OR","972":"Dallas, TX","973":"Newark, NJ","978":"Lowell, MA","979":"College Station, TX","980":"Charlotte, NC","984":"Raleigh, NC","985":"Houma, LA","989":"Saginaw, MI"};
 
     function getCityFromPhone(ph) {
-        const c = String(ph).replace(/\D/g, '');
-        const ac = c.length >= 10 ? c.substring(c.length - 10, c.length - 7) : '';
+        const c = String(ph).replace(/\D/g,'');
+        const ac = c.length>=10 ? c.substring(c.length-10, c.length-7) : '';
         return areaCodeToCity[ac] || 'Unknown';
     }
 
     function getLocalTimeForLead(ph) {
-        const c = String(ph).replace(/\D/g, '');
-        const ac = c.length >= 10 ? c.substring(c.length - 10, c.length - 7) : '';
+        const c = String(ph).replace(/\D/g,'');
+        const ac = c.length>=10 ? c.substring(c.length-10, c.length-7) : '';
         const zones = {
-            'America/Chicago': ['205','210','225','228','312','314','318','337','402','405','414','501','504','512','515','601','612','615','630','636','651','682','713','715','731','769','816','817','832','870','901','903','913','918','931','936','940','956','972','979','985'],
-            'America/Denver': ['303','307','385','406','435','505','719','720','801','928','970'],
-            'America/Los_Angeles': ['206','213','253','310','323','360','408','415','424','442','503','509','510','530','541','559','562','619','626','650','657','661','669','702','707','714','747','760','775','805','818','831','858','916','925','949','951','971']
+            'America/Chicago':['205','210','225','228','312','314','318','337','402','405','414','501','504','512','515','601','612','615','630','636','651','682','713','715','731','769','816','817','832','870','901','903','913','918','931','936','940','956','972','979','985'],
+            'America/Denver':['303','307','385','406','435','505','719','720','801','928','970'],
+            'America/Los_Angeles':['206','213','253','310','323','360','408','415','424','442','503','509','510','530','541','559','562','619','626','650','657','661','669','702','707','714','747','760','775','805','818','831','858','916','925','949','951','971']
         };
         let zone = 'America/New_York';
         for (const [z, codes] of Object.entries(zones)) {
-            if (codes.includes(ac)) { zone = z; break; }
+            if (codes.includes(ac)) { zone=z; break; }
         }
         return luxon.DateTime.now().setZone(zone).toFormat('hh:mm a');
     }
