@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Workflow — Lead Organizer Pro (Twilio 10-Number Edition)</title>
+    <script src="https://sdk.twilio.com/js/voice/releases/1.25.0/twilio.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        :root {
+            --primary: #007bff;
+            --bg-body: #f0f4f8;
+            --bg-panel: rgba(255, 255, 255, 0.95);
+            --text-main: #333;
+            --border-color: rgba(209, 217, 224, 0.6);
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #f6ad55;
+            --twilio-green: #10b981;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #1a202c;
+                --bg-panel: rgba(45, 55, 72, 0.95);
+                --text-main: #e2e8f0;
+                --border-color: rgba(74, 85, 104, 0.6);
+                --primary: #63b3ed;
+            }
+        }
+        [data-theme="dark"] {
+            --bg-body: #1a202c;
+            --bg-panel: rgba(45, 55, 72, 0.95);
+            --text-main: #e2e8f0;
+            --border-color: rgba(74, 85, 104, 0.6);
+            --primary: #63b3ed;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 20px;
+            background: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            height: calc(100vh - 40px);
+            overflow: hidden;
+        }
+        h1 { margin: 0; color: var(--primary); font-size: 1.8em; font-weight: 700; }
+        h2 { margin: 15px 0 10px 0; color: var(--primary); font-size: 1.1em; font-weight: 600; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
+        label { font-size: 0.75em; font-weight: 600; color: var(--primary); display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        #main { flex: 3; margin-right: 20px; display: flex; flex-direction: column; overflow: hidden; }
+        #sidebar { flex: 1; max-width: 350px; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; overflow: hidden; }
+        .panel { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+        .stats-bar { display: flex; gap: 12px; margin-bottom: 16px; }
+        .stat-card { flex: 1; background: var(--bg-panel); padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; }
+        .stat-val { display: block; font-size: 1.6em; font-weight: 700; color: var(--primary); }
+        .progress-container { width: 100%; height: 8px; background: rgba(226, 232, 240, 0.5); border-radius: 999px; margin-top: 12px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(135deg, #007bff, #63b3ed); }
+        .progress-complete { background: linear-gradient(135deg, #28a745, #48bb78) !important; }
+        .table-wrapper { flex: 1; overflow: auto; background: var(--bg-panel); border-radius: 16px; border: 1px solid var(--border-color); }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; min-width: 1000px; }
+        th, td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); font-size: 0.85em; text-align: left; }
+        th { background: rgba(255, 255, 255, 0.6); position: sticky; top: 0; z-index: 10; font-weight: 600; }
+        [data-theme="dark"] th { background: rgba(45, 55, 72, 0.6); }
+        tr:hover { background: rgba(0, 123, 255, 0.08); cursor: pointer; }
+        tr.is-hidden-row { opacity: 0.5; }
+        tr.no-connect { background: rgba(255, 193, 7, 0.12) !important; }
+        .icon-btn { background: var(--bg-panel); border: 1px solid var(--border-color); color: var(--text-main); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2em; }
+        .btn-primary, .btn-warning, .btn-danger, .btn-vm { padding: 10px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; }
+        .btn-primary { background: linear-gradient(135deg, #007bff, #63b3ed); color: #fff; }
+        .btn-warning { background: linear-gradient(135deg, #f6ad55, #ed8936); color: #111; }
+        .btn-danger { background: linear-gradient(135deg, #dc3545, #c53030); color: #fff; }
+        .btn-vm { background: linear-gradient(135deg, #6b46c1, #9f7aea); color: white; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 3000; }
+        .modal-content { background: var(--bg-panel); width: 90%; max-width: 520px; margin: 5vh auto; padding: 32px; border-radius: 16px; border: 1px solid var(--border-color); max-height: 90vh; overflow-y: auto; }
+        .badge { font-size: 0.85em; padding: 4px 10px; border-radius: 999px; display: inline-block; }
+        .city-badge { background: rgba(0,123,255,0.1); color: var(--primary); }
+        .resort-badge { background: rgba(40,167,69,0.1); color: #28a745; }
+        .call-badge { background: rgba(254,226,226,0.5); color: #991b1b; }
+        .queue-bar { background: linear-gradient(135deg, #007bff, #63b3ed); color: white; padding: 12px 24px; border-radius: 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+        .dialer-name { font-size: 2em; font-weight: 700; cursor: pointer; }
+        input, select, textarea { width: 100%; padding: 12px; margin-bottom: 16px; border: 1px solid var(--border-color); border-radius: 12px; background: rgba(255,255,255,0.6); }
+        [data-theme="dark"] input, [data-theme="dark"] select, [data-theme="dark"] textarea { background: rgba(45,55,72,0.6); }
+        .log-entry { padding: 12px; background: rgba(0,123,255,0.06); border-radius: 12px; margin-bottom: 8px; cursor: pointer; font-size: 0.85em; }
+        .log-entry:hover { background: rgba(0,123,255,0.12); }
+        .custom-list-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid var(--border-color); }
+        .twilio-badge { background: rgba(16,185,129,0.1); color: var(--twilio-green); font-weight: 600; }
+        .status-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #dc3545; margin-right: 5px; }
+        .status-dot.online { background-color: #10b981; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+</head>
+<body data-theme="light">
+<div id="main">
+    <div class="header-container" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <h1>Workflow — Twilio 10-Number Edition</h1>
+            <button onclick="startQueue()" class="icon-btn" style="background:var(--primary);color:white;width:auto;padding:0 15px;gap:8px;font-size:0.9em;border:none;">🔀 Start Call Queue (Round-Robin)</button>
+            <button onclick="startFullQueue()" class="icon-btn" style="background:var(--warning);color:white;width:auto;padding:0 15px;gap:8px;font-size:0.9em;border:none;">🔄 Force Full Queue</button>
+            <button onclick="openCustomQueueModal()" class="icon-btn" style="background:#6b46c1;color:white;width:auto;padding:0 15px;gap:8px;font-size:0.9em;border:none;">🛠️ Custom Queue</button>
+            <label style="margin-left:10px;font-size:0.9em;color:#666;display:flex;align-items:center;gap:6px;">
+                <input type="checkbox" id="onlyFreshToday" checked> Only uncalled today
+            </label>
+        </div>
+        <button id="themeBtn" onclick="toggleTheme()" style="width:50px;height:50px;border-radius:50%;border:1px solid var(--border-color);font-size:1.5em;background:var(--bg-panel);">🌞</button>
+    </div>
+
+    <div id="activeQueueBar" class="queue-bar" style="display:none;">
+        <div><span id="queueProgress">Playing 1 of 100</span> — <span id="queueCurrentName">...</span></div>
+        <div style="display:flex;gap:10px;">
+            <button onclick="openDialerModal()" style="padding:5px 12px;border-radius:6px;font-weight:bold;background:white;color:var(--primary);">Open Dialer</button>
+            <button onclick="stopQueue()" style="padding:5px 12px;border-radius:6px;font-weight:bold;background:var(--danger);color:white;">End Session</button>
+        </div>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-card"><span id="statTotal" class="stat-val">0</span><div style="font-size:0.7em;color:#718096;">Total Leads</div></div>
+        <div class="stat-card"><span id="statCalled" class="stat-val">0</span><div style="font-size:0.7em;color:#718096;">Called Leads</div></div>
+        <div class="stat-card"><span id="statCallsToday" class="stat-val">0</span><div style="font-size:0.7em;color:#718096;">Total Logs</div></div>
+        <div class="stat-card"><span id="statZeroDial" class="stat-val">0</span><div style="font-size:0.7em;color:var(--success);">Zero-Dial Left</div></div>
+    </div>
+
+    <div class="panel" style="padding:10px 15px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span id="progressLabel" style="font-size:0.75em;font-weight:bold;color:var(--primary);">LIST PROGRESS: 0%</span>
+            <span id="progressCount" style="font-size:0.75em;color:#718096;">0 / 0 Finished</span>
+        </div>
+        <div class="progress-container"><div id="progressBar" class="progress-fill"></div></div>
+    </div>
+
+    <div class="panel">
+        <div style="display:flex;gap:10px;align-items:center;">
+            <input type="text" id="searchInput" placeholder="Search name or phone..." style="flex:1;margin-bottom:0;" />
+            <select id="resortFilter" onchange="currentPage=1;renderLeads();" style="width:150px;margin-bottom:0;"><option value="">All Resorts</option></select>
+            <label style="font-size:0.8em;color:var(--warning);margin-left:15px;white-space:nowrap;">
+                <input type="checkbox" id="noConnectFilter" onchange="currentPage=1;renderLeads();"> Only No-Connect
+            </label>
+            <div style="position:relative;">
+                <button class="icon-btn" style="background:var(--primary);color:white;border:none;">📥</button>
+                <input type="file" id="fileInput" accept=".csv,.xls,.xlsx" style="position:absolute;left:0;top:0;opacity:0;width:100%;height:100%;cursor:pointer;" />
+            </div>
+            <button onclick="toggleShowHidden()" class="icon-btn" title="Toggle hidden">👁</button>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table id="leadTable">
+            <thead>
+                <tr>
+                    <th onclick="sortBy('name')" style="width:18%;">Name</th>
+                    <th onclick="sortBy('phone')" style="width:15%;">Phone</th>
+                    <th onclick="sortBy('localTime')" style="width:12%;">Local Time</th>
+                    <th onclick="sortBy('city')" style="width:12%;">City</th>
+                    <th onclick="sortBy('resort')" style="width:12%;">Resort</th>
+                    <th onclick="sortBy('appointment')" style="width:15%;">Appointment</th>
+                    <th style="width:16%;">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="leadBody"></tbody>
+        </table>
+        <div style="display:flex;justify-content:center;gap:15px;padding:15px;background:rgba(0,0,0,0.02);border-top:1px solid var(--border-color);">
+            <button onclick="changePage(-1)" style="padding:5px 15px;border-radius:5px;background:var(--bg-panel);border:1px solid var(--border-color);">←</button>
+            <span id="pageInfo" style="font-size:0.85em;font-weight:bold;">Page 1</span>
+            <button onclick="changePage(1)" style="padding:5px 15px;border-radius:5px;background:var(--bg-panel);border:1px solid var(--border-color);">→</button>
+        </div>
+    </div>
+</div>
+
+<div id="sidebar">
+    <div style="text-align:center;margin-bottom:20px;">
+        <div id="clock" style="font-size:1.8em;font-weight:bold;color:var(--primary);">00:00:00</div>
+        <div id="dateLabel" style="opacity:0.7;font-size:0.9em;"></div>
+    </div>
+    <div style="flex:1;overflow-y:auto;">
+        <h2>Upcoming Appointments</h2>
+        <div id="appointmentList"></div>
+        
+        <h2 style="margin-top:25px;color:#10b981;">Twilio Connection Status</h2>
+        <div style="background:rgba(16,185,129,0.08);padding:14px;border-radius:12px;font-size:0.85em;line-height:1.5;">
+            <div id="twilioStatusDisplay"><span class="status-dot"></span>Connecting to Server...</div>
+            <br>
+            10 numbers per agent • Automatic 10-bucket assignment<br>
+            Round-robin queues active • Exact 1,000-lead cycle<br>
+            <small>Caller ID = rented Twilio number only • Full TCPA compliance</small>
+        </div>
+
+        <h2 style="margin-top:25px;">Call Log (Latest First)</h2>
+        <div id="callLogList" style="max-height:380px;overflow-y:auto;"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:15px;">
+        <button onclick="exportWeeklyRecap()" style="padding:12px;background:var(--success);color:white;border:none;border-radius:8px;font-weight:bold;">Download Weekly Recap</button>
+        <button onclick="exportNoConnectOnly()" style="padding:12px;background:var(--warning);color:white;border:none;border-radius:8px;font-weight:bold;">Export No-Connect Only</button>
+        <button onclick="exportCarryOverLeads()" style="padding:12px;background:#10b981;color:white;border:none;border-radius:8px;font-weight:bold;">Export Carry-Over (Non-Deleted)</button>
+        <button onclick="resetHiddenLeads()" style="padding:8px;font-size:0.8em;background:var(--warning);color:white;">Reset Hidden (New Day)</button>
+        <button onclick="deleteAllLeads()" style="padding:8px;background:var(--danger);color:white;border:none;border-radius:8px;opacity:0.5;font-size:0.7em;">Clear Workspace</button>
+    </div>
+</div>
+
+<div id="dialerModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:500px;">
+        <div style="text-align:center;">
+            <div id="dialerProgress" style="font-size:0.8em;color:var(--primary);font-weight:bold;margin-bottom:10px;">LEAD 1 OF 100</div>
+            <div id="dialerName" class="dialer-name" onclick="openProfileFromDialer()">John Doe</div>
+            <div id="dialerTime" style="font-size:1.2em;font-weight:600;color:var(--warning);margin-bottom:16px;"></div>
+            
+            <div style="margin-bottom:10px;display:flex;justify-content:center;flex-wrap:wrap;gap:5px;">
+                <span id="dialerCity" class="badge city-badge">City</span>
+                <span id="dialerResort" class="badge resort-badge">Resort</span>
+                <span id="dialerCalls" class="badge call-badge">0 Calls</span>
+            </div>
+            
+            <div style="text-align:center;margin:12px 0;padding:10px;background:rgba(16,185,129,0.08);border-radius:8px;font-size:1.05em;">
+                <strong>Twilio Caller ID:</strong> 
+                <span id="twilioCallerId" style="font-family:monospace;color:#10b981;font-weight:700;">+1-XXX-XXX-XXXX</span>
+            </div>
+            
+            <div id="dialerPhone" style="font-size:1.4em;margin-bottom:12px;letter-spacing:1.5px;"></div>
+            
+            <button id="mainDialButton" onclick="placeTwilioCallNow()" style="width:100%;margin-bottom:12px;padding:12px;background:linear-gradient(135deg,#10b981,#34d399);color:white;border:none;border-radius:8px;font-weight:700;font-size:1.05em;">
+                📲 DIAL WITH ASSIGNED TWILIO NUMBER
+            </button>
+            
+            <label>Call Result Notes</label>
+            <textarea id="dialerNotes" style="width:100%;height:80px;" placeholder="Add details..."></textarea>
+            
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <button onclick="queueAction('call')" class="btn-primary">LOG CALL &amp; NEXT</button>
+                <button onclick="queueAction('no_connect')" class="btn-warning">DIDN'T GO THROUGH &amp; NEXT</button>
+                <button onclick="queueAction('vm')" class="btn-vm">LEFT VM &amp; NEXT</button>
+                <button onclick="queueAction('delete')" class="btn-danger">DISCONNECTED / DEL</button>
+            </div>
+            
+            <button onclick="closeModal('dialerModal')" style="width:100%;margin-top:15px;padding:10px;border-radius:8px;font-weight:bold;border:1px solid var(--border-color);background:none;">CLOSE DIALER</button>
+        </div>
+    </div>
+</div>
+
+<div id="profileModal" class="modal-overlay">
+    <div class="modal-content">
+        <h2 id="profileName"></h2>
+        <div id="profilePhone" style="font-size:1.35em;font-family:monospace;margin-bottom:16px;"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+            <div><strong>City:</strong> <span id="profileCity"></span></div>
+            <div><strong>Resort:</strong> <span id="profileResort"></span></div>
+            <div><strong>Calls:</strong> <span id="profileCalls"></span></div>
+            <div><strong>Last:</strong> <span id="profileLast"></span></div>
+        </div>
+        
+        <div style="margin-bottom:16px;padding:12px;background:rgba(16,185,129,0.08);border-radius:8px;text-align:center;">
+            <strong style="color:#10b981;">Assigned Twilio Dialer Number:</strong><br>
+            <span id="profileTwilioNumber" style="font-family:monospace;font-size:1.2em;color:#10b981;font-weight:700;"></span>
+        </div>
+        
+        <label>Appointment</label><input type="datetime-local" id="profileAppt">
+        <label>Email</label><input type="text" id="profileEmail">
+        
+        <h2 style="margin: 24px 0 12px 0; font-size:1.1em;">Email Templates</h2>
+        <div style="margin-bottom:16px; font-size:0.9em;">
+            <label style="display:block; margin:8px 0;">
+                <input type="checkbox" name="emailTemplate" value="inquiry"> Initial Inquiry (Sell Vacation Membership)
+            </label>
+            <label style="display:block; margin:8px 0;">
+                <input type="checkbox" name="emailTemplate" value="thankyou_quick"> Thank You for Quick Response
+            </label>
+            <label style="display:block; margin:8px 0;">
+                <input type="checkbox" name="emailTemplate" value="followup_long"> Follow-Up — It's Been a While
+            </label>
+        </div>
+        <button onclick="generateEmailTemplates()" class="btn-primary" style="margin-bottom:20px; width:100%;">Generate to Notepad</button>
+        <div id="emailOutputs" style="margin-bottom:24px;"></div>
+        <label>Full Notes / History</label>
+        <div id="profileNotes" style="background:#f8fafc;padding:12px;border-radius:8px;max-height:220px;overflow-y:auto;font-size:0.85em;white-space:pre-wrap;"></div>
+        <div style="margin-top:20px;display:flex;gap:10px;">
+            <button onclick="saveProfile()" class="btn-primary" style="flex:1;">SAVE CHANGES</button>
+            <button onclick="closeModal('profileModal')" style="flex:1;background:#e2e8f0;padding:12px;border-radius:8px;">CLOSE</button>
+        </div>
+    </div>
+</div>
+
+<div id="customQueueModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:580px;">
+        <h2>Build Your Own Call Queue</h2>
+        <input type="text" id="customSearch" placeholder="Search name or phone..." style="margin-bottom:12px;" oninput="renderCustomQueueList()">
+        <div id="customQueueList" style="max-height:420px;overflow-y:auto;border:1px solid var(--border-color);border-radius:12px;padding:8px;background:var(--bg-panel);"></div>
+        <div style="margin-top:15px;display:flex;gap:10px;">
+            <button onclick="selectAllCustom()" style="flex:1;padding:12px;" class="btn-ghost">Select All Visible</button>
+            <button onclick="startCustomQueue()" class="btn-primary" style="flex:2;padding:12px;">START QUEUE WITH SELECTED</button>
+            <button onclick="closeModal('customQueueModal')" style="flex:1;padding:12px;" class="btn-ghost">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div id="mappingModal" class="modal-overlay">
+    <div class="modal-content">
+        <h2>Map Your Columns</h2>
+        <p style="font-size:0.8em;opacity:0.7;">Tell us which columns match our lead data.</p>
+        <label for="mapNameSelect">Full Name</label><select id="mapNameSelect"></select>
+        <label for="mapPhoneSelect">Phone Number</label><select id="mapPhoneSelect"></select>
+        <label for="mapEmailSelect">Email (Optional)</label><select id="mapEmailSelect"></select>
+        <label for="mapCitySelect">City (Optional)</label><select id="mapCitySelect"></select>
+        <label for="mapResortSelect">Resort (Optional)</label><select id="mapResortSelect"></select>
+        <label for="mapCallsSelect">Calls (Optional)</label><select id="mapCallsSelect"></select>
+        <label for="mapApptSelect">Appointment (Optional)</label><select id="mapApptSelect"></select>
+        <label for="mapNotesSelect">Notes (Optional)</label><select id="mapNotesSelect"></select>
+        <button onclick="finalizeImport()" class="btn-primary" style="width:100%;padding:12px;">FINISH IMPORT</button>
+        <button onclick="closeModal('mappingModal')" style="width:100%;margin-top:10px;padding:10px;">CANCEL</button>
+    </div>
+</div>
+
+<script>
+    // ===================================================================
+    // TWILIO 10-NUMBER INTEGRATION & INITIALIZATION
+    // ===================================================================
+    const TOKEN_URL = 'https://dialer-1641.twil.io/token';
+
+    const TWILIO_NUMBERS = [
+        '+14155551234', // Bucket 0 (Update these with your real numbers when ready)
+        '+14155551235', // Bucket 1
+        '+14155551236', // Bucket 2
+        '+14155551237', // Bucket 3
+        '+14155551238', // Bucket 4
+        '+14155551239', // Bucket 5
+        '+14155551240', // Bucket 6
+        '+14155551241', // Bucket 7
+        '+14155551242', // Bucket 8
+        '+14155551243'  // Bucket 9
+    ];
+
+    let device;
+    let activeConnection = null;
+
+    async function initTwilioDevice() {
+        try {
+            const statusDisplay = document.getElementById('twilioStatusDisplay');
+            statusDisplay.innerHTML = `<span class="status-dot"></span>Connecting to Server...`;
+            
+            const response = await fetch(TOKEN_URL);
+            if (!response.ok) throw new Error("Network response was not ok");
+            const data = await response.json();
+
+            device = new Twilio.Device(data.token, {
+                codecPreferences: ['opus', 'pcmu'],
+                fakeLocalDTMF: true,
+                enableIceRestart: true
+            });
+
+            device.on('registered', () => {
+                console.log('Twilio Device Registered and Ready!');
+                statusDisplay.innerHTML = `<span class="status-dot online"></span><span style="color:#10b981;font-weight:bold;">Device Online & Ready to Dial</span>`;
+            });
+
+            device.on('error', (error) => {
+                console.error('Twilio Device Error:', error);
+                statusDisplay.innerHTML = `<span class="status-dot"></span><span style="color:#dc3545;font-weight:bold;">Error: ${error.message}</span>`;
+            });
+
+            await device.register();
+        } catch (err) {
+            console.error('Could not get Twilio token:', err);
+            document.getElementById('twilioStatusDisplay').innerHTML = `<span class="status-dot"></span><span style="color:#dc3545;font-weight:bold;">Failed to connect to Twilio</span>`;
+        }
+    }
+
+    const KEY_LEADS = 'wf_leads_v8';
+    const KEY_QUEUE = 'wf_queue_v8';
+    const KEY_INDEX = 'wf_index_v8';
+    if (!localStorage.getItem(KEY_LEADS) && localStorage.getItem('wf_leads_v7')) {
+        localStorage.setItem(KEY_LEADS, localStorage.getItem('wf_leads_v7'));
+        if (localStorage.getItem('wf_queue_v7')) localStorage.setItem(KEY_QUEUE, localStorage.getItem('wf_queue_v7'));
+        if (localStorage.getItem('wf_index_v7')) localStorage.setItem(KEY_INDEX, localStorage.getItem('wf_index_v7'));
+        console.log('✅ Your old data was safely migrated!');
+    }
+    let leads = JSON.parse(localStorage.getItem(KEY_LEADS)) || [];
+    let callQueue = JSON.parse(localStorage.getItem(KEY_QUEUE)) || [];
+    let queueIndex = parseInt(localStorage.getItem(KEY_INDEX)) || 0;
+    let currentPage = 1;
+    const leadsPerPage = 40;
+    let currentProfileId = null;
+    let sortColumn = null;
+    let sortDir = 1;
+    let selectedCustom = new Set();
+    const tzMap = { 
+        "201":"America/New_York","202":"America/New_York","212":"America/New_York","305":"America/New_York","407":"America/New_York","321":"America/New_York","954":"America/New_York","904":"America/New_York","404":"America/New_York","617":"America/New_York","215":"America/New_York",
+        "312":"America/Chicago","713":"America/Chicago","214":"America/Chicago","615":"America/Chicago","504":"America/Chicago","816":"America/Chicago",
+        "303":"America/Denver","602":"America/Phoenix","801":"America/Denver",
+        "213":"America/Los_Angeles","619":"America/Los_Angeles","415":"America/Los_Angeles","206":"America/Los_Angeles","503":"America/Los_Angeles","702":"America/Los_Angeles"
+    };
+    const areaCodeToCity = { 
+        "201":"Jersey City, NJ", "202":"Washington, DC", "203":"Bridgeport, CT", "205":"Birmingham, AL", "206":"Seattle, WA", "207":"Portland, ME", "208":"Boise, ID", "209":"Stockton, CA", "210":"San Antonio, TX", "212":"New York, NY", "213":"Los Angeles, CA", "214":"Dallas, TX", "215":"Philadelphia, PA", "216":"Cleveland, OH", "217":"Springfield, IL", "218":"Duluth, MN", "219":"Hammond, IN", "224":"Elgin, IL", "225":"Baton Rouge, LA", "228":"Gulfport, MS", "229":"Albany, GA", "231":"Muskegon, MI", "234":"Akron, OH", "239":"Cape Coral, FL", "240":"Germantown, MD", "248":"Troy, MI", "251":"Mobile, AL", "252":"Greenville, NC", "253":"Tacoma, WA", "254":"Waco, TX", "256":"Huntsville, AL", "260":"Fort Wayne, IN", "262":"Kenosha, WI", "267":"Philadelphia, PA", "269":"Kalamazoo, MI", "270":"Bowling Green, KY", "272":"Scranton, PA", "276":"Bristol, VA", "281":"Houston, TX", "301":"Silver Spring, MD", "302":"Wilmington, DE", "303":"Denver, CO", "304":"Charleston, WV", "305":"Miami, FL", "307":"Cheyenne, WY", "308":"Grand Island, NE", "309":"Peoria, IL", "310":"Santa Monica, CA", "312":"Chicago, IL", "313":"Detroit, MI", "314":"St. Louis, MO", "315":"Syracuse, NY", "316":"Wichita, KS", "317":"Indianapolis, IN", "318":"Shreveport, LA", "319":"Cedar Rapids, IA", "320":"St. Cloud, MN", "321":"Orlando, FL", "323":"Los Angeles, CA", "325":"Abilene, TX", "330":"Akron, OH", "331":"Aurora, IL", "334":"Montgomery, AL", "336":"Greensboro, NC", "337":"Lafayette, LA", "339":"Saugus, MA", "340":"St. Thomas, VI", "341":"Oakland, CA", "346":"Houston, TX", "347":"New York, NY", "351":"Lowell, MA", "352":"Gainesville, FL", "360":"Vancouver, WA", "361":"Corpus Christi, TX", "364":"Paducah, KY", "380":"Columbus, OH", "385":"Salt Lake City, UT", "386":"Daytona Beach, FL", "401":"Providence, RI", "402":"Omaha, NE", "404":"Atlanta, GA", "405":"Oklahoma City, OK", "406":"Billings, MT", "407":"Orlando, FL", "408":"San Jose, CA", "409":"Beaumont, TX", "410":"Baltimore, MD", "412":"Pittsburgh, PA", "413":"Springfield, MA", "414":"Milwaukee, WI", "415":"San Francisco, CA", "417":"Springfield, MO", "419":"Toledo, OH", "423":"Chattanooga, TN", "424":"Santa Monica, CA", "425":"Bellevue, WA", "430":"Tyler, TX", "432":"Midland, TX", "434":"Lynchburg, VA", "435":"St. George, UT", "440":"Parma, OH", "442":"Oceanside, CA", "443":"Baltimore, MD", "458":"Eugene, OR", "469":"Dallas, TX", "470":"Atlanta, GA", "475":"Bridgeport, CT", "478":"Macon, GA", "479":"Fort Smith, AR", "480":"Mesa, AZ", "484":"Allentown, PA", "501":"Little Rock, AR", "502":"Louisville, KY", "503":"Portland, OR", "504":"New Orleans, LA", "505":"Albuquerque, NM", "507":"Rochester, MN", "508":"Worcester, MA", "509":"Spokane, WA", "510":"Oakland, CA", "512":"Austin, TX", "513":"Cincinnati, OH", "515":"Des Moines, IA", "516":"Hempstead, NY", "517":"Lansing, MI", "518":"Albany, NY", "520":"Tucson, AZ", "530":"Redding, CA", "531":"Omaha, NE", "534":"Eau Claire, WI", "539":"Tulsa, OK", "540":"Roanoke, VA", "541":"Eugene, OR", "551":"Jersey City, NJ", "559":"Fresno, CA", "561":"West Palm Beach, FL", "562":"Long Beach, CA", "563":"Davenport, IA", "567":"Toledo, OH", "570":"Scranton, PA", "571":"Arlington, VA", "573":"Columbia, MO", "574":"South Bend, IN", "575":"Las Cruces, NM", "580":"Lawton, OK", "585":"Rochester, NY", "586":"Warren, MI", "601":"Jackson, MS", "602":"Phoenix, AZ", "603":"Manchester, NH", "605":"Sioux Falls, SD", "606":"Ashland, KY", "607":"Binghamton, NY", "608":"Madison, WI", "609":"Trenton, NJ", "610":"Allentown, PA", "612":"Minneapolis, MN", "614":"Columbus, OH", "615":"Nashville, TN", "616":"Grand Rapids, MI", "617":"Boston, MA", "618":"Belleville, IL", "619":"San Diego, CA", "620":"Hutchinson, KS", "623":"Glendale, AZ", "626":"Pasadena, CA", "628":"San Francisco, CA", "629":"Nashville, TN", "630":"Aurora, IL", "631":"Brentwood, NY", "636":"O'Fallon, MO", "641":"Mason City, IA", "646":"New York, NY", "650":"San Mateo, CA", "651":"St. Paul, MN", "657":"Anaheim, CA", "660":"Sedalia, MO", "661":"Bakersfield, CA", "662":"Southaven, MS", "667":"Baltimore, MD", "669":"San Jose, CA", "678":"Atlanta, GA", "681":"Charleston, WV", "682":"Fort Worth, TX", "701":"Fargo, ND", "702":"Las Vegas, NV", "703":"Arlington, VA", "704":"Charlotte, NC", "706":"Augusta, GA", "707":"Santa Rosa, CA", "708":"Cicero, IL", "712":"Sioux City, IA", "713":"Houston, TX", "714":"Anaheim, CA", "715":"Eau Claire, WI", "716":"Buffalo, NY", "717":"Harrisburg, PA", "718":"New York, NY", "719":"Colorado Springs, CO", "720":"Denver, CO", "724":"New Castle, PA", "727":"St. Petersburg, FL", "731":"Jackson, TN", "732":"Edison, NJ", "734":"Ann Arbor, MI", "737":"Austin, TX", "740":"Newark, OH", "747":"Los Angeles, CA", "754":"Fort Lauderdale, FL", "757":"Virginia Beach, VA", "760":"Oceanside, CA", "762":"Augusta, GA", "763":"Brooklyn Park, MN", "765":"Muncie, IN", "769":"Jackson, MS", "770":"Atlanta, GA", "772":"Port St. Lucie, FL", "773":"Chicago, IL", "774":"Worcester, MA", "775":"Reno, NV", "779":"Rockford, IL", "781":"Waltham, MA", "785":"Topeka, KS", "786":"Miami, FL", "787":"San Juan, PR", "801":"Salt Lake City, UT", "802":"Burlington, VT", "803":"Columbia, SC", "804":"Richmond, VA", "805":"Oxnard, CA", "806":"Lubbock, TX", "808":"Honolulu, HI", "810":"Flint, MI", "812":"Evansville, IN", "813":"Tampa, FL", "814":"Erie, PA", "815":"Rockford, IL", "816":"Kansas City, MO", "817":"Fort Worth, TX", "818":"Los Angeles, CA", "828":"Asheville, NC", "830":"New Braunfels, TX", "831":"Salinas, CA", "832":"Houston, TX", "843":"Charleston, SC", "845":"New City, NY", "847":"Elgin, IL", "848":"Edison, NJ", "850":"Tallahassee, FL", "854":"Charleston, SC", "856":"Camden, NJ", "857":"Boston, MA", "858":"San Diego, CA", "859":"Lexington, KY", "860":"Hartford, CT", "862":"Newark, NJ", "863":"Lakeland, FL", "864":"Greenville, SC", "865":"Knoxville, TN", "870":"Jonesboro, AR", "872":"Chicago, IL", "878":"Pittsburgh, PA", "901":"Memphis, TN", "903":"Tyler, TX", "904":"Jacksonville, FL", "906":"Marquette, MI", "907":"Anchorage, AK", "908":"Elizabeth, NJ", "909":"San Bernardino, CA", "910":"Fayetteville, NC", "912":"Savannah, GA", "913":"Overland Park, KS", "914":"Yonkers, NY", "915":"El Paso, TX", "916":"Sacramento, CA", "917":"New York, NY", "918":"Tulsa, OK", "919":"Raleigh, NC", "920":"Green Bay, WI", "925":"Concord, CA", "928":"Yuma, AZ", "929":"New York, NY", "931":"Clarksville, TN", "936":"Conroe, TX", "937":"Dayton, OH", "938":"Huntsville, AL", "940":"Denton, TX", "941":"North Port, FL", "947":"Troy, MI", "949":"Irvine, CA", "951":"Riverside, CA", "952":"Bloomington, MN", "954":"Fort Lauderdale, FL", "956":"Laredo, TX", "959":"Hartford, CT", "970":"Fort Collins, CO", "971":"Portland, OR", "972":"Dallas, TX", "973":"Newark, NJ", "975":"Independence, MO", "978":"Lowell, MA", "979":"College Station, TX", "980":"Charlotte, NC", "984":"Raleigh, NC", "985":"Houma, LA", "989":"Saginaw, MI"
+    };
+
+    window.onload = () => {
+        initTwilioDevice(); // Initialize Twilio when page loads
+        forceSelfRepair();
+        updateResortFilter();
+        renderLeads();
+        setInterval(updateTime, 1000);
+        document.getElementById('fileInput').addEventListener('change', handleUpload);
+        document.getElementById('searchInput').addEventListener('input', () => { currentPage = 1; renderLeads(); });
+        if (callQueue.length > 0) { updateQueueUI(); openDialerModal(); }
+    };
+
+    function getLocalTimeForLead(phone) {
+        const clean = String(phone || '').replace(/\D/g, '');
+        let code = clean.length === 11 && clean.startsWith('1') ? clean.substring(1,4) : clean.substring(0,3);
+        const zone = tzMap[code] || "America/New_York";
+        return luxon.DateTime.now().setZone(zone).toFormat('hh:mm a');
+    }
+    function updateTime() {
+        const now = luxon.DateTime.now();
+        document.getElementById('clock').textContent = now.toFormat('hh:mm:ss a');
+        document.getElementById('dateLabel').textContent = now.toFormat('cccc, LLL dd');
+    }
+
+    // UPDATED: Round-Robin 10-Bucket Queue
+    function startQueue() {
+        const onlyFresh = document.getElementById('onlyFreshToday').checked;
+        const today = luxon.DateTime.now().toISODate();
+        let available = leads.filter(l => !l.hidden && (!onlyFresh || l.lastCalledDate !== today));
+        if (available.length === 0) { alert("No leads available"); return; }
+
+        const buckets = Array.from({length: 10}, () => []);
+        available.forEach(l => {
+            const b = (l.bucket !== undefined && l.bucket !== null) ? l.bucket : Math.floor(Math.random() * 10);
+            buckets[b].push(l);
+        });
+        buckets.forEach(bkt => bkt.sort(() => 0.5 - Math.random()));
+
+        callQueue = [];
+        let round = 0;
+        while (callQueue.length < 100 && round < 200) {
+            let addedThisRound = false;
+            for (let b = 0; b < 10; b++) {
+                if (buckets[b].length > 0) {
+                    callQueue.push(buckets[b].shift());
+                    addedThisRound = true;
+                    if (callQueue.length >= 100) break;
+                }
+            }
+            if (!addedThisRound) break;
+            round++;
+        }
+
+        queueIndex = 0;
+        saveQueue();
+        updateQueueUI();
+        openDialerModal();
+    }
+
+    function startFullQueue() {
+        if (!confirm("Include already-called today?")) return;
+        let available = leads.filter(l => !l.hidden);
+        if (available.length === 0) { alert("No leads"); return; }
+        callQueue = [...available].sort(() => 0.5 - Math.random()).slice(0,100);
+        queueIndex = 0;
+        saveQueue();
+        updateQueueUI();
+        openDialerModal();
+    }
+
+    function saveQueue() {
+        localStorage.setItem(KEY_QUEUE, JSON.stringify(callQueue));
+        localStorage.setItem(KEY_INDEX, queueIndex);
+    }
+    function updateQueueUI() {
+        if (callQueue.length === 0) { document.getElementById('activeQueueBar').style.display = 'none'; return; }
+        document.getElementById('activeQueueBar').style.display = 'flex';
+        document.getElementById('queueProgress').textContent = `Playing ${queueIndex + 1} of ${callQueue.length}`;
+        document.getElementById('queueCurrentName').textContent = callQueue[queueIndex].name;
+    }
+
+    function openDialerModal() {
+        const current = callQueue[queueIndex];
+        if (!current) { stopQueue(); return; }
+        document.getElementById('dialerProgress').textContent = `LEAD ${queueIndex + 1} OF ${callQueue.length}`;
+        document.getElementById('dialerName').textContent = current.name;
+        document.getElementById('dialerTime').textContent = getLocalTimeForLead(current.phone);
+        document.getElementById('dialerCity').textContent = current.city || getCityFromPhone(current.phone);
+        document.getElementById('dialerResort').textContent = current.resort || "Unknown";
+        document.getElementById('dialerCalls').textContent = (current.calls || 0) + " Calls";
+        document.getElementById('dialerPhone').textContent = formatPhone(current.phone);
+        
+        document.getElementById('twilioCallerId').textContent = current.twilioNumber || '844-216-6085 (Main)';
+        
+        document.getElementById('dialerNotes').value = '';
+        
+        // Reset button state
+        const btn = document.getElementById('mainDialButton');
+        btn.innerHTML = "📲 DIAL WITH ASSIGNED TWILIO NUMBER";
+        btn.style.background = "linear-gradient(135deg,#10b981,#34d399)";
+        btn.onclick = placeTwilioCallNow;
+        
+        document.getElementById('dialerModal').style.display = 'block';
+    }
+
+    function openProfileFromDialer() {
+        const cur = callQueue[queueIndex];
+        if (cur) { closeModal('dialerModal'); openProfile(cur.id); }
+    }
+
+    // ===================================================================
+    // TWILIO ACTIVE CALL LOGIC
+    // ===================================================================
+    async function placeTwilioCallNow() {
+        const current = callQueue[queueIndex];
+        if (!current || !current.twilioNumber) {
+            alert("No Twilio number assigned to this lead!");
+            return;
+        }
+
+        if (!device) {
+            alert("Twilio is not connected yet. Please wait a moment or refresh the page.");
+            return;
+        }
+
+        const params = {
+            To: current.phone,
+            From: current.twilioNumber 
+        };
+
+        const btn = document.getElementById('mainDialButton');
+
+        try {
+            console.log(`Calling ${params.To} from ${params.From}...`);
+            activeConnection = await device.connect({ params });
+
+            btn.innerHTML = "🛑 HANG UP CALL";
+            btn.style.background = "#ef4444";
+            btn.onclick = () => {
+                if (activeConnection) activeConnection.disconnect();
+            };
+
+            activeConnection.on('disconnect', () => {
+                console.log('Call ended');
+                btn.innerHTML = "📲 DIAL WITH ASSIGNED TWILIO NUMBER";
+                btn.style.background = "linear-gradient(135deg,#10b981,#34d399)";
+                btn.onclick = placeTwilioCallNow;
+                activeConnection = null;
+            });
+
+            activeConnection.on('error', (err) => {
+                console.error("Call error:", err);
+                alert("Call failed: " + err.message);
+                btn.innerHTML = "📲 DIAL WITH ASSIGNED TWILIO NUMBER";
+                btn.style.background = "linear-gradient(135deg,#10b981,#34d399)";
+                btn.onclick = placeTwilioCallNow;
+                activeConnection = null;
+            });
+
+        } catch (err) {
+            console.error("Dialing Error:", err);
+            alert("Failed to dial: " + err.message);
+        }
+    }
+
+    function queueAction(type) {
+        if (activeConnection) {
+            activeConnection.disconnect(); // Hang up if moving to next while on call
+        }
+        
+        const current = callQueue[queueIndex];
+        let rawNote = document.getElementById('dialerNotes').value.trim();
+        const now = luxon.DateTime.now();
+        const timestamp = now.toFormat('MM/dd hh:mm a');
+        const today = now.toISODate();
+        let actionLabel = type === 'call' ? 'LOGGED CALL' : type === 'no_connect' ? 'NO CONNECT' : type === 'vm' ? 'LEFT VM' : 'DELETED';
+        if (type === 'vm' && !rawNote) rawNote = 'VM left: Call back to main company line 844-216-6085';
+        if (type === 'delete') {
+            leads = leads.filter(l => l.id !== current.id);
+            callQueue.splice(queueIndex, 1);
+        } else {
+            const lead = leads.find(l => l.id === current.id);
+            if (lead) {
+                const noteWithTimestamp = `[${timestamp} - ${actionLabel}]: ${rawNote || 'No notes added.'}`;
+                lead.notes = (lead.notes ? lead.notes + '\n' : '') + noteWithTimestamp;
+                lead.lastCalledDate = today;
+                if (type === 'call' || type === 'no_connect' || type === 'vm') {
+                    lead.calls = (lead.calls || 0) + 1;
+                    lead.hidden = true;
+                }
+                if (type === 'no_connect') lead.disposition = 'no_connect';
+            }
+            queueIndex++;
+        }
+        save();
+        saveQueue();
+        renderLeads();
+        if (queueIndex >= callQueue.length) {
+            alert("Queue Finished!");
+            stopQueue();
+        } else {
+            updateQueueUI();
+            openDialerModal();
+        }
+    }
+
+    function stopQueue() {
+        if (activeConnection) activeConnection.disconnect();
+        callQueue = [];
+        queueIndex = 0; saveQueue(); updateQueueUI(); closeModal('dialerModal');
+    }
+    function save() { localStorage.setItem(KEY_LEADS, JSON.stringify(leads)); }
+
+    function sortBy(col) {
+        if (sortColumn === col) sortDir = -sortDir;
+        else { sortColumn = col; sortDir = 1; }
+        renderLeads();
+    }
+    function getSortValue(lead, col) {
+        switch (col) {
+            case 'name': return lead.name ? lead.name.toLowerCase() : null;
+            case 'phone': return lead.phone;
+            case 'localTime': {
+                const clean = String(lead.phone || '').replace(/\D/g, '');
+                let code = clean.length === 11 && clean.startsWith('1') ? clean.substring(1,4) : clean.substring(0,3);
+                const zone = tzMap[code] || 'America/New_York';
+                const dt = luxon.DateTime.now().setZone(zone);
+                return dt.hour * 100 + dt.minute;
+            }
+            case 'city': return (lead.city || getCityFromPhone(lead.phone) || '').toLowerCase();
+            case 'resort': return (lead.resort || '').toLowerCase();
+            case 'appointment': return lead.appointment ? luxon.DateTime.fromISO(lead.appointment).toMillis() : null;
+            default: return null;
+        }
+    }
+
+    function renderLeads() {
+        const body = document.getElementById('leadBody');
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const resFilter = document.getElementById('resortFilter').value;
+        let filtered = leads.filter(l => {
+            if (document.getElementById('noConnectFilter').checked) return l.disposition === 'no_connect';
+            return (l.name.toLowerCase().includes(search) || l.phone.includes(search)) && (!resFilter || l.resort === resFilter);
+        });
+        if (sortColumn) {
+            filtered.sort((a, b) => {
+                let va = getSortValue(a, sortColumn);
+                let vb = getSortValue(b, sortColumn);
+                if (va === null && vb === null) return 0;
+                if (va === null) return 1;
+                if (vb === null) return -1;
+                return (typeof va === 'string' ? va.localeCompare(vb) : va - vb) * sortDir;
+            });
+        }
+        const slice = filtered.slice((currentPage-1)*leadsPerPage, currentPage*leadsPerPage);
+        body.innerHTML = '';
+        slice.forEach(l => {
+            const tr = document.createElement('tr');
+            if (l.hidden) tr.className = 'is-hidden-row';
+            if (l.disposition === 'no_connect') tr.className += ' no-connect';
+            tr.onclick = () => openProfile(l.id);
+            tr.innerHTML = `
+                <td><b>${l.name}</b></td>
+                <td>${formatPhone(l.phone)}</td>
+                <td>${getLocalTimeForLead(l.phone)}</td>
+                <td>${l.city || getCityFromPhone(l.phone)}</td>
+                <td>${l.resort}</td>
+                <td>${l.appointment || '-'}</td>
+                <td><button onclick="event.stopPropagation(); logCallAndHide('${l.id}');" class="btn-primary">CALL (${l.calls||0})</button></td>
+            `;
+            body.appendChild(tr);
+        });
+        updateStats();
+        renderApptsSidebar();
+        renderCallLog();
+    }
+
+    function updateStats() {
+        const total = leads.length;
+        const called = leads.filter(l => l.calls > 0 || l.hidden).length;
+        const totalLogs = leads.reduce((sum, l) => sum + (l.calls || 0), 0);
+        document.getElementById('statTotal').textContent = total;
+        document.getElementById('statCalled').textContent = called;
+        document.getElementById('statCallsToday').textContent = totalLogs;
+        const progressPercent = total > 0 ? Math.round((called / total) * 100) : 0;
+        const bar = document.getElementById('progressBar');
+        bar.style.width = progressPercent + '%';
+        document.getElementById('progressLabel').textContent = `LIST PROGRESS: ${progressPercent}%`;
+        document.getElementById('progressCount').textContent = `${called} / ${total} Finished`;
+        if (progressPercent >= 100 && total > 0) bar.classList.add('progress-complete');
+        else bar.classList.remove('progress-complete');
+        document.getElementById('pageInfo').textContent = `Page ${currentPage}`;
+        const zeroDialLeft = leads.filter(l => !l.hidden && (l.calls||0) === 0).length;
+        document.getElementById('statZeroDial').textContent = zeroDialLeft;
+    }
+
+    function formatPhone(ph) {
+        const digits = (ph||'').replace(/\D/g, '');
+        if (digits.length === 10) return digits.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+        if (digits.length === 11 && digits.startsWith('1')) return digits.replace(/1(\d{3})(\d{3})(\d{4})/, '+1 $1-$2-$3');
+        return ph;
+    }
+    function getCityFromPhone(phone) {
+        const clean = String(phone || '').replace(/\D/g, '');
+        let code = clean.length === 11 && clean.startsWith('1') ? clean.substring(1,4) : clean.substring(0,3);
+        return areaCodeToCity[code] || "Other";
+    }
+    function logCallAndHide(id) {
+        const l = leads.find(x => x.id === id);
+        if (l) {
+            const now = luxon.DateTime.now();
+            const timestamp = now.toFormat('MM/dd hh:mm a');
+            const noteWithTimestamp = `[${timestamp} - MANUAL CALL]: Logged from table`;
+            l.calls = (l.calls || 0) + 1;
+            l.notes = (l.notes ? l.notes + '\n' : '') + noteWithTimestamp;
+            l.hidden = true;
+            l.lastCalledDate = now.toISODate();
+            save();
+            renderLeads();
+        }
+    }
+    function openProfile(id) {
+        const l = leads.find(x => x.id === id);
+        if (!l) return;
+        currentProfileId = id;
+        document.getElementById('profileName').textContent = l.name;
+        document.getElementById('profilePhone').textContent = formatPhone(l.phone);
+        document.getElementById('profileCity').textContent = l.city || getCityFromPhone(l.phone);
+        document.getElementById('profileResort').textContent = l.resort;
+        document.getElementById('profileCalls').textContent = l.calls || 0;
+        document.getElementById('profileLast').textContent = l.lastCalledDate || 'Never';
+        document.getElementById('profileEmail').value = l.email || '';
+        document.getElementById('profileAppt').value = l.appointment ? l.appointment.substring(0,16) : '';
+        document.getElementById('profileNotes').textContent = l.notes || 'No notes yet';
+        document.getElementById('profileTwilioNumber').textContent = l.twilioNumber ? formatPhone(l.twilioNumber) : 'Not assigned (import 1,000-lead batch to assign)';
+        
+        document.getElementById('profileModal').style.display = 'block';
+    }
+    function saveProfile() {
+        const l = leads.find(x => x.id === currentProfileId);
+        if (l) {
+            l.email = document.getElementById('profileEmail').value;
+            l.appointment = document.getElementById('profileAppt').value;
+            save();
+            renderLeads();
+        }
+        closeModal('profileModal');
+    }
+    function renderApptsSidebar() {
+        const list = document.getElementById('appointmentList');
+        const upcoming = leads.filter(l => l.appointment).sort((a,b) => a.appointment.localeCompare(b.appointment));
+        list.innerHTML = upcoming.slice(0,5).map(l => `
+            <div onclick="openProfile('${l.id}');" style="background:rgba(0,123,255,0.05); padding:8px; border-radius:8px; margin-bottom:5px; font-size:0.8em; cursor:pointer;">
+                <b>${l.name}</b><br> ${l.appointment.replace('T',' ')}
+            </div>
+        `).join('');
+    }
+    function renderCallLog() {
+        const container = document.getElementById('callLogList');
+        container.innerHTML = '';
+        let logs = [];
+        leads.forEach(lead => {
+            if (!lead.notes) return;
+            const lines = lead.notes.split('\n');
+            lines.forEach(line => {
+                line = line.trim();
+                const match = line.match(/^(\d{2}\/\d{2} \d{1,2}:\d{2} [AP]M) - (.*) : (.*)$/);
+                if (match) {
+                    logs.push({
+                        ts: match[1],
+                        tag: match[2],
+                        note: match[3],
+                        name: lead.name,
+                        phone: formatPhone(lead.phone),
+                        id: lead.id
+                    });
+                }
+            });
+        });
+        logs.sort((a,b) => {
+            try {
+                const da = luxon.DateTime.fromFormat(a.ts, 'MM/dd hh:mm a');
+                const db = luxon.DateTime.fromFormat(b.ts, 'MM/dd hh:mm a');
+                return db.toMillis() - da.toMillis();
+            } catch(e) { return 0; }
+        });
+        if (logs.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:30px; color:#888;">No calls logged yet</div>';
+            return;
+        }
+        logs.forEach(log => {
+            const div = document.createElement('div');
+            div.className = 'log-entry';
+            div.innerHTML = `
+                <span style="color:#666; font-size:0.8em;">${log.ts}</span><br>
+                <b>${log.name}</b> ${log.phone}<br>
+                <span style="background:#fef3c7; padding:2px 6px; border-radius:4px;">${log.tag}</span> ${log.note}
+            `;
+            div.onclick = () => openProfile(log.id);
+            container.appendChild(div);
+        });
+    }
+
+    function handleUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+            const data = new Uint8Array(evt.target.result);
+            const wb = XLSX.read(data, {type: 'array'});
+            const raw = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+            if (!raw.length) { alert("Empty file"); return; }
+            const cols = Object.keys(raw[0]);
+            populateSelect('mapNameSelect', cols, ['name', 'full name', 'first']);
+            populateSelect('mapPhoneSelect', cols, ['phone', 'mobile', 'cell']);
+            populateSelect('mapEmailSelect', cols, ['email', 'mail']);
+            populateSelect('mapCitySelect', cols, ['city', 'town']);
+            populateSelect('mapResortSelect', cols, ['resort', 'location']);
+            populateSelect('mapCallsSelect', cols, ['calls', 'count']);
+            populateSelect('mapApptSelect', cols, ['appt', 'appointment', 'date']);
+            populateSelect('mapNotesSelect', cols, ['notes', 'comments']);
+            window.tempData = raw;
+            document.getElementById('mappingModal').style.display = 'block';
+        };
+        reader.readAsArrayBuffer(file);
+    }
+    function populateSelect(id, cols, guesses) {
+        const s = document.getElementById(id);
+        s.innerHTML = '<option value="">-- No Column --</option>';
+        cols.forEach(c => {
+            const o = document.createElement('option');
+            o.value = c; o.textContent = c;
+            if (guesses.some(g => c.toLowerCase().includes(g))) o.selected = true;
+            s.appendChild(o);
+        });
+    }
+
+    function finalizeImport() {
+        const nC = document.getElementById('mapNameSelect').value;
+        const pC = document.getElementById('mapPhoneSelect').value;
+        const eC = document.getElementById('mapEmailSelect').value;
+        const rC = document.getElementById('mapResortSelect').value;
+        const cC = document.getElementById('mapCitySelect').value;
+        const callsC = document.getElementById('mapCallsSelect').value;
+        const apptC = document.getElementById('mapApptSelect').value;
+        const notesC = document.getElementById('mapNotesSelect').value;
+        let added = 0, skipped = 0;
+        window.tempData.forEach(row => {
+            const ph = String(row[pC] || '').replace(/\D/g, '');
+            if (!ph || leads.some(l => l.phone === ph)) { skipped++; return; }
+            const callsVal = callsC ? parseInt(row[callsC]) || 0 : 0;
+            leads.push({
+                id: 'L-' + Math.random().toString(36).substr(2, 9),
+                name: row[nC] || 'Unknown',
+                phone: ph,
+                email: row[eC] || '',
+                resort: row[rC] || 'Batch',
+                city: row[cC] || getCityFromPhone(ph),
+                calls: callsVal,
+                appointment: apptC ? row[apptC] : null,
+                notes: notesC ? row[notesC] || '' : '',
+                hidden: callsVal > 0,
+                disposition: '',
+                bucket: null,
+                twilioNumber: null
+            });
+            added++;
+        });
+        if (added >= 900) {
+            const start = leads.length - added;
+            for (let i = 0; i < added; i++) {
+                const lead = leads[start + i];
+                lead.bucket = Math.floor(i / 100);
+                lead.twilioNumber = TWILIO_NUMBERS[lead.bucket] || '+18442166085';
+            }
+            console.log(`✅ Auto-assigned ${added} leads to 10 Twilio buckets (round-robin ready)`);
+            alert(`✅ 1,000-lead batch imported!\n10 buckets created • Twilio numbers assigned\nRound-robin queue ready for even usage`);
+        }
+        
+        save();
+        updateResortFilter();
+        renderLeads();
+        closeModal('mappingModal');
+        alert(`Imported ${added} new leads. Skipped ${skipped} duplicates.`);
+    }
+
+    function updateResortFilter() {
+        const sel = document.getElementById('resortFilter');
+        const rs = [...new Set(leads.map(l => l.resort))].filter(Boolean).sort();
+        sel.innerHTML = '<option value="">All Resorts</option>' + rs.map(r => `<option value="${r}">${r}</option>`).join('');
+    }
+    function changePage(d) { currentPage += d; if (currentPage < 1) currentPage = 1; renderLeads(); }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function toggleTheme() {
+        const cur = document.body.getAttribute('data-theme');
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.body.setAttribute('data-theme', next);
+        document.getElementById('themeBtn').textContent = next === 'light' ? '🌞' : '🌙';
+    }
+    function toggleShowHidden() { window.showHidden = !window.showHidden; renderLeads(); }
+
+    function exportWeeklyRecap() {
+        const wb = XLSX.utils.book_new();
+        const allData = leads.map(l => ({
+            "Name": l.name, "Phone": formatPhone(l.phone), "Email": l.email || '',
+            "Resort": l.resort, "Calls": l.calls, "Appt": l.appointment || 'None',
+            "Notes": l.notes, "Disposition": l.disposition || ''
+        }));
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(allData), "All Leads");
+        XLSX.writeFile(wb, `Recap_${luxon.DateTime.now().toISODate()}.xlsx`);
+    }
+    function exportNoConnectOnly() {
+        const noConnectLeads = leads.filter(l => l.disposition === 'no_connect');
+        if (noConnectLeads.length === 0) { alert("No 'No Connect' leads"); return; }
+        const data = noConnectLeads.map(l => ({
+            "Name": l.name, "Phone": formatPhone(l.phone), "Email": l.email || '',
+            "Resort": l.resort, "Calls": l.calls, "Appt": l.appointment || 'None',
+            "Notes": l.notes, "Last Called": l.lastCalledDate || '', "Disposition": "NO CONNECT"
+        }));
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(data), "No Connect Leads");
+        XLSX.writeFile(wb, `No_Connect_Leads_${luxon.DateTime.now().toFormat('yyyy-MM-dd')}.xlsx`);
+    }
+    
+    function exportCarryOverLeads() {
+        const carryOver = leads.filter(l => !l.hidden);
+        if (carryOver.length === 0) { alert("No carry-over leads"); return; }
+        const data = carryOver.map(l => ({
+            "Name": l.name, "Phone": formatPhone(l.phone), "Email": l.email || '',
+            "Resort": l.resort, "Bucket": l.bucket || '', "Twilio": l.twilioNumber || '',
+            "Calls": l.calls, "Appt": l.appointment || 'None', "Notes": l.notes
+        }));
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(data), "Carry_Over");
+        XLSX.writeFile(wb, `Carry_Over_${luxon.DateTime.now().toISODate()}.xlsx`);
+    }
+
+    function resetHiddenLeads() {
+        if (!confirm("Un-hide ALL leads?")) return;
+        leads.forEach(l => { l.hidden = false; });
+        save();
+        renderLeads();
+    }
+    function forceSelfRepair() {
+        leads.forEach(l => {
+            if (!l.id) l.id = 'L-' + Math.random().toString(36).substr(2,9);
+            if (l.bucket === undefined) l.bucket = null;
+            if (l.twilioNumber === undefined) l.twilioNumber = null;
+        });
+        save();
+        renderLeads();
+    }
+    function deleteAllLeads() {
+        if (confirm("Permanently wipe ALL leads?")) { leads = []; save(); renderLeads(); }
+    }
+    function openCustomQueueModal() {
+        selectedCustom = new Set();
+        document.getElementById('customQueueModal').style.display = 'block';
+        renderCustomQueueList();
+    }
+    function renderCustomQueueList() {
+        const search = document.getElementById('customSearch').value.toLowerCase().trim();
+        const container = document.getElementById('customQueueList');
+        container.innerHTML = '';
+        const filtered = leads.filter(l => !l.hidden && (l.name.toLowerCase().includes(search) || l.phone.includes(search)));
+        filtered.forEach(l => {
+            const div = document.createElement('div');
+            div.className = 'custom-list-item';
+            div.innerHTML = `
+                <input type="checkbox" ${selectedCustom.has(l.id)?'checked':''} style="margin-right:12px;" onchange="toggleCustomSelect('${l.id}',this.checked)">
+                <div style="flex:1;">
+                    <b>${l.name}</b><br><small>${formatPhone(l.phone)} — ${l.resort}</small>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+    function toggleCustomSelect(id, checked) {
+        if (checked) selectedCustom.add(id); else selectedCustom.delete(id);
+    }
+    function selectAllCustom() {
+        const search = document.getElementById('customSearch').value.toLowerCase().trim();
+        leads.filter(l => !l.hidden && (l.name.toLowerCase().includes(search) || l.phone.includes(search)))
+            .forEach(l => selectedCustom.add(l.id));
+        renderCustomQueueList();
+    }
+    function startCustomQueue() {
+        if (selectedCustom.size === 0) { alert("Select at least one lead!"); return; }
+        callQueue = leads.filter(l => selectedCustom.has(l.id));
+        queueIndex = 0;
+        saveQueue();
+        updateQueueUI();
+        closeModal('customQueueModal');
+        openDialerModal();
+    }
+
+    const emailTemplates = {
+        inquiry: `Subject: Inquiry Regarding Potential Sale of Your Vacation Membership\nDear {{lastName}}, My name is Brian Alba, and I am a Sales Agent with Blue Ribbon Vacations. I am writing to respectfully inquire whether you would still be interested in exploring the possibility of selling your vacation membership. If you are open to proceeding, we would greatly appreciate it if you could kindly reply to this message and attach only the cover page of your ownership contract. For your privacy and convenience, you may redact or obscure all personal information except for your full name and the specific membership type. We look forward to your response and are happy to answer any questions you may have. Thank you for your time and consideration. Best regards, Brian Alba Sales Agent Blue Ribbon Vacations Phone: 844-216-6085 Website: blueribbonvacations.com`,
+        thankyou_quick: `Subject: Thank You for Your Prompt Reply – Blue Ribbon Vacations\nDear {{lastName}}, Thank you very much for responding so quickly to my previous message. I truly appreciate your timely reply. I have received the information you kindly provided regarding your vacation membership and will review it carefully. I will follow up with you shortly regarding any additional details that may be required or to discuss next steps. Should you have any further information or questions in the meantime, please do not hesitate to let me know. Thank you again for your cooperation. Best regards, Brian Alba Sales Agent Blue Ribbon Vacations Phone: 844-216-6085 Website: blueribbonvacations.com`,
+        followup_long: `Subject: Follow-Up Regarding Your Vacation Membership – Blue Ribbon Vacations\nDear {{lastName}}, I hope this message finds you well. It has been some time since our last communication concerning your potential interest in selling your vacation membership to Blue Ribbon Vacations. I wanted to kindly follow up and ask whether you are still considering this option. If so, I would be pleased to assist you further or address any questions you may have. Alternatively, if your plans have changed and you are no longer interested, please feel free to let me know. This will allow me to respectfully update our records and remove your information accordingly. Thank you in advance for taking a moment to reply — I greatly value your time and consideration. Best regards, Brian Alba Sales Agent Blue Ribbon Vacations Phone: 844-216-6085 Website: blueribbonvacations.com`
+    };
+    function generateEmailTemplates() {
+        const checked = Array.from(document.querySelectorAll('input[name="emailTemplate"]:checked')).map(cb => cb.value);
+        if (checked.length === 0) { alert("Please select at least one template."); return; }
+        const lead = leads.find(l => l.id === currentProfileId);
+        if (!lead) return;
+        const lastName = (lead.name || '').trim().split(' ').pop() || 'Owner';
+        let output = '';
+        checked.forEach(key => {
+            let text = emailTemplates[key];
+            text = text.replace(/{{lastName}}/g, lastName);
+            const title = key === 'inquiry' ? 'Initial Inquiry' : key === 'thankyou_quick' ? 'Thank You - Quick Response' : 'Follow-Up - It\'s Been a While';
+            output += `<div style="margin-bottom:24px;"><strong style="display:block;margin-bottom:8px;">${title}</strong><textarea readonly style="width:100%; height:240px; font-family:monospace; font-size:0.9em; padding:12px; border:1px solid #ccc; border-radius:8px; background:#fdfdfd; white-space:pre-wrap; resize:vertical;">${text}</textarea></div>`;
+        });
+        document.getElementById('emailOutputs').innerHTML = output;
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (document.getElementById('dialerModal').style.display === 'block') {
+            if (e.key === 'n') { e.preventDefault(); queueAction('call'); }
+            if (e.key === 'm') { e.preventDefault(); queueAction('delete'); }
+        }
+    });
+</script>
+</body>
+</html>
