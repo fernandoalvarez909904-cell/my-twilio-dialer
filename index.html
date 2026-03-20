@@ -283,8 +283,6 @@
 
 <script>
     const TOKEN_URL = 'https://dialer-1641.twil.io/token';
-
-    // Only 1 real number for now — placeholders for future numbers
     const TWILIO_NUMBERS = [
         '+18129010600', // active
         '+10000000001', // placeholder
@@ -459,10 +457,11 @@
     function logCallAndHide(id) {
         const lead = leads.find(l => l.id === id);
         if (!lead) return;
-        lead.calls = (lead.calls || 0) + 1;
-        lead.lastCalledDate = luxon.DateTime.now().toISODate();
-        lead.disposition = 'called';
-        save(); renderLeads();
+        callQueue = [lead];
+        queueIndex = 0;
+        saveQueue();
+        updateQueueUI();
+        openDialerModal();
     }
 
     function openCustomQueueModal() {
