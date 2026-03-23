@@ -47,6 +47,7 @@
         tr:hover { background:rgba(0,123,255,0.08); cursor:pointer; }
         tr.is-hidden-row { opacity:0.5; }
         tr.no-connect { background:rgba(255,193,7,0.12) !important; }
+        tr.has-callback { background:rgba(16,185,129,0.08) !important; }
         .icon-btn { background:var(--bg-panel); border:1px solid var(--border-color); color:var(--text-main); width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.2em; }
         .btn-primary, .btn-warning, .btn-danger, .btn-vm { padding:10px 16px; border-radius:8px; font-weight:600; cursor:pointer; border:none; }
         .btn-primary { background:linear-gradient(135deg,#007bff,#63b3ed); color:#fff; }
@@ -67,6 +68,15 @@
         .status-dot.online { background:#10b981; }
         .log-entry { padding:8px; border-radius:8px; margin-bottom:5px; font-size:0.8em; cursor:pointer; background:rgba(0,123,255,0.05); }
         .log-entry:hover { background:rgba(0,123,255,0.12); }
+        .dtmf-pad { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:10px 0; }
+        .dtmf-btn { padding:12px; font-size:1.2em; font-weight:700; border:1px solid var(--border-color); border-radius:8px; background:var(--bg-panel); color:var(--text-main); cursor:pointer; }
+        .dtmf-btn:hover { background:rgba(0,123,255,0.1); }
+        .dtmf-btn:active { transform:scale(0.95); }
+        .quick-note-btn { padding:6px 10px; font-size:0.75em; font-weight:600; border:1px solid var(--border-color); border-radius:6px; background:var(--bg-panel); color:var(--text-main); cursor:pointer; margin:3px; }
+        .quick-note-btn:hover { background:rgba(0,123,255,0.1); }
+        .call-timer { font-size:1.4em; font-weight:700; color:#10b981; text-align:center; margin:8px 0; font-family:monospace; }
+        .callback-alert { background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.4); border-radius:10px; padding:10px 14px; margin-bottom:8px; font-size:0.82em; cursor:pointer; }
+        .callback-alert:hover { background:rgba(16,185,129,0.2); }
     </style>
 </head>
 <body data-theme="light">
@@ -152,7 +162,10 @@
         <div id="dateLabel" style="opacity:0.7;font-size:0.9em;"></div>
     </div>
     <div style="flex:1;overflow-y:auto;">
-        <h2>Upcoming Appointments</h2>
+        <h2>📅 Upcoming Callbacks</h2>
+        <div id="callbackList"><div style="font-size:0.8em;color:#718096;">No callbacks scheduled.</div></div>
+
+        <h2 style="margin-top:20px;">Upcoming Appointments</h2>
         <div id="appointmentList"></div>
 
         <h2 style="margin-top:25px;color:#10b981;">Twilio Connection Status</h2>
@@ -165,7 +178,7 @@
         </div>
 
         <h2 style="margin-top:25px;">Call Log (Latest First)</h2>
-        <div id="callLogList" style="max-height:380px;overflow-y:auto;"></div>
+        <div id="callLogList" style="max-height:300px;overflow-y:auto;"></div>
     </div>
     <div style="display:flex;flex-direction:column;gap:8px;margin-top:15px;">
         <button onclick="exportWeeklyRecap()" style="padding:12px;background:var(--success);color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer;">Download Weekly Recap</button>
@@ -182,7 +195,8 @@
         <div style="text-align:center;">
             <div id="dialerProgress" style="font-size:0.8em;color:var(--primary);font-weight:bold;margin-bottom:10px;">LEAD 1 OF 100</div>
             <div id="dialerName" class="dialer-name" onclick="openProfileFromDialer()">John Doe</div>
-            <div id="dialerTime" style="font-size:1.2em;font-weight:600;color:var(--warning);margin-bottom:16px;"></div>
+            <div id="dialerTime" style="font-size:1.2em;font-weight:600;color:var(--warning);margin-bottom:8px;"></div>
+            <div id="callTimerDisplay" class="call-timer" style="display:none;">00:00</div>
             <div style="margin-bottom:10px;display:flex;justify-content:center;flex-wrap:wrap;gap:5px;">
                 <span id="dialerCity" class="badge city-badge">City</span>
                 <span id="dialerResort" class="badge resort-badge">Resort</span>
@@ -200,6 +214,46 @@
             <button id="mainDialButton" onclick="placeTwilioCallNow()" style="width:100%;margin-bottom:12px;padding:12px;background:linear-gradient(135deg,#10b981,#34d399);color:white;border:none;border-radius:8px;font-weight:700;font-size:1.05em;cursor:pointer;">
                 📲 DIAL WITH ASSIGNED TWILIO NUMBER
             </button>
+
+            <!-- DTMF KEYPAD -->
+            <div id="dtmfSection" style="display:none;margin-bottom:12px;border:1px solid var(--border-color);border-radius:12px;padding:12px;">
+                <div style="font-size:0.75em;font-weight:600;color:var(--primary);margin-bottom:8px;text-transform:uppercase;">Keypad — Press to Send Tone</div>
+                <div class="dtmf-pad">
+                    <button class="dtmf-btn" onclick="sendDTMF('1')">1</button>
+                    <button class="dtmf-btn" onclick="sendDTMF('2')">2</button>
+                    <button class="dtmf-btn" onclick="sendDTMF('3')">3</button>
+                    <button class="dtmf-btn" onclick="sendDTMF('4')">4</button>
+                    <button class="dtmf-btn" onclick="sendDTMF('5')">5</button>
+                    <button class="dtmf-btn" onclick="sendDTMF('6')">6</button>
+                    <button class="dtmf-btn" onclick="sendDTMF('7')">7</button>
+                    <button class="dtmf-btn" onclick="sendDTMF('8')">8</button>
+                    <button class="dtmf-btn" onclick="sendDTMF('9')">9</button>
+                    <button class="dtmf-btn" onclick="sendDTMF('*')">*</button>
+                    <button class="dtmf-btn" onclick="sendDTMF('0')">0</button>
+                    <button class="dtmf-btn" onclick="sendDTMF('#')">#</button>
+                </div>
+            </div>
+
+            <!-- CALLBACK SCHEDULER -->
+            <div style="margin-bottom:12px;border:1px solid var(--border-color);border-radius:12px;padding:12px;text-align:left;">
+                <div style="font-size:0.75em;font-weight:600;color:var(--primary);margin-bottom:8px;text-transform:uppercase;">📅 Schedule Callback</div>
+                <input type="datetime-local" id="callbackDateTime" style="margin-bottom:8px;" />
+                <button onclick="scheduleCallback()" style="width:100%;padding:8px;background:linear-gradient(135deg,#10b981,#34d399);color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Set Callback Reminder</button>
+            </div>
+
+            <!-- QUICK NOTES -->
+            <div style="margin-bottom:8px;text-align:left;">
+                <div style="font-size:0.75em;font-weight:600;color:var(--primary);margin-bottom:6px;text-transform:uppercase;">Quick Notes</div>
+                <div>
+                    <button class="quick-note-btn" onclick="addQuickNote('Interested')">✅ Interested</button>
+                    <button class="quick-note-btn" onclick="addQuickNote('Not home')">🏠 Not home</button>
+                    <button class="quick-note-btn" onclick="addQuickNote('Wrong number')">❌ Wrong #</button>
+                    <button class="quick-note-btn" onclick="addQuickNote('Call back later')">🔄 Call back later</button>
+                    <button class="quick-note-btn" onclick="addQuickNote('Not interested')">🚫 Not interested</button>
+                    <button class="quick-note-btn" onclick="addQuickNote('Left voicemail')">📬 Left VM</button>
+                </div>
+            </div>
+
             <label>Call Result Notes</label>
             <textarea id="dialerNotes" style="width:100%;height:80px;" placeholder="Add details..."></textarea>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
@@ -228,8 +282,41 @@
             <strong style="color:#10b981;">Assigned Twilio Dialer Number:</strong><br>
             <span id="profileTwilioNumber" style="font-family:monospace;font-size:1.2em;color:#10b981;font-weight:700;"></span>
         </div>
+
+        <button id="profileCallNowBtn" onclick="callFromProfile()" style="width:100%;margin-bottom:8px;padding:12px;background:linear-gradient(135deg,#10b981,#34d399);color:white;border:none;border-radius:8px;font-weight:700;font-size:1.05em;cursor:pointer;">📲 CALL NOW</button>
+        <div id="profileCallStatus" style="display:none;margin-bottom:12px;padding:10px;background:rgba(16,185,129,0.08);border-radius:8px;text-align:center;">
+            <div id="profileCallTimer" class="call-timer">00:00</div>
+            <span id="profileCallStatusText" style="font-weight:600;color:#10b981;">Connected</span>
+            <button onclick="hangUpFromProfile()" style="margin-left:12px;padding:5px 12px;background:var(--danger);color:white;border:none;border-radius:6px;font-weight:bold;cursor:pointer;">🛑 Hang Up</button>
+        </div>
+
+        <div id="profileDtmfSection" style="display:none;margin-bottom:12px;border:1px solid var(--border-color);border-radius:12px;padding:12px;">
+            <div style="font-size:0.75em;font-weight:600;color:var(--primary);margin-bottom:8px;text-transform:uppercase;">Keypad — Press to Send Tone</div>
+            <div class="dtmf-pad">
+                <button class="dtmf-btn" onclick="sendDTMF('1')">1</button>
+                <button class="dtmf-btn" onclick="sendDTMF('2')">2</button>
+                <button class="dtmf-btn" onclick="sendDTMF('3')">3</button>
+                <button class="dtmf-btn" onclick="sendDTMF('4')">4</button>
+                <button class="dtmf-btn" onclick="sendDTMF('5')">5</button>
+                <button class="dtmf-btn" onclick="sendDTMF('6')">6</button>
+                <button class="dtmf-btn" onclick="sendDTMF('7')">7</button>
+                <button class="dtmf-btn" onclick="sendDTMF('8')">8</button>
+                <button class="dtmf-btn" onclick="sendDTMF('9')">9</button>
+                <button class="dtmf-btn" onclick="sendDTMF('*')">*</button>
+                <button class="dtmf-btn" onclick="sendDTMF('0')">0</button>
+                <button class="dtmf-btn" onclick="sendDTMF('#')">#</button>
+            </div>
+        </div>
+
         <label>Appointment</label><input type="datetime-local" id="profileAppt">
         <label>Email</label><input type="text" id="profileEmail">
+
+        <div style="margin-bottom:16px;border:1px solid var(--border-color);border-radius:12px;padding:12px;">
+            <div style="font-size:0.75em;font-weight:600;color:var(--primary);margin-bottom:8px;text-transform:uppercase;">📅 Schedule Callback</div>
+            <input type="datetime-local" id="profileCallbackDateTime" style="margin-bottom:8px;" />
+            <button onclick="scheduleCallbackFromProfile()" style="width:100%;padding:8px;background:linear-gradient(135deg,#10b981,#34d399);color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Set Callback Reminder</button>
+        </div>
+
         <h2 style="margin:24px 0 12px;font-size:1.1em;">Email Templates</h2>
         <div style="margin-bottom:16px;font-size:0.9em;">
             <label style="display:block;margin:8px 0;text-transform:none;"><input type="checkbox" name="emailTemplate" value="inquiry" style="width:auto;padding:0;margin-right:6px;"> Initial Inquiry</label>
@@ -287,8 +374,6 @@
 
 <script>
     const TOKEN_URL = 'https://dialer-1641.twil.io/token';
-
-    // 5 active numbers — add more when ready
     const TWILIO_NUMBERS = [
         '+18129010600',
         '+13252080883',
@@ -296,18 +381,18 @@
         '+13256665731',
         '+13256665490'
     ];
-
     const ACTIVE_NUMBER_COUNT = TWILIO_NUMBERS.length;
-
     const KEY_LEADS = 'leads_v4_system';
     const KEY_QUEUE = 'active_call_queue';
     const KEY_INDEX = 'active_queue_index';
     const KEY_ROUND_ROBIN = 'round_robin_index';
+    const KEY_CALLBACKS = 'scheduled_callbacks';
 
     let leads = JSON.parse(localStorage.getItem(KEY_LEADS)) || [];
     let callQueue = JSON.parse(localStorage.getItem(KEY_QUEUE)) || [];
     let queueIndex = parseInt(localStorage.getItem(KEY_INDEX)) || 0;
     let roundRobinIndex = parseInt(localStorage.getItem(KEY_ROUND_ROBIN)) || 0;
+    let callbacks = JSON.parse(localStorage.getItem(KEY_CALLBACKS)) || [];
     let currentPage = 1;
     const leadsPerPage = 20;
     let currentProfileId = null;
@@ -316,16 +401,20 @@
     let sortDir = 1;
     let device = null;
     let activeCall = null;
-
+    let callTimerInterval = null;
+    let callStartTime = null;
 
     window.onload = () => {
         document.getElementById('dateLabel').innerText = luxon.DateTime.now().toLocaleString(luxon.DateTime.DATE_HUGE);
         updateClock();
         setInterval(updateClock, 1000);
+        setInterval(checkCallbacks, 30000);
         initTwilioDevice();
         renderLeads();
         updateQueueUI();
         updateFilterResorts();
+        renderCallbackList();
+        checkCallbacks();
     };
 
     function updateClock() {
@@ -356,6 +445,117 @@
         }
     }
 
+    // ── DTMF ──────────────────────────────────────────────────────────────
+    function sendDTMF(digit) {
+        if (activeCall) activeCall.sendDigits(digit);
+    }
+
+    function showDTMF() {
+        document.getElementById('dtmfSection').style.display = 'block';
+        document.getElementById('profileDtmfSection').style.display = 'block';
+    }
+
+    function hideDTMF() {
+        document.getElementById('dtmfSection').style.display = 'none';
+        document.getElementById('profileDtmfSection').style.display = 'none';
+    }
+
+    // ── CALL TIMER ────────────────────────────────────────────────────────
+    function startCallTimer(displayId) {
+        callStartTime = Date.now();
+        callTimerInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - callStartTime) / 1000);
+            const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
+            const s = String(elapsed % 60).padStart(2, '0');
+            const el = document.getElementById(displayId);
+            if (el) el.textContent = `${m}:${s}`;
+        }, 1000);
+        const timerEl = document.getElementById(displayId);
+        if (timerEl) { timerEl.style.display = 'block'; timerEl.textContent = '00:00'; }
+    }
+
+    function stopCallTimer(displayId) {
+        clearInterval(callTimerInterval);
+        callTimerInterval = null;
+        callStartTime = null;
+        const el = document.getElementById(displayId);
+        if (el) el.style.display = 'none';
+    }
+
+    // ── QUICK NOTES ───────────────────────────────────────────────────────
+    function addQuickNote(text) {
+        const notes = document.getElementById('dialerNotes');
+        notes.value = notes.value ? notes.value + '\n' + text : text;
+    }
+
+    // ── CALLBACKS ─────────────────────────────────────────────────────────
+    function scheduleCallback() {
+        const dt = document.getElementById('callbackDateTime').value;
+        if (!dt) return alert('Please select a date and time for the callback.');
+        const current = callQueue[queueIndex];
+        if (!current) return;
+        callbacks.push({ leadId: current.id, name: current.name, phone: current.phone, datetime: dt, notified: false });
+        localStorage.setItem(KEY_CALLBACKS, JSON.stringify(callbacks));
+        document.getElementById('callbackDateTime').value = '';
+        renderCallbackList();
+        alert(`Callback scheduled for ${dt.replace('T', ' ')} — ${current.name}`);
+    }
+
+    function scheduleCallbackFromProfile() {
+        const dt = document.getElementById('profileCallbackDateTime').value;
+        if (!dt) return alert('Please select a date and time for the callback.');
+        const lead = leads.find(l => l.id === currentProfileId);
+        if (!lead) return;
+        callbacks.push({ leadId: lead.id, name: lead.name, phone: lead.phone, datetime: dt, notified: false });
+        localStorage.setItem(KEY_CALLBACKS, JSON.stringify(callbacks));
+        document.getElementById('profileCallbackDateTime').value = '';
+        renderCallbackList();
+        alert(`Callback scheduled for ${dt.replace('T', ' ')} — ${lead.name}`);
+    }
+
+    function checkCallbacks() {
+        const now = luxon.DateTime.now();
+        let alerted = false;
+        callbacks.forEach(cb => {
+            if (cb.notified) return;
+            const cbTime = luxon.DateTime.fromISO(cb.datetime);
+            if (now >= cbTime) {
+                cb.notified = true;
+                alerted = true;
+                if (Notification.permission === 'granted') {
+                    new Notification(`📞 Callback Due: ${cb.name}`, { body: `Time to call ${cb.name} — ${formatPhone(cb.phone)}` });
+                } else {
+                    alert(`📞 CALLBACK DUE!\n\n${cb.name}\n${formatPhone(cb.phone)}\n\nScheduled: ${cb.datetime.replace('T', ' ')}`);
+                }
+            }
+        });
+        if (alerted) localStorage.setItem(KEY_CALLBACKS, JSON.stringify(callbacks));
+        renderCallbackList();
+    }
+
+    function renderCallbackList() {
+        const list = document.getElementById('callbackList');
+        const pending = callbacks.filter(cb => !cb.notified).sort((a,b) => a.datetime.localeCompare(b.datetime));
+        if (!pending.length) {
+            list.innerHTML = '<div style="font-size:0.8em;color:#718096;">No callbacks scheduled.</div>';
+            return;
+        }
+        list.innerHTML = pending.map((cb, i) => `
+            <div class="callback-alert" onclick="openProfile('${cb.leadId}')">
+                <strong>${cb.name}</strong> — ${formatPhone(cb.phone)}<br>
+                <small>📅 ${cb.datetime.replace('T', ' ')}</small>
+                <button onclick="event.stopPropagation();dismissCallback(${callbacks.indexOf(cb)})" style="float:right;padding:2px 8px;font-size:0.75em;background:var(--danger);color:white;border:none;border-radius:4px;cursor:pointer;">✕</button>
+            </div>
+        `).join('');
+    }
+
+    function dismissCallback(index) {
+        callbacks.splice(index, 1);
+        localStorage.setItem(KEY_CALLBACKS, JSON.stringify(callbacks));
+        renderCallbackList();
+    }
+
+    // ── QUEUE ─────────────────────────────────────────────────────────────
     function startQueue() {
         const freshOnly = document.getElementById('onlyFreshToday').checked;
         let available = leads.filter(l => !l.hidden);
@@ -392,17 +592,19 @@
         document.getElementById('dialerCalls').textContent = (current.calls || 0) + ' Calls';
         document.getElementById('dialerPhone').textContent = formatPhone(current.phone);
         document.getElementById('dialerNotes').value = '';
+        document.getElementById('callbackDateTime').value = '';
+        hideDTMF();
+        stopCallTimer('callTimerDisplay');
 
-        // Build caller ID dropdown
         const sel = document.getElementById('callerIdSelect');
-        // Compute what the next auto round-robin number would be (preview, don't advance)
         const previewAutoNum = TWILIO_NUMBERS[roundRobinIndex % ACTIVE_NUMBER_COUNT];
-        sel.innerHTML = `<option value="auto">Auto Round-Robin (recommended) — next: ${formatPhone(previewAutoNum)}</option>`
+        sel.innerHTML = `<option value="auto">Auto Round-Robin — next: ${formatPhone(previewAutoNum)}</option>`
             + TWILIO_NUMBERS.map(n => `<option value="${n}">${formatPhone(n)}</option>`).join('');
         sel.value = 'auto';
-
-        // Show preview of auto number in the caller ID box
         document.getElementById('twilioCallerId').textContent = formatPhone(previewAutoNum);
+
+        // Request notification permission
+        if (Notification.permission === 'default') Notification.requestPermission();
 
         resetDialButton();
         document.getElementById('dialerModal').style.display = 'block';
@@ -410,49 +612,49 @@
 
     function onCallerIdSelectChange() {
         const sel = document.getElementById('callerIdSelect');
-        if (sel.value === 'auto') {
-            const previewAutoNum = TWILIO_NUMBERS[roundRobinIndex % ACTIVE_NUMBER_COUNT];
-            document.getElementById('twilioCallerId').textContent = formatPhone(previewAutoNum);
-        } else {
-            document.getElementById('twilioCallerId').textContent = formatPhone(sel.value);
-        }
+        document.getElementById('twilioCallerId').textContent = sel.value === 'auto'
+            ? formatPhone(TWILIO_NUMBERS[roundRobinIndex % ACTIVE_NUMBER_COUNT])
+            : formatPhone(sel.value);
     }
 
     function getActiveCallerNumber() {
         const sel = document.getElementById('callerIdSelect');
         if (!sel || sel.value === 'auto') {
-            // Advance round-robin
             const num = TWILIO_NUMBERS[roundRobinIndex % ACTIVE_NUMBER_COUNT];
             roundRobinIndex++;
             localStorage.setItem(KEY_ROUND_ROBIN, String(roundRobinIndex));
             return num;
-        } else {
-            // Manual selection — do NOT advance round-robin
-            return sel.value;
         }
+        return sel.value;
     }
 
     async function placeTwilioCallNow() {
         if (!device) return alert('Twilio device not connected. Check the token URL.');
         const current = callQueue[queueIndex];
         const callerNum = getActiveCallerNumber();
-        // Store the actual number used for this call so logging can reference it
         window._lastUsedCallerNum = callerNum;
-        // Update the display to show what's actually being used
         document.getElementById('twilioCallerId').textContent = formatPhone(callerNum);
         const btn = document.getElementById('mainDialButton');
         btn.disabled = true;
         btn.innerText = '⏳ CONNECTING...';
         try {
-            activeCall = await device.connect({
-                params: { To: current.phone, From: callerNum }
+            activeCall = await device.connect({ params: { To: current.phone, From: callerNum } });
+            activeCall.on('disconnect', () => {
+                resetDialButton(); hideDTMF();
+                stopCallTimer('callTimerDisplay');
+                activeCall = null;
             });
-            activeCall.on('disconnect', resetDialButton);
-            activeCall.on('cancel', resetDialButton);
+            activeCall.on('cancel', () => {
+                resetDialButton(); hideDTMF();
+                stopCallTimer('callTimerDisplay');
+                activeCall = null;
+            });
             btn.innerText = '🛑 HANG UP';
             btn.style.background = 'linear-gradient(135deg,#dc3545,#c53030)';
             btn.disabled = false;
             btn.onclick = hangUp;
+            showDTMF();
+            startCallTimer('callTimerDisplay');
         } catch (err) {
             alert('Call failed: ' + err.message);
             resetDialButton();
@@ -461,7 +663,8 @@
 
     function hangUp() {
         if (activeCall) { activeCall.disconnect(); activeCall = null; }
-        resetDialButton();
+        resetDialButton(); hideDTMF();
+        stopCallTimer('callTimerDisplay');
     }
 
     function resetDialButton() {
@@ -479,22 +682,11 @@
         if (lead) {
             lead.calls = (lead.calls || 0) + 1;
             lead.lastCalledDate = luxon.DateTime.now().toISODate();
-
-            // Determine the caller number actually used this call
-            const usedNum = window._lastUsedCallerNum
-                || document.getElementById('twilioCallerId').textContent
-                || formatPhone(lead.twilioNumber || TWILIO_NUMBERS[0]);
-            const usedNumFormatted = typeof usedNum === 'string' && usedNum.startsWith('+')
-                ? formatPhone(usedNum) : usedNum;
-
-            // Default note text if none provided
-            const defaultNoteMap = { call: 'Call logged', vm: 'Call logged (vm)', no_connect: "Didn't go through", delete: 'Disconnected / deleted' };
+            const usedNum = window._lastUsedCallerNum || TWILIO_NUMBERS[0];
+            const defaultNoteMap = { call:'Call logged', vm:'Left voicemail', no_connect:"Didn't go through", delete:'Disconnected/deleted' };
             const noteText = document.getElementById('dialerNotes').value.trim() || defaultNoteMap[type] || 'Call logged';
-
             const timestamp = luxon.DateTime.now().toFormat('M/d HH:mm');
-            const prefix = `[${timestamp}] (Twilio: ${usedNumFormatted}) ${noteText}`;
-            lead.notes = prefix + '\n' + (lead.notes || '');
-
+            lead.notes = `[${timestamp}] (${formatPhone(usedNum)}) ${noteText}\n` + (lead.notes || '');
             if (type === 'delete') lead.hidden = true;
             lead.disposition = type === 'no_connect' ? 'no_connect' : type === 'vm' ? 'vm' : 'called';
         }
@@ -520,11 +712,63 @@
         if (!lead) return;
         callQueue = [lead];
         queueIndex = 0;
-        saveQueue();
-        updateQueueUI();
-        openDialerModal();
+        saveQueue(); updateQueueUI(); openDialerModal();
     }
 
+    // ── CALL FROM PROFILE ─────────────────────────────────────────────────
+    async function callFromProfile() {
+        if (!device) return alert('Twilio device not connected.');
+        const lead = leads.find(l => l.id === currentProfileId);
+        if (!lead) return;
+        if (activeCall) return alert('Already on a call. Hang up first.');
+        const callerNum = lead.twilioNumber || TWILIO_NUMBERS[0];
+        const btn = document.getElementById('profileCallNowBtn');
+        const statusDiv = document.getElementById('profileCallStatus');
+        const statusText = document.getElementById('profileCallStatusText');
+        btn.disabled = true;
+        btn.innerText = '⏳ CONNECTING...';
+        statusDiv.style.display = 'block';
+        statusText.textContent = 'Connecting...';
+        try {
+            activeCall = await device.connect({ params: { To: lead.phone, From: callerNum } });
+            activeCall.on('disconnect', () => {
+                activeCall = null;
+                btn.disabled = false; btn.innerText = '📲 CALL NOW';
+                statusDiv.style.display = 'none';
+                hideDTMF(); stopCallTimer('profileCallTimer');
+                lead.calls = (lead.calls || 0) + 1;
+                lead.lastCalledDate = luxon.DateTime.now().toISODate();
+                lead.notes = `[${luxon.DateTime.now().toFormat('M/d HH:mm')}] (${formatPhone(callerNum)}) Called from profile\n` + (lead.notes || '');
+                lead.disposition = 'called';
+                save(); renderLeads();
+                document.getElementById('profileCalls').textContent = lead.calls;
+            });
+            activeCall.on('cancel', () => {
+                activeCall = null;
+                btn.disabled = false; btn.innerText = '📲 CALL NOW';
+                statusDiv.style.display = 'none';
+                hideDTMF(); stopCallTimer('profileCallTimer');
+            });
+            btn.innerText = '🟢 ON CALL...';
+            statusText.textContent = 'Call connected!';
+            showDTMF();
+            startCallTimer('profileCallTimer');
+        } catch (err) {
+            alert('Call failed: ' + err.message);
+            btn.disabled = false; btn.innerText = '📲 CALL NOW';
+            statusDiv.style.display = 'none';
+        }
+    }
+
+    function hangUpFromProfile() {
+        if (activeCall) { activeCall.disconnect(); activeCall = null; }
+        const btn = document.getElementById('profileCallNowBtn');
+        btn.disabled = false; btn.innerText = '📲 CALL NOW';
+        document.getElementById('profileCallStatus').style.display = 'none';
+        hideDTMF(); stopCallTimer('profileCallTimer');
+    }
+
+    // ── CUSTOM QUEUE ──────────────────────────────────────────────────────
     function openCustomQueueModal() {
         const sel = document.getElementById('customResortSelect');
         const resorts = [...new Set(leads.map(l => l.resort))].filter(Boolean);
@@ -547,6 +791,7 @@
         openDialerModal();
     }
 
+    // ── IMPORT ────────────────────────────────────────────────────────────
     document.getElementById('fileInput').onchange = (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -597,7 +842,7 @@
                 notes: notesC ? (row[notesC] || '') : '',
                 hidden: false,
                 disposition: '',
-                bucket: bucket,
+                bucket,
                 twilioNumber: TWILIO_NUMBERS[bucket],
                 lastCalledDate: null
             });
@@ -607,6 +852,7 @@
         alert(`Import complete! Added ${added} leads.`);
     }
 
+    // ── RENDER ────────────────────────────────────────────────────────────
     function renderLeads() {
         const body = document.getElementById('leadBody');
         const query = document.getElementById('searchInput').value.toLowerCase();
@@ -628,10 +874,11 @@
 
         const start = (currentPage - 1) * leadsPerPage;
         const slice = filtered.slice(start, start + leadsPerPage);
+        const pendingCallbackIds = new Set(callbacks.filter(cb => !cb.notified).map(cb => cb.leadId));
 
         body.innerHTML = slice.map(l => `
-            <tr class="${l.hidden ? 'is-hidden-row' : ''} ${l.disposition === 'no_connect' ? 'no-connect' : ''}" onclick="openProfile('${l.id}')">
-                <td><b>${l.name}</b></td>
+            <tr class="${l.hidden ? 'is-hidden-row' : ''} ${l.disposition === 'no_connect' ? 'no-connect' : ''} ${pendingCallbackIds.has(l.id) ? 'has-callback' : ''}" onclick="openProfile('${l.id}')">
+                <td><b>${l.name}</b>${pendingCallbackIds.has(l.id) ? ' 📅' : ''}</td>
                 <td style="font-family:monospace;">${formatPhone(l.phone)}</td>
                 <td>${getLocalTimeForLead(l.phone)}</td>
                 <td>${l.city || getCityFromPhone(l.phone)}</td>
@@ -648,6 +895,7 @@
         renderCallLog();
     }
 
+    // ── PROFILE ───────────────────────────────────────────────────────────
     function openProfile(id) {
         const l = leads.find(x => x.id === id);
         if (!l) return;
@@ -664,6 +912,11 @@
         document.getElementById('profileTwilioNumber').textContent = formatPhone(l.twilioNumber || TWILIO_NUMBERS[0]);
         document.getElementById('emailOutputs').innerHTML = '';
         document.querySelectorAll('input[name="emailTemplate"]').forEach(c => c.checked = false);
+        document.getElementById('profileCallbackDateTime').value = '';
+        const btn = document.getElementById('profileCallNowBtn');
+        btn.disabled = false; btn.innerText = '📲 CALL NOW';
+        document.getElementById('profileCallStatus').style.display = 'none';
+        hideDTMF();
         document.getElementById('profileModal').style.display = 'block';
     }
 
@@ -697,6 +950,7 @@
         `).join('');
     }
 
+    // ── SIDEBAR ───────────────────────────────────────────────────────────
     function renderApptsSidebar() {
         const list = document.getElementById('appointmentList');
         const upcoming = leads.filter(l => l.appointment).sort((a,b) => a.appointment.localeCompare(b.appointment));
@@ -718,6 +972,7 @@
         `).join('') || '<div style="font-size:0.8em;color:#718096;">No calls logged yet.</div>';
     }
 
+    // ── STATS ─────────────────────────────────────────────────────────────
     function updateStats() {
         document.getElementById('statTotal').innerText = leads.length;
         document.getElementById('statCalled').innerText = leads.filter(l => (l.calls||0) > 0).length;
@@ -757,6 +1012,7 @@
         document.getElementById('themeBtn').innerText = dark ? '🌞' : '🌙';
     }
 
+    // ── EXPORTS ───────────────────────────────────────────────────────────
     function exportToExcel(data, filename) {
         const ws = XLSX.utils.json_to_sheet(data);
         const wb = XLSX.utils.book_new();
@@ -794,6 +1050,7 @@
         save(); saveQueue(); renderLeads(); updateFilterResorts();
     }
 
+    // ── UTILS ─────────────────────────────────────────────────────────────
     function save() { localStorage.setItem(KEY_LEADS, JSON.stringify(leads)); }
     function saveQueue() { localStorage.setItem(KEY_QUEUE, JSON.stringify(callQueue)); localStorage.setItem(KEY_INDEX, String(queueIndex)); }
     function closeModal(id) { document.getElementById(id).style.display='none'; }
