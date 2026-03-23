@@ -192,6 +192,10 @@
                 <strong>Twilio Caller ID:</strong>
                 <span id="twilioCallerId" style="font-family:monospace;color:#10b981;font-weight:700;">+1-XXX-XXX-XXXX</span>
             </div>
+            <div style="margin-bottom:12px;">
+                <label>Choose Caller ID for this call:</label>
+                <select id="callerIdSelect" onchange="onCallerIdSelectChange()" style="margin-bottom:0;"></select>
+            </div>
             <div id="dialerPhone" style="font-size:1.4em;margin-bottom:12px;letter-spacing:1.5px;"></div>
             <button id="mainDialButton" onclick="placeTwilioCallNow()" style="width:100%;margin-bottom:12px;padding:12px;background:linear-gradient(135deg,#10b981,#34d399);color:white;border:none;border-radius:8px;font-weight:700;font-size:1.05em;cursor:pointer;">
                 📲 DIAL WITH ASSIGNED TWILIO NUMBER
@@ -313,12 +317,6 @@
     let device = null;
     let activeCall = null;
 
-    function getNextTwilioNumber() {
-        const num = TWILIO_NUMBERS[roundRobinIndex % ACTIVE_NUMBER_COUNT];
-        roundRobinIndex++;
-        localStorage.setItem(KEY_ROUND_ROBIN, String(roundRobinIndex));
-        return num;
-    }
 
     window.onload = () => {
         document.getElementById('dateLabel').innerText = luxon.DateTime.now().toLocaleString(luxon.DateTime.DATE_HUGE);
@@ -386,7 +384,6 @@
     function openDialerModal() {
         const current = callQueue[queueIndex];
         if (!current) return stopQueue();
-        const callerNum = current.twilioNumber || TWILIO_NUMBERS[0];
         document.getElementById('dialerProgress').textContent = `LEAD ${queueIndex + 1} OF ${callQueue.length}`;
         document.getElementById('dialerName').textContent = current.name;
         document.getElementById('dialerTime').textContent = getLocalTimeForLead(current.phone);
@@ -394,16 +391,55 @@
         document.getElementById('dialerResort').textContent = current.resort || 'Batch';
         document.getElementById('dialerCalls').textContent = (current.calls || 0) + ' Calls';
         document.getElementById('dialerPhone').textContent = formatPhone(current.phone);
-        document.getElementById('twilioCallerId').textContent = formatPhone(callerNum);
         document.getElementById('dialerNotes').value = '';
+
+        // Build caller ID dropdown
+        const sel = document.getElementById('callerIdSelect');
+        // Compute what the next auto round-robin number would be (preview, don't advance)
+        const previewAutoNum = TWILIO_NUMBERS[roundRobinIndex % ACTIVE_NUMBER_COUNT];
+        sel.innerHTML = `<option value="auto">Auto Round-Robin (recommended) — next: ${formatPhone(previewAutoNum)}</option>`
+            + TWILIO_NUMBERS.map(n => `<option value="${n}">${formatPhone(n)}</option>`).join('');
+        sel.value = 'auto';
+
+        // Show preview of auto number in the caller ID box
+        document.getElementById('twilioCallerId').textContent = formatPhone(previewAutoNum);
+
         resetDialButton();
         document.getElementById('dialerModal').style.display = 'block';
+    }
+
+    function onCallerIdSelectChange() {
+        const sel = document.getElementById('callerIdSelect');
+        if (sel.value === 'auto') {
+            const previewAutoNum = TWILIO_NUMBERS[roundRobinIndex % ACTIVE_NUMBER_COUNT];
+            document.getElementById('twilioCallerId').textContent = formatPhone(previewAutoNum);
+        } else {
+            document.getElementById('twilioCallerId').textContent = formatPhone(sel.value);
+        }
+    }
+
+    function getActiveCallerNumber() {
+        const sel = document.getElementById('callerIdSelect');
+        if (!sel || sel.value === 'auto') {
+            // Advance round-robin
+            const num = TWILIO_NUMBERS[roundRobinIndex % ACTIVE_NUMBER_COUNT];
+            roundRobinIndex++;
+            localStorage.setItem(KEY_ROUND_ROBIN, String(roundRobinIndex));
+            return num;
+        } else {
+            // Manual selection — do NOT advance round-robin
+            return sel.value;
+        }
     }
 
     async function placeTwilioCallNow() {
         if (!device) return alert('Twilio device not connected. Check the token URL.');
         const current = callQueue[queueIndex];
-        const callerNum = current.twilioNumber || TWILIO_NUMBERS[0];
+        const callerNum = getActiveCallerNumber();
+        // Store the actual number used for this call so logging can reference it
+        window._lastUsedCallerNum = callerNum;
+        // Update the display to show what's actually being used
+        document.getElementById('twilioCallerId').textContent = formatPhone(callerNum);
         const btn = document.getElementById('mainDialButton');
         btn.disabled = true;
         btn.innerText = '⏳ CONNECTING...';
@@ -443,11 +479,26 @@
         if (lead) {
             lead.calls = (lead.calls || 0) + 1;
             lead.lastCalledDate = luxon.DateTime.now().toISODate();
-            const note = document.getElementById('dialerNotes').value.trim();
-            if (note) lead.notes = `[${luxon.DateTime.now().toFormat('M/d HH:mm')}] ${note}\n` + (lead.notes || '');
+
+            // Determine the caller number actually used this call
+            const usedNum = window._lastUsedCallerNum
+                || document.getElementById('twilioCallerId').textContent
+                || formatPhone(lead.twilioNumber || TWILIO_NUMBERS[0]);
+            const usedNumFormatted = typeof usedNum === 'string' && usedNum.startsWith('+')
+                ? formatPhone(usedNum) : usedNum;
+
+            // Default note text if none provided
+            const defaultNoteMap = { call: 'Call logged', vm: 'Call logged (vm)', no_connect: "Didn't go through", delete: 'Disconnected / deleted' };
+            const noteText = document.getElementById('dialerNotes').value.trim() || defaultNoteMap[type] || 'Call logged';
+
+            const timestamp = luxon.DateTime.now().toFormat('M/d HH:mm');
+            const prefix = `[${timestamp}] (Twilio: ${usedNumFormatted}) ${noteText}`;
+            lead.notes = prefix + '\n' + (lead.notes || '');
+
             if (type === 'delete') lead.hidden = true;
             lead.disposition = type === 'no_connect' ? 'no_connect' : type === 'vm' ? 'vm' : 'called';
         }
+        window._lastUsedCallerNum = null;
         save();
         queueIndex++;
         if (queueIndex < callQueue.length) {
