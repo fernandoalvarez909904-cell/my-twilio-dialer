@@ -192,14 +192,6 @@
                 <strong>Twilio Caller ID:</strong>
                 <span id="twilioCallerId" style="font-family:monospace;color:#10b981;font-weight:700;">+1-XXX-XXX-XXXX</span>
             </div>
-            
-            <!-- ADDED: Pull-down to pick specific number (default = auto round-robin) -->
-            <div style="margin-top:12px;">
-                <label style="font-weight:600;display:block;margin-bottom:6px;">Choose Caller ID for this call:</label>
-                <select id="manualCallerSelect" onchange="updateCallerPreview()" style="width:100%;padding:12px;border-radius:8px;border:1px solid var(--border-color);font-family:monospace;background:white;">
-                </select>
-            </div>
-
             <div id="dialerPhone" style="font-size:1.4em;margin-bottom:12px;letter-spacing:1.5px;"></div>
             <button id="mainDialButton" onclick="placeTwilioCallNow()" style="width:100%;margin-bottom:12px;padding:12px;background:linear-gradient(135deg,#10b981,#34d399);color:white;border:none;border-radius:8px;font-weight:700;font-size:1.05em;cursor:pointer;">
                 📲 DIAL WITH ASSIGNED TWILIO NUMBER
@@ -320,20 +312,12 @@
     let sortDir = 1;
     let device = null;
     let activeCall = null;
-    let lastUsedCallerId = '';   // ADDED: remembers the exact number used on this dial
 
     function getNextTwilioNumber() {
         const num = TWILIO_NUMBERS[roundRobinIndex % ACTIVE_NUMBER_COUNT];
         roundRobinIndex++;
         localStorage.setItem(KEY_ROUND_ROBIN, String(roundRobinIndex));
         return num;
-    }
-
-    // ADDED: updates the preview box when you change the dropdown
-    function updateCallerPreview() {
-        const sel = document.getElementById('manualCallerSelect').value;
-        const preview = (sel === 'auto') ? TWILIO_NUMBERS[roundRobinIndex % ACTIVE_NUMBER_COUNT] : sel;
-        document.getElementById('twilioCallerId').textContent = formatPhone(preview);
     }
 
     window.onload = () => {
@@ -414,26 +398,12 @@
         document.getElementById('dialerNotes').value = '';
         resetDialButton();
         document.getElementById('dialerModal').style.display = 'block';
-
-        // ADDED: populate dropdown (only once) + set default to auto
-        const select = document.getElementById('manualCallerSelect');
-        if (select.options.length === 0) {
-            select.innerHTML = `<option value="auto">Auto Round-Robin (recommended)</option>` +
-                TWILIO_NUMBERS.map(n => `<option value="${n}">${formatPhone(n)}</option>`).join('');
-        }
-        select.value = 'auto';
-        updateCallerPreview();
     }
 
     async function placeTwilioCallNow() {
         if (!device) return alert('Twilio device not connected. Check the token URL.');
         const current = callQueue[queueIndex];
-        
-        // ADDED: respect dropdown + advance round-robin only on auto
-        const override = document.getElementById('manualCallerSelect').value;
-        const callerNum = (override === 'auto') ? getNextTwilioNumber() : override;
-        lastUsedCallerId = callerNum;
-
+        const callerNum = current.twilioNumber || TWILIO_NUMBERS[0];
         const btn = document.getElementById('mainDialButton');
         btn.disabled = true;
         btn.innerText = '⏳ CONNECTING...';
@@ -473,15 +443,8 @@
         if (lead) {
             lead.calls = (lead.calls || 0) + 1;
             lead.lastCalledDate = luxon.DateTime.now().toISODate();
-            
-            // ADDED: always stamp the exact Twilio number that was used + timestamp
-            const userNote = document.getElementById('dialerNotes').value.trim();
-            const stampTime = luxon.DateTime.now().toFormat('M/d HH:mm');
-            const stampNum = lastUsedCallerId ? formatPhone(lastUsedCallerId) : 'Unknown';
-            const fullStamp = `[${stampTime}] (Twilio: ${stampNum}) `;
-            const entry = userNote ? `${fullStamp}${userNote}` : `${fullStamp}Call logged (${type})`;
-            lead.notes = entry + '\n' + (lead.notes || '');
-
+            const note = document.getElementById('dialerNotes').value.trim();
+            if (note) lead.notes = `[${luxon.DateTime.now().toFormat('M/d HH:mm')}] ${note}\n` + (lead.notes || '');
             if (type === 'delete') lead.hidden = true;
             lead.disposition = type === 'no_connect' ? 'no_connect' : type === 'vm' ? 'vm' : 'called';
         }
