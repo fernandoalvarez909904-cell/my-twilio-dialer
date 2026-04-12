@@ -311,7 +311,7 @@
 
   <!-- NAVBAR -->
   <nav>
-    <div class="nav-logo" onclick="showPage('home')">SOUL FAITH</div>
+    <div class="nav-logo" onclick="showPage('home')"><img src="https://i.imgur.com/aMrDgl3.jpeg" alt="Soul Faith" style="height:50px;width:auto;filter:drop-shadow(0 0 8px rgba(255,255,255,0.3));"></div>
     <ul class="nav-links">
       <li><a href="#" onclick="return navClick(this,'home')"    data-lang-en="Home"    data-lang-es="Inicio">Home</a></li>
       <li><a href="#" onclick="return navClick(this,'about')"   data-lang-en="About"   data-lang-es="Nosotros">About</a></li>
@@ -380,12 +380,8 @@
         <div class="hero-tagline" data-lang-en="Official Website — Guasave, Sinaloa, MX" data-lang-es="Sitio Oficial — Guasave, Sinaloa, MX">
           Official Website — Guasave, Sinaloa, MX
         </div>
-        <!--
-          TODO: When you have the logo PNG with transparent background from Imgur, replace the line below with:
-          <img src="YOUR_IMGUR_URL" alt="Soul Faith" class="hero-logo-img">
-          and remove the hero-logo-text div.
-        -->
-        <div class="hero-logo-text">SOUL FAITH</div>
+        <img src="https://i.imgur.com/aMrDgl3.jpeg" alt="Soul Faith" class="hero-logo-img" onerror="this.style.display='none';document.getElementById('hero-logo-fallback').style.display='block'">
+        <div id="hero-logo-fallback" class="hero-logo-text" style="display:none">SOUL FAITH</div>
       </div>
     </div>
 
@@ -447,8 +443,8 @@
             Each post embed code goes inside a .insta-post div.
             For now showing placeholders.
           -->
-          <div class="insta-post">POST 1</div>
-          <div class="insta-post">POST 2</div>
+        <div class="insta-post"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DWfIniAEd9w/" data-instgrm-version="14" style="width:200px;min-width:unset;"></blockquote></div>
+          <div class="insta-post"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DXAQXS_kaF-/" data-instgrm-version="14" style="width:200px;min-width:unset;"></blockquote></div>
           <div class="insta-post">POST 3</div>
           <div class="insta-post">POST 4</div>
           <div class="insta-post">POST 5</div>
@@ -467,8 +463,7 @@
     </div>
 
     <footer>
-      <div class="footer-logo">SOUL FAITH</div>
-      <div class="footer-social">
+      <div class="footer-logo"><img src="https://i.imgur.com/aMrDgl3.jpeg" alt="Soul Faith" style="height:60px;width:auto;margin:0 auto 16px;filter:drop-shadow(0 0 10px rgba(255,255,255,0.2));"></div>
         <a href="https://www.instagram.com/soulfaithmx"    target="_blank"><i class="fab fa-instagram"></i></a>
         <a href="https://www.facebook.com/soulfaithmx"     target="_blank"><i class="fab fa-facebook"></i></a>
         <a href="https://youtube.com/@jou8aaxel"           target="_blank"><i class="fab fa-youtube"></i></a>
@@ -569,7 +564,7 @@
 
       </div>
     </div>
-    <footer style="margin-top:80px;"><div class="footer-logo">SOUL FAITH</div><div class="footer-copy">© 2025 Soul Faith. All rights reserved.</div></footer>
+    <footer style="margin-top:80px;"><div class="footer-logo"><img src="https://i.imgur.com/aMrDgl3.jpeg" alt="Soul Faith" style="height:50px;width:auto;margin:0 auto;filter:drop-shadow(0 0 8px rgba(255,255,255,0.2));"></div><div class="footer-copy">© 2025 Soul Faith. All rights reserved.</div></footer>
   </div>
 
 
@@ -587,7 +582,7 @@
       </div>
       <div class="tour-dates-list" id="tour-dates-list"></div>
     </div>
-    <footer style="margin-top:80px;"><div class="footer-logo">SOUL FAITH</div><div class="footer-copy">© 2025 Soul Faith. All rights reserved.</div></footer>
+    <footer style="margin-top:80px;"><div class="footer-logo"><img src="https://i.imgur.com/aMrDgl3.jpeg" alt="Soul Faith" style="height:50px;width:auto;margin:0 auto;filter:drop-shadow(0 0 8px rgba(255,255,255,0.2));"></div><div class="footer-copy">© 2025 Soul Faith. All rights reserved.</div></footer>
   </div>
 
 
@@ -597,7 +592,7 @@
       <div class="section-title" data-lang-en="Merch" data-lang-es="Mercancía">Merch</div>
       <div class="merch-grid" id="merch-grid"></div>
     </div>
-    <footer style="margin-top:80px;"><div class="footer-logo">SOUL FAITH</div><div class="footer-copy">© 2025 Soul Faith. All rights reserved.</div></footer>
+    <footer style="margin-top:80px;"><div class="footer-logo"><img src="https://i.imgur.com/aMrDgl3.jpeg" alt="Soul Faith" style="height:50px;width:auto;margin:0 auto;filter:drop-shadow(0 0 8px rgba(255,255,255,0.2));"></div><div class="footer-copy">© 2025 Soul Faith. All rights reserved.</div></footer>
   </div>
 
 
@@ -613,7 +608,7 @@
         </div>
       </div>
     </div>
-    <footer style="margin-top:80px;"><div class="footer-logo">SOUL FAITH</div><div class="footer-copy">© 2025 Soul Faith. All rights reserved.</div></footer>
+    <footer style="margin-top:80px;"><div class="footer-logo"><img src="https://i.imgur.com/aMrDgl3.jpeg" alt="Soul Faith" style="height:50px;width:auto;margin:0 auto;filter:drop-shadow(0 0 8px rgba(255,255,255,0.2));"></div><div class="footer-copy">© 2025 Soul Faith. All rights reserved.</div></footer>
   </div>
 
 
@@ -710,19 +705,23 @@
 
     // Placeholder tour dates — swap for real ones when confirmed
     const TOUR_EVENTS = [
-      { date:"2025-07-15", venue:"Foro Indie Rocks!",      city:"Guadalajara, MX", ticketUrl:"#", placeholder:true },
-      { date:"2025-08-22", venue:"El Plaza Condesa",        city:"Mexico City, MX", ticketUrl:"#", placeholder:true },
-      { date:"2025-09-30", venue:"Sala de Armas",           city:"Culiacán, MX",    ticketUrl:"#", placeholder:true },
-      { date:"2025-11-14", venue:"Teatro Metropolitano",    city:"Mazatlán, MX",    ticketUrl:"#", placeholder:true },
+      { date:"2026-05-10", venue:"Foro Indie Rocks!",   city:"Guadalajara, MX", ticketUrl:"#", placeholder:true },
+      { date:"2026-06-20", venue:"El Plaza Condesa",    city:"Mexico City, MX", ticketUrl:"#", placeholder:true },
+      { date:"2026-07-18", venue:"Sala de Armas",       city:"Culiacán, MX",   ticketUrl:"#", placeholder:true },
+      { date:"2026-09-05", venue:"Teatro Metropolitano",city:"Mazatlán, MX",   ticketUrl:"#", placeholder:true },
     ];
 
-    // Countdown points to first upcoming show
-    const NEXT_SHOW_DATE   = "2025-07-15T21:00:00";
+    const NEXT_SHOW_DATE   = "2026-05-10T21:00:00";
     const NEXT_SHOW_NAME   = "FORO INDIE ROCKS! — GDL";
     const NEXT_SHOW_NAMEES = "FORO INDIE ROCKS! — GDL";
 
     // Videos — empty for now, you'll send IDs
-    const VIDEOS = [];
+    const VIDEOS = [
+      { id:"l2Ik0pyQbS0", titleEn:"Soul Faith - Live",    titleEs:"Soul Faith - En Vivo" },
+      { id:"Yk7YSueimvg",  titleEn:"Soul Faith - Video 2", titleEs:"Soul Faith - Video 2" },
+      { id:"0smVwQTCt4M",  titleEn:"Soul Faith - Video 3", titleEs:"Soul Faith - Video 3" },
+      { id:"NV-PHJ1epsg",  titleEn:"Soul Faith - Video 4", titleEs:"Soul Faith - Video 4" },
+    ];
 
     // Merch — generic placeholder images from picsum
     const MERCH_ITEMS = [
@@ -899,5 +898,7 @@
     /* ======== INIT ======== */
     document.getElementById('band-bio-text').innerHTML = BAND_BIO_EN;
   </script>
+  <!-- Instagram embed script -->
+  <script async src="https://www.instagram.com/embed.js"></script>
 </body>
 </html>
