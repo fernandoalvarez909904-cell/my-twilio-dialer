@@ -442,6 +442,9 @@
         <div id="hero-logo-fallback" class="hero-logo-text" style="display:none">SOUL FAITH</div>
       </div>
       <button class="mute-btn" id="mute-btn" onclick="toggleMute()"><i class="fas fa-volume-mute" id="mute-icon"></i> <span id="mute-label">SOUND OFF</span></button>
+    </div><!-- END hero-bg -->
+
+    <!-- Countdown -->
     <div class="countdown-section">
       <div class="countdown-label" data-lang-en="Next Show" data-lang-es="Próximo Show">Next Show</div>
       <div class="countdown-event-name" id="countdown-event-name"></div>
@@ -456,7 +459,6 @@
     <!-- Photo Carousel -->
     <div class="carousel-section">
       <div class="carousel-track" id="carousel-track">
-        <!-- TODO: Replace placeholders with <img src="IMGUR_URL"> once gig photos are uploaded -->
         <div class="carousel-item"><div class="carousel-placeholder">GIG PHOTO</div></div>
         <div class="carousel-item"><div class="carousel-placeholder">GIG PHOTO</div></div>
         <div class="carousel-item"><div class="carousel-placeholder">GIG PHOTO</div></div>
@@ -466,35 +468,19 @@
       </div>
     </div>
 
-
-
     <!-- Latest Posts: TikTok + Instagram -->
     <div class="social-feed-section">
       <div class="section-title" data-lang-en="Latest Posts" data-lang-es="Últimas Publicaciones">Latest Posts</div>
-
-      <!-- TikTok latest video -->
       <div class="tiktok-embed-wrapper">
-        <!--
-          TODO: Go to tiktok.com/@soulfaithoficial
-          Click their latest video → Share → Embed → copy the <blockquote> code
-          Paste it here and delete the tiktok-placeholder div below.
-        -->
         <div class="tiktok-placeholder">
           <i class="fab fa-tiktok"></i>
           <p data-lang-en="Latest TikTok" data-lang-es="Último TikTok">Latest TikTok</p>
           <a href="https://www.tiktok.com/@soulfaithoficial" target="_blank">@soulfaithoficial</a>
         </div>
       </div>
-
-      <!-- Instagram auto-scroll posts -->
       <div class="insta-scroll-wrapper">
         <div class="insta-scroll-track" id="insta-track">
-          <!--
-            TODO: You will give me individual Instagram post links.
-            Each post embed code goes inside a .insta-post div.
-            For now showing placeholders.
-          -->
-        <div class="insta-post"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DWfIniAEd9w/" data-instgrm-version="14" style="width:200px;min-width:unset;"></blockquote></div>
+          <div class="insta-post"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DWfIniAEd9w/" data-instgrm-version="14" style="width:200px;min-width:unset;"></blockquote></div>
           <div class="insta-post"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DXAQXS_kaF-/" data-instgrm-version="14" style="width:200px;min-width:unset;"></blockquote></div>
           <div class="insta-post">POST 3</div>
           <div class="insta-post">POST 4</div>
@@ -506,7 +492,6 @@
 
     <!-- Donate -->
     <div class="donate-section">
-      <!-- TODO: Create Ko-fi account for band → replace link -->
       <a href="https://ko-fi.com/soulfaith" target="_blank" class="donate-btn">
         <i class="fas fa-coffee"></i>
         <span data-lang-en="Support the Band" data-lang-es="Apoya a la Banda">Support the Band</span>
@@ -514,7 +499,8 @@
     </div>
 
     <footer>
-      <div class="footer-logo"><img src="https://i.imgur.com/e36TWvV.png" alt="Soul Faith" style="height:60px;width:auto;margin:0 auto 16px;filter:drop-shadow(0 0 10px rgba(255,255,255,0.2));"></div>
+      <div class="footer-logo"><img src="https://i.imgur.com/e36TWvV.png" alt="Soul Faith" style="height:60px;width:auto;margin:0 auto 16px;display:block;filter:drop-shadow(0 0 10px rgba(255,255,255,0.2));"></div>
+      <div class="footer-social">
         <a href="https://www.instagram.com/soulfaithmx"    target="_blank"><i class="fab fa-instagram"></i></a>
         <a href="https://www.facebook.com/soulfaithmx"     target="_blank"><i class="fab fa-facebook"></i></a>
         <a href="https://youtube.com/@jou8aaxel"           target="_blank"><i class="fab fa-youtube"></i></a>
