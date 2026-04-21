@@ -604,7 +604,10 @@
       width:100%; height:100%;
       font-family:'Outfit', sans-serif;
       position:relative;
-      overflow:hidden;
+      overflow-y:auto;
+      overflow-x:hidden;
+      display:flex;
+      flex-direction:column;
     }
     .pv-nav {
       padding:12px 20px;
@@ -1090,35 +1093,67 @@
     <!-- Bee moving across -->
     <div class="loader-bee-wrap">
       <svg class="loader-bee" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Wings -->
-        <ellipse cx="20" cy="28" rx="16" ry="9" fill="rgba(255,255,255,0.75)" transform="rotate(-25 20 28)"/>
-        <ellipse cx="60" cy="28" rx="16" ry="9" fill="rgba(255,255,255,0.75)" transform="rotate(25 60 28)"/>
-        <!-- Body -->
-        <ellipse cx="40" cy="52" rx="14" ry="18" fill="#C9A227"/>
-        <rect x="26" y="47" width="28" height="5" rx="1" fill="#0D1B2E" opacity="0.7"/>
-        <rect x="26" y="55" width="28" height="5" rx="1" fill="#0D1B2E" opacity="0.7"/>
-        <!-- Head -->
-        <circle cx="40" cy="26" r="13" fill="#C9A227"/>
+        <defs>
+          <radialGradient id="bodyGrad" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#E8C547"/>
+            <stop offset="100%" stop-color="#9A7A10"/>
+          </radialGradient>
+          <radialGradient id="headGrad" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#E8C547"/>
+            <stop offset="100%" stop-color="#C9A227"/>
+          </radialGradient>
+          <filter id="wingBlur">
+            <feGaussianBlur stdDeviation="0.4"/>
+          </filter>
+          <linearGradient id="wingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.92)"/>
+            <stop offset="100%" stop-color="rgba(200,220,255,0.55)"/>
+          </linearGradient>
+        </defs>
+        <!-- Upper wings -->
+        <ellipse cx="19" cy="26" rx="17" ry="8.5" fill="url(#wingGrad)" transform="rotate(-28 19 26)" filter="url(#wingBlur)"/>
+        <ellipse cx="61" cy="26" rx="17" ry="8.5" fill="url(#wingGrad)" transform="rotate(28 61 26)" filter="url(#wingBlur)"/>
+        <!-- Wing veins -->
+        <line x1="19" y1="26" x2="6" y2="19" stroke="rgba(100,160,255,0.35)" stroke-width="0.7"/>
+        <line x1="19" y1="26" x2="10" y2="22" stroke="rgba(100,160,255,0.25)" stroke-width="0.5"/>
+        <line x1="61" y1="26" x2="74" y2="19" stroke="rgba(100,160,255,0.35)" stroke-width="0.7"/>
+        <line x1="61" y1="26" x2="70" y2="22" stroke="rgba(100,160,255,0.25)" stroke-width="0.5"/>
+        <!-- Lower wings (smaller) -->
+        <ellipse cx="23" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.55)" transform="rotate(-15 23 36)"/>
+        <ellipse cx="57" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.55)" transform="rotate(15 57 36)"/>
+        <!-- Body (abdomen) -->
+        <ellipse cx="40" cy="54" rx="13" ry="16" fill="url(#bodyGrad)"/>
+        <!-- Body stripes -->
+        <rect x="27.5" y="47" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
+        <rect x="27.5" y="54" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
+        <rect x="29" y="61" width="22" height="3" rx="1.5" fill="#0D1B2E" opacity="0.5"/>
+        <!-- Body sheen -->
+        <ellipse cx="35" cy="47" rx="5" ry="2.5" fill="rgba(255,255,255,0.18)" transform="rotate(-10 35 47)"/>
+        <!-- Head (teardrop / rounded) -->
+        <ellipse cx="40" cy="26" rx="13" ry="14" fill="url(#headGrad)"/>
+        <!-- Head sheen -->
+        <ellipse cx="36" cy="20" rx="5" ry="3" fill="rgba(255,255,255,0.22)" transform="rotate(-15 36 20)"/>
         <!-- Eyes -->
-        <circle cx="34" cy="24" r="3" fill="#0D1B2E"/>
-        <circle cx="46" cy="24" r="3" fill="#0D1B2E"/>
-        <circle cx="35" cy="23" r="1" fill="white"/>
-        <circle cx="47" cy="23" r="1" fill="white"/>
+        <ellipse cx="34" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
+        <ellipse cx="46" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
+        <circle cx="35.2" cy="22.8" r="1.1" fill="white"/>
+        <circle cx="47.2" cy="22.8" r="1.1" fill="white"/>
+        <!-- Mouth / smile -->
+        <path d="M36 31 Q40 34 44 31" stroke="#0D1B2E" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.8"/>
         <!-- Code bracket on body -->
-        <text x="31" y="54" font-size="9" fill="#0D1B2E" font-family="monospace" font-weight="bold">&lt;/&gt;</text>
+        <text x="29.5" y="56" font-size="9.5" fill="#0D1B2E" font-family="monospace" font-weight="bold" opacity="0.9">&lt;/&gt;</text>
         <!-- Stinger -->
-        <polygon points="40,70 36,78 44,78" fill="#9A7A10"/>
+        <polygon points="40,70 37,76 43,76" fill="#7A5F0A"/>
+        <polygon points="40,72 38.5,75.5 41.5,75.5" fill="#9A7A10"/>
         <!-- Antennae -->
-        <line x1="35" y1="14" x2="28" y2="5" stroke="#0D1B2E" stroke-width="2"/>
-        <line x1="45" y1="14" x2="52" y2="5" stroke="#0D1B2E" stroke-width="2"/>
-        <circle cx="28" cy="5" r="3" fill="#C9A227"/>
-        <circle cx="52" cy="5" r="3" fill="#C9A227"/>
-        <!-- Spray can (tagging) -->
-        <rect x="54" y="38" width="10" height="20" rx="3" fill="#1B2A4A"/>
-        <rect x="60" y="36" width="4" height="6" rx="1" fill="#C9A227"/>
-        <circle cx="55" cy="38" r="2" fill="#C9A227" opacity=".6"/>
-        <circle cx="53" cy="42" r="1.5" fill="#C9A227" opacity=".4"/>
-        <circle cx="51" cy="46" r="1" fill="#C9A227" opacity=".3"/>
+        <path d="M36 13 Q32 8 27 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        <path d="M44 13 Q48 8 53 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        <!-- Antenna tips -->
+        <circle cx="27" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
+        <circle cx="53" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
+        <!-- Antenna tip shine -->
+        <circle cx="26.2" cy="5.2" r="0.9" fill="rgba(255,255,255,0.7)"/>
+        <circle cx="52.2" cy="5.2" r="0.9" fill="rgba(255,255,255,0.7)"/>
       </svg>
     </div>
     <!-- Tagline reveal -->
@@ -1139,17 +1174,7 @@
 ============================================================ -->
 <nav id="navbar">
   <a href="#hero" class="nav-logo">
-    <!-- Inline mini bee SVG -->
-    <svg class="nav-logo-bee" viewBox="0 0 40 40" fill="none">
-      <ellipse cx="10" cy="14" rx="8" ry="5" fill="rgba(255,255,255,0.7)" transform="rotate(-20 10 14)"/>
-      <ellipse cx="30" cy="14" rx="8" ry="5" fill="rgba(255,255,255,0.7)" transform="rotate(20 30 14)"/>
-      <ellipse cx="20" cy="28" rx="7" ry="9" fill="#C9A227"/>
-      <rect x="13" y="25" width="14" height="3" rx="1" fill="#0D1B2E" opacity=".7"/>
-      <rect x="13" y="30" width="14" height="3" rx="1" fill="#0D1B2E" opacity=".7"/>
-      <circle cx="20" cy="14" r="7" fill="#C9A227"/>
-      <circle cx="17" cy="13" r="1.5" fill="#0D1B2E"/>
-      <circle cx="23" cy="13" r="1.5" fill="#0D1B2E"/>
-    </svg>
+    <img src="https://i.imgur.com/gHWuxr0.png" class="nav-logo-bee" alt="BeezerBuilt Logo" style="width:44px;height:44px;object-fit:contain;"/>
     Beezer<span>Built</span>
   </a>
   <ul class="nav-links">
@@ -1198,22 +1223,51 @@
 
   <!-- Floating bee hero -->
   <svg class="hero-bee" viewBox="0 0 80 80" fill="none" title="BeezerBuilt Mascot">
-    <ellipse cx="18" cy="28" rx="16" ry="9" fill="rgba(255,255,255,0.75)" transform="rotate(-25 18 28)"/>
-    <ellipse cx="62" cy="28" rx="16" ry="9" fill="rgba(255,255,255,0.75)" transform="rotate(25 62 28)"/>
-    <ellipse cx="40" cy="52" rx="14" ry="18" fill="#C9A227"/>
-    <rect x="26" y="47" width="28" height="5" rx="1" fill="#0D1B2E" opacity="0.7"/>
-    <rect x="26" y="55" width="28" height="5" rx="1" fill="#0D1B2E" opacity="0.7"/>
-    <circle cx="40" cy="26" r="13" fill="#C9A227"/>
-    <circle cx="34" cy="24" r="3" fill="#0D1B2E"/>
-    <circle cx="46" cy="24" r="3" fill="#0D1B2E"/>
-    <circle cx="35" cy="23" r="1" fill="white"/>
-    <circle cx="47" cy="23" r="1" fill="white"/>
-    <text x="31" y="54" font-size="9" fill="#0D1B2E" font-family="monospace" font-weight="bold">&lt;/&gt;</text>
-    <polygon points="40,70 36,78 44,78" fill="#9A7A10"/>
-    <line x1="35" y1="14" x2="28" y2="5" stroke="#0D1B2E" stroke-width="2"/>
-    <line x1="45" y1="14" x2="52" y2="5" stroke="#0D1B2E" stroke-width="2"/>
-    <circle cx="28" cy="5" r="3" fill="#C9A227"/>
-    <circle cx="52" cy="5" r="3" fill="#C9A227"/>
+    <defs>
+      <radialGradient id="hBodyGrad" cx="40%" cy="35%" r="60%">
+        <stop offset="0%" stop-color="#E8C547"/>
+        <stop offset="100%" stop-color="#9A7A10"/>
+      </radialGradient>
+      <radialGradient id="hHeadGrad" cx="40%" cy="35%" r="60%">
+        <stop offset="0%" stop-color="#E8C547"/>
+        <stop offset="100%" stop-color="#C9A227"/>
+      </radialGradient>
+      <linearGradient id="hWingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="rgba(255,255,255,0.92)"/>
+        <stop offset="100%" stop-color="rgba(200,220,255,0.55)"/>
+      </linearGradient>
+    </defs>
+    <!-- Upper wings -->
+    <ellipse cx="19" cy="26" rx="17" ry="8.5" fill="url(#hWingGrad)" transform="rotate(-28 19 26)"/>
+    <ellipse cx="61" cy="26" rx="17" ry="8.5" fill="url(#hWingGrad)" transform="rotate(28 61 26)"/>
+    <!-- Wing veins -->
+    <line x1="19" y1="26" x2="6" y2="19" stroke="rgba(100,160,255,0.3)" stroke-width="0.7"/>
+    <line x1="61" y1="26" x2="74" y2="19" stroke="rgba(100,160,255,0.3)" stroke-width="0.7"/>
+    <!-- Lower wings -->
+    <ellipse cx="23" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.5)" transform="rotate(-15 23 36)"/>
+    <ellipse cx="57" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.5)" transform="rotate(15 57 36)"/>
+    <!-- Body -->
+    <ellipse cx="40" cy="54" rx="13" ry="16" fill="url(#hBodyGrad)"/>
+    <rect x="27.5" y="47" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
+    <rect x="27.5" y="54" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
+    <rect x="29" y="61" width="22" height="3" rx="1.5" fill="#0D1B2E" opacity="0.5"/>
+    <ellipse cx="35" cy="47" rx="5" ry="2.5" fill="rgba(255,255,255,0.18)" transform="rotate(-10 35 47)"/>
+    <!-- Head -->
+    <ellipse cx="40" cy="26" rx="13" ry="14" fill="url(#hHeadGrad)"/>
+    <ellipse cx="36" cy="20" rx="5" ry="3" fill="rgba(255,255,255,0.22)" transform="rotate(-15 36 20)"/>
+    <ellipse cx="34" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
+    <ellipse cx="46" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
+    <circle cx="35.2" cy="22.8" r="1.1" fill="white"/>
+    <circle cx="47.2" cy="22.8" r="1.1" fill="white"/>
+    <path d="M36 31 Q40 34 44 31" stroke="#0D1B2E" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.8"/>
+    <text x="29.5" y="56" font-size="9.5" fill="#0D1B2E" font-family="monospace" font-weight="bold" opacity="0.9">&lt;/&gt;</text>
+    <polygon points="40,70 37,76 43,76" fill="#7A5F0A"/>
+    <path d="M36 13 Q32 8 27 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    <path d="M44 13 Q48 8 53 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    <circle cx="27" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
+    <circle cx="53" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
+    <circle cx="26.2" cy="5.2" r="0.9" fill="rgba(255,255,255,0.7)"/>
+    <circle cx="52.2" cy="5.2" r="0.9" fill="rgba(255,255,255,0.7)"/>
   </svg>
 
   <div class="scroll-hint">
@@ -1410,29 +1464,76 @@
   <div class="sandbox-layout">
     <!-- Controls -->
     <div class="sandbox-controls">
-      <h3>🎛️ Customize</h3>
+      <h3>🎛️ Customize Your Site</h3>
+
+      <!-- Business Name -->
+      <div class="ctrl-group">
+        <div class="ctrl-group-title">Business Name</div>
+        <input type="text" id="sbBrandInput" placeholder="YourBrand" oninput="setBrandName(this.value)"
+          style="width:100%;background:var(--navy-mid);border:1.5px solid var(--navy-border);border-radius:5px;padding:8px 12px;color:var(--white);font-family:'Outfit',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;"
+          onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--navy-border)'"/>
+      </div>
 
       <div class="ctrl-group">
         <div class="ctrl-group-title">Theme</div>
         <div class="ctrl-options" id="themeOptions">
           <div class="ctrl-option active" data-theme="dark" onclick="setTheme(this)">Dark</div>
           <div class="ctrl-option" data-theme="light" onclick="setTheme(this)">Light</div>
+          <div class="ctrl-option" data-theme="midnight" onclick="setTheme(this)">Midnight</div>
         </div>
       </div>
 
       <div class="ctrl-group">
         <div class="ctrl-group-title">Color Accent</div>
         <div class="ctrl-options" id="colorOptions">
-          <div class="ctrl-option active" data-color="#C9A227" onclick="setColor(this)">Gold</div>
+          <div class="ctrl-option active" data-color="#C9A227" onclick="setColor(this)" style="border-color:#C9A227;color:#C9A227;">Gold</div>
           <div class="ctrl-option" data-color="#3B82F6" onclick="setColor(this)">Blue</div>
           <div class="ctrl-option" data-color="#10B981" onclick="setColor(this)">Green</div>
           <div class="ctrl-option" data-color="#EF4444" onclick="setColor(this)">Red</div>
           <div class="ctrl-option" data-color="#8B5CF6" onclick="setColor(this)">Purple</div>
+          <div class="ctrl-option" data-color="#F97316" onclick="setColor(this)">Orange</div>
+          <div class="ctrl-option" data-color="#EC4899" onclick="setColor(this)">Pink</div>
         </div>
       </div>
 
       <div class="ctrl-group">
-        <div class="ctrl-group-title">Sections</div>
+        <div class="ctrl-group-title">Hero Layout</div>
+        <div class="ctrl-options" id="layoutOptions">
+          <div class="ctrl-option active" data-layout="centered" onclick="setLayout(this)">Centered</div>
+          <div class="ctrl-option" data-layout="left" onclick="setLayout(this)">Left-Split</div>
+          <div class="ctrl-option" data-layout="bold" onclick="setLayout(this)">Bold Full</div>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <div class="ctrl-group-title">Button Style</div>
+        <div class="ctrl-options" id="btnStyleOptions">
+          <div class="ctrl-option active" data-btn="square" onclick="setBtnStyle(this)">Sharp</div>
+          <div class="ctrl-option" data-btn="rounded" onclick="setBtnStyle(this)">Rounded</div>
+          <div class="ctrl-option" data-btn="pill" onclick="setBtnStyle(this)">Pill</div>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <div class="ctrl-group-title">Font Style</div>
+        <div class="ctrl-options" id="fontOptions">
+          <div class="ctrl-option active" data-font="modern" onclick="setFont(this)">Modern</div>
+          <div class="ctrl-option" data-font="serif" onclick="setFont(this)">Serif</div>
+          <div class="ctrl-option" data-font="mono" onclick="setFont(this)">Tech</div>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <div class="ctrl-group-title">Navigation Style</div>
+        <div class="ctrl-options">
+          <div class="ctrl-option active" onclick="setNavStyle(this,'modern')">Glass</div>
+          <div class="ctrl-option" onclick="setNavStyle(this,'minimal')">Minimal</div>
+          <div class="ctrl-option" onclick="setNavStyle(this,'bold')">Solid</div>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <div class="ctrl-group-title">Sections & Features</div>
         <div class="ctrl-toggle" onclick="toggleFeature('videoBackground')">
           <span class="ctrl-toggle-label">🎬 Video Background</span>
           <div class="toggle-switch" id="toggle-videoBackground"></div>
@@ -1453,15 +1554,35 @@
           <span class="ctrl-toggle-label">🛒 Online Store</span>
           <div class="toggle-switch" id="toggle-store"></div>
         </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('testimonials')">
+          <span class="ctrl-toggle-label">⭐ Testimonials</span>
+          <div class="toggle-switch" id="toggle-testimonials"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('pricing')">
+          <span class="ctrl-toggle-label">💰 Pricing Table</span>
+          <div class="toggle-switch" id="toggle-pricing"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('chatWidget')">
+          <span class="ctrl-toggle-label">💬 Chat Widget</span>
+          <div class="toggle-switch" id="toggle-chatWidget"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('mapEmbed')">
+          <span class="ctrl-toggle-label">🗺️ Map / Location</span>
+          <div class="toggle-switch" id="toggle-mapEmbed"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('newsletter')">
+          <span class="ctrl-toggle-label">📧 Newsletter Signup</span>
+          <div class="toggle-switch" id="toggle-newsletter"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('countdown')">
+          <span class="ctrl-toggle-label">⏳ Countdown Timer</span>
+          <div class="toggle-switch" id="toggle-countdown"></div>
+        </div>
       </div>
 
-      <div class="ctrl-group">
-        <div class="ctrl-group-title">Navigation Style</div>
-        <div class="ctrl-options">
-          <div class="ctrl-option active" onclick="setNavStyle(this,'modern')">Modern</div>
-          <div class="ctrl-option" onclick="setNavStyle(this,'minimal')">Minimal</div>
-          <div class="ctrl-option" onclick="setNavStyle(this,'bold')">Bold</div>
-        </div>
+      <!-- Feature summary count -->
+      <div id="featureCount" style="font-size:.78rem;color:var(--gold);font-weight:600;padding:10px 0 0;border-top:1px solid var(--navy-border);margin-top:4px;">
+        1 feature active
       </div>
     </div>
 
@@ -1471,28 +1592,60 @@
         <div class="preview-dot" style="background:#FF5F57"></div>
         <div class="preview-dot" style="background:#FEBC2E"></div>
         <div class="preview-dot" style="background:#28C840"></div>
-        <div class="preview-url">🔒 yourwebsite.com</div>
+        <div class="preview-url" id="pvUrl">🔒 yourwebsite.com</div>
+        <div style="display:flex;gap:6px;margin-left:auto;">
+          <div id="pvDevDesktop" onclick="setPvDevice('desktop')" title="Desktop"
+            style="cursor:pointer;font-size:.8rem;padding:2px 6px;border-radius:3px;border:1px solid var(--gold);color:var(--gold);">🖥</div>
+          <div id="pvDevMobile" onclick="setPvDevice('mobile')" title="Mobile"
+            style="cursor:pointer;font-size:.8rem;padding:2px 6px;border-radius:3px;border:1px solid var(--navy-border);color:var(--gray);">📱</div>
+        </div>
       </div>
-      <div class="preview-frame">
+      <div class="preview-frame" id="pvFrame">
+        <!-- Mobile wrapper (shown conditionally) -->
+        <div id="pvMobileWrap" style="display:none;align-items:center;justify-content:center;height:100%;background:#111;padding:16px;">
+          <div style="width:200px;background:#1a1a1a;border-radius:24px;border:3px solid #333;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6);">
+            <div id="pvMobileSite" style="transform:scale(0.52);transform-origin:top left;width:384px;height:580px;overflow:hidden;">
+            </div>
+          </div>
+        </div>
         <div class="pv-site dark" id="pvSite">
           <!-- Video background -->
           <div class="pv-video-bg" id="pvVideo">
             <div class="pv-video-bg-inner"></div>
           </div>
           <!-- Particles -->
-          <div id="pvParticles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
+          <div id="pvParticles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;"></div>
           <!-- Nav -->
-          <div class="pv-nav" id="pvNav" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(8px);">
+          <div class="pv-nav" id="pvNav" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(8px);position:relative;z-index:2;">
             <strong id="pvNavBrand" style="color:#C9A227;">YourBrand</strong>
-            <div style="display:flex;gap:12px;font-size:.7rem;opacity:.7;">
-              <span>Home</span><span>About</span><span>Contact</span>
+            <div style="display:flex;gap:12px;font-size:.7rem;opacity:.7;" id="pvNavLinks">
+              <span>Home</span><span>About</span><span>Services</span><span>Contact</span>
             </div>
+            <div id="pvNavCta" style="font-size:.65rem;font-weight:700;padding:4px 10px;border-radius:3px;background:#C9A227;color:#0D1B2E;">Get Quote</div>
           </div>
           <!-- Hero -->
-          <div class="pv-hero" style="position:relative;z-index:1;">
+          <div class="pv-hero" id="pvHero" style="position:relative;z-index:1;text-align:center;align-items:center;">
             <div class="pv-h1" id="pvH1">Your Website<br/><span id="pvAccentText" style="color:#C9A227;">Starts Here</span></div>
-            <p class="pv-p">Beautiful, fast, and custom-built for your business. Imagine it — we'll build it.</p>
-            <div class="pv-btn" id="pvBtn" style="background:#C9A227;color:#0D1B2E;">Get Started →</div>
+            <p class="pv-p" id="pvTagline">Beautiful, fast, and custom-built for your business. Imagine it — we'll build it.</p>
+            <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+              <div class="pv-btn" id="pvBtn" style="background:#C9A227;color:#0D1B2E;border-radius:4px;">Get Started →</div>
+              <div class="pv-btn" id="pvBtn2" style="border:1.5px solid #C9A227;color:#C9A227;background:transparent;border-radius:4px;">Learn More</div>
+            </div>
+          </div>
+          <!-- Stats bar (always visible) -->
+          <div id="pvStats" style="display:flex;gap:0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);position:relative;z-index:1;">
+            <div style="flex:1;padding:8px 6px;text-align:center;border-right:1px solid rgba(255,255,255,.08);">
+              <div style="font-size:1rem;font-weight:800;" id="pvStat1Color">200+</div>
+              <div style="font-size:.55rem;opacity:.5;">Projects</div>
+            </div>
+            <div style="flex:1;padding:8px 6px;text-align:center;border-right:1px solid rgba(255,255,255,.08);">
+              <div style="font-size:1rem;font-weight:800;" id="pvStat2Color">98%</div>
+              <div style="font-size:.55rem;opacity:.5;">Satisfied</div>
+            </div>
+            <div style="flex:1;padding:8px 6px;text-align:center;">
+              <div style="font-size:1rem;font-weight:800;" id="pvStat3Color">24hr</div>
+              <div style="font-size:.55rem;opacity:.5;">Response</div>
+            </div>
           </div>
           <!-- Gallery -->
           <div class="pv-gallery" id="pvGallery">
@@ -1500,12 +1653,60 @@
             <div class="pv-gallery-img" id="pvGImg2"></div>
             <div class="pv-gallery-img" id="pvGImg3"></div>
           </div>
+          <!-- Testimonials -->
+          <div id="pvTestimonials" style="display:none;padding:10px 16px;position:relative;z-index:1;">
+            <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin-bottom:6px;">What Clients Say</div>
+            <div style="display:flex;gap:6px;">
+              <div style="flex:1;background:rgba(255,255,255,.06);border-radius:5px;padding:8px;font-size:.62rem;line-height:1.4;">
+                <div style="color:#C9A227;margin-bottom:3px;" id="pvTstColor1">★★★★★</div>
+                <div style="opacity:.8;">"Absolutely transformed our online presence!"</div>
+                <div style="opacity:.4;margin-top:4px;font-size:.58rem;">— Sarah M.</div>
+              </div>
+              <div style="flex:1;background:rgba(255,255,255,.06);border-radius:5px;padding:8px;font-size:.62rem;line-height:1.4;">
+                <div style="color:#C9A227;margin-bottom:3px;" id="pvTstColor2">★★★★★</div>
+                <div style="opacity:.8;">"Fast, professional, and worth every penny."</div>
+                <div style="opacity:.4;margin-top:4px;font-size:.58rem;">— James K.</div>
+              </div>
+            </div>
+          </div>
+          <!-- Pricing Table -->
+          <div id="pvPricing" style="display:none;padding:10px 16px;position:relative;z-index:1;">
+            <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin-bottom:6px;">Pricing Plans</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;">
+              <div style="background:rgba(255,255,255,.05);border-radius:4px;padding:8px;text-align:center;font-size:.58rem;">
+                <div style="font-weight:800;font-size:.8rem;margin-bottom:3px;">Starter</div>
+                <div style="font-weight:700;margin-bottom:3px;" id="pvPriceColor1">$29<span style="font-size:.55rem;opacity:.5;">/mo</span></div>
+                <div style="opacity:.4;">Basic features</div>
+              </div>
+              <div style="border-radius:4px;padding:8px;text-align:center;font-size:.58rem;" id="pvPricingHighlight">
+                <div style="font-weight:800;font-size:.8rem;margin-bottom:3px;">Pro</div>
+                <div style="font-weight:700;margin-bottom:3px;" id="pvPriceColor2">$79<span style="font-size:.55rem;opacity:.5;">/mo</span></div>
+                <div>Most popular ✓</div>
+              </div>
+              <div style="background:rgba(255,255,255,.05);border-radius:4px;padding:8px;text-align:center;font-size:.58rem;">
+                <div style="font-weight:800;font-size:.8rem;margin-bottom:3px;">Elite</div>
+                <div style="font-weight:700;margin-bottom:3px;" id="pvPriceColor3">$199<span style="font-size:.55rem;opacity:.5;">/mo</span></div>
+                <div style="opacity:.4;">Full package</div>
+              </div>
+            </div>
+          </div>
           <!-- Contact Form -->
           <div class="pv-form" id="pvForm">
             <div style="font-size:.8rem;font-weight:700;margin-bottom:4px;">Contact Us</div>
             <input class="pv-input" placeholder="Your Name" readonly />
             <input class="pv-input" placeholder="Your Email" readonly />
+            <textarea class="pv-input" placeholder="Message..." readonly style="height:40px;resize:none;"></textarea>
             <div class="pv-btn" id="pvFormBtn" style="background:#C9A227;color:#0D1B2E;font-size:.75rem;padding:6px 14px;border-radius:3px;">Send Message</div>
+          </div>
+          <!-- Newsletter -->
+          <div id="pvNewsletter" style="display:none;padding:8px 16px;position:relative;z-index:1;">
+            <div style="background:rgba(255,255,255,.05);border-radius:5px;padding:10px;text-align:center;">
+              <div style="font-size:.7rem;font-weight:700;margin-bottom:4px;">📧 Stay in the Loop</div>
+              <div style="display:flex;gap:4px;">
+                <input class="pv-input" placeholder="your@email.com" readonly style="flex:1;"/>
+                <div class="pv-btn" id="pvNewsBtn" style="background:#C9A227;color:#0D1B2E;font-size:.65rem;padding:6px 10px;border-radius:3px;white-space:nowrap;">Subscribe</div>
+              </div>
+            </div>
           </div>
           <!-- Store -->
           <div class="pv-store" id="pvStore">
@@ -1521,6 +1722,58 @@
               <div style="font-size:.7rem;opacity:.6;">$49.99</div>
               <div style="margin-top:4px;font-size:.7rem;font-weight:700;" id="pvBuyBtn2">Buy Now</div>
             </div>
+            <div class="pv-product">
+              <div class="pv-product-img"></div>
+              <div style="font-weight:700;font-size:.75rem;">Product 3</div>
+              <div style="font-size:.7rem;opacity:.6;">$19.99</div>
+              <div style="margin-top:4px;font-size:.7rem;font-weight:700;" id="pvBuyBtn3">Buy Now</div>
+            </div>
+            <div class="pv-product">
+              <div class="pv-product-img"></div>
+              <div style="font-weight:700;font-size:.75rem;">Product 4</div>
+              <div style="font-size:.7rem;opacity:.6;">$89.99</div>
+              <div style="margin-top:4px;font-size:.7rem;font-weight:700;" id="pvBuyBtn4">Buy Now</div>
+            </div>
+          </div>
+          <!-- Map Embed -->
+          <div id="pvMap" style="display:none;padding:8px 16px 12px;position:relative;z-index:1;">
+            <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin-bottom:6px;">Our Location</div>
+            <div style="height:70px;border-radius:5px;background:linear-gradient(135deg,#1a2a1a,#2a3a2a);display:flex;align-items:center;justify-content:center;gap:6px;font-size:.7rem;opacity:.6;border:1px solid rgba(255,255,255,.1);">
+              📍 Interactive Map Embed
+            </div>
+          </div>
+          <!-- Countdown Timer -->
+          <div id="pvCountdown" style="display:none;padding:8px 16px;position:relative;z-index:1;">
+            <div style="background:rgba(255,255,255,.04);border-radius:5px;padding:10px;text-align:center;">
+              <div style="font-size:.65rem;opacity:.5;margin-bottom:5px;letter-spacing:.1em;text-transform:uppercase;">Launch / Event Countdown</div>
+              <div style="display:flex;gap:6px;justify-content:center;">
+                <div style="background:rgba(0,0,0,.3);border-radius:4px;padding:5px 8px;text-align:center;">
+                  <div style="font-size:.95rem;font-weight:800;" id="pvCdDays">14</div>
+                  <div style="font-size:.5rem;opacity:.4;">days</div>
+                </div>
+                <div style="background:rgba(0,0,0,.3);border-radius:4px;padding:5px 8px;text-align:center;">
+                  <div style="font-size:.95rem;font-weight:800;" id="pvCdHrs">06</div>
+                  <div style="font-size:.5rem;opacity:.4;">hrs</div>
+                </div>
+                <div style="background:rgba(0,0,0,.3);border-radius:4px;padding:5px 8px;text-align:center;">
+                  <div style="font-size:.95rem;font-weight:800;" id="pvCdMin">32</div>
+                  <div style="font-size:.5rem;opacity:.4;">min</div>
+                </div>
+                <div style="background:rgba(0,0,0,.3);border-radius:4px;padding:5px 8px;text-align:center;">
+                  <div style="font-size:.95rem;font-weight:800;" id="pvCdSec">59</div>
+                  <div style="font-size:.5rem;opacity:.4;">sec</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Chat Widget -->
+          <div id="pvChat" style="display:none;position:absolute;bottom:12px;right:12px;z-index:10;">
+            <div style="width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.4);" id="pvChatBtn">💬</div>
+          </div>
+          <!-- Footer bar -->
+          <div id="pvFooter" style="padding:8px 16px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;font-size:.6rem;opacity:.4;margin-top:auto;position:relative;z-index:1;">
+            <span id="pvFooterBrand">YourBrand</span>
+            <span>© 2025 · Privacy · Terms</span>
           </div>
         </div>
       </div>
@@ -1935,16 +2188,7 @@
   <div class="footer-top">
     <div class="footer-brand">
       <div class="footer-logo">
-        <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
-          <ellipse cx="10" cy="14" rx="8" ry="5" fill="rgba(255,255,255,0.7)" transform="rotate(-20 10 14)"/>
-          <ellipse cx="30" cy="14" rx="8" ry="5" fill="rgba(255,255,255,0.7)" transform="rotate(20 30 14)"/>
-          <ellipse cx="20" cy="28" rx="7" ry="9" fill="#C9A227"/>
-          <rect x="13" y="25" width="14" height="3" rx="1" fill="#0D1B2E" opacity=".7"/>
-          <rect x="13" y="30" width="14" height="3" rx="1" fill="#0D1B2E" opacity=".7"/>
-          <circle cx="20" cy="14" r="7" fill="#C9A227"/>
-          <circle cx="17" cy="13" r="1.5" fill="#0D1B2E"/>
-          <circle cx="23" cy="13" r="1.5" fill="#0D1B2E"/>
-        </svg>
+        <img src="https://i.imgur.com/gHWuxr0.png" width="38" height="38" alt="BeezerBuilt" style="object-fit:contain;"/>
         Beezer<span>Built</span>
       </div>
       <p class="footer-tagline">
@@ -1977,22 +2221,45 @@
      FLOATING BEE
 ============================================================ -->
 <svg id="floating-bee" viewBox="0 0 80 80" fill="none" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" title="Get a quote">
-  <ellipse cx="18" cy="28" rx="16" ry="9" fill="rgba(255,255,255,0.75)" transform="rotate(-25 18 28)"/>
-  <ellipse cx="62" cy="28" rx="16" ry="9" fill="rgba(255,255,255,0.75)" transform="rotate(25 62 28)"/>
-  <ellipse cx="40" cy="52" rx="14" ry="18" fill="#C9A227"/>
-  <rect x="26" y="47" width="28" height="5" rx="1" fill="#0D1B2E" opacity="0.7"/>
-  <rect x="26" y="55" width="28" height="5" rx="1" fill="#0D1B2E" opacity="0.7"/>
-  <circle cx="40" cy="26" r="13" fill="#C9A227"/>
-  <circle cx="34" cy="24" r="3" fill="#0D1B2E"/>
-  <circle cx="46" cy="24" r="3" fill="#0D1B2E"/>
-  <circle cx="35" cy="23" r="1" fill="white"/>
-  <circle cx="47" cy="23" r="1" fill="white"/>
-  <text x="31" y="54" font-size="9" fill="#0D1B2E" font-family="monospace" font-weight="bold">&lt;/&gt;</text>
-  <polygon points="40,70 36,78 44,78" fill="#9A7A10"/>
-  <line x1="35" y1="14" x2="28" y2="5" stroke="#0D1B2E" stroke-width="2"/>
-  <line x1="45" y1="14" x2="52" y2="5" stroke="#0D1B2E" stroke-width="2"/>
-  <circle cx="28" cy="5" r="3" fill="#C9A227"/>
-  <circle cx="52" cy="5" r="3" fill="#C9A227"/>
+  <defs>
+    <radialGradient id="fbBodyGrad" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#E8C547"/>
+      <stop offset="100%" stop-color="#9A7A10"/>
+    </radialGradient>
+    <radialGradient id="fbHeadGrad" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#E8C547"/>
+      <stop offset="100%" stop-color="#C9A227"/>
+    </radialGradient>
+    <linearGradient id="fbWingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.92)"/>
+      <stop offset="100%" stop-color="rgba(200,220,255,0.55)"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="19" cy="26" rx="17" ry="8.5" fill="url(#fbWingGrad)" transform="rotate(-28 19 26)"/>
+  <ellipse cx="61" cy="26" rx="17" ry="8.5" fill="url(#fbWingGrad)" transform="rotate(28 61 26)"/>
+  <line x1="19" y1="26" x2="6" y2="19" stroke="rgba(100,160,255,0.3)" stroke-width="0.7"/>
+  <line x1="61" y1="26" x2="74" y2="19" stroke="rgba(100,160,255,0.3)" stroke-width="0.7"/>
+  <ellipse cx="23" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.5)" transform="rotate(-15 23 36)"/>
+  <ellipse cx="57" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.5)" transform="rotate(15 57 36)"/>
+  <ellipse cx="40" cy="54" rx="13" ry="16" fill="url(#fbBodyGrad)"/>
+  <rect x="27.5" y="47" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
+  <rect x="27.5" y="54" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
+  <rect x="29" y="61" width="22" height="3" rx="1.5" fill="#0D1B2E" opacity="0.5"/>
+  <ellipse cx="40" cy="26" rx="13" ry="14" fill="url(#fbHeadGrad)"/>
+  <ellipse cx="36" cy="20" rx="5" ry="3" fill="rgba(255,255,255,0.22)" transform="rotate(-15 36 20)"/>
+  <ellipse cx="34" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
+  <ellipse cx="46" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
+  <circle cx="35.2" cy="22.8" r="1.1" fill="white"/>
+  <circle cx="47.2" cy="22.8" r="1.1" fill="white"/>
+  <path d="M36 31 Q40 34 44 31" stroke="#0D1B2E" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.8"/>
+  <text x="29.5" y="56" font-size="9.5" fill="#0D1B2E" font-family="monospace" font-weight="bold" opacity="0.9">&lt;/&gt;</text>
+  <polygon points="40,70 37,76 43,76" fill="#7A5F0A"/>
+  <path d="M36 13 Q32 8 27 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <path d="M44 13 Q48 8 53 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <circle cx="27" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
+  <circle cx="53" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
+  <circle cx="26.2" cy="5.2" r="0.9" fill="rgba(255,255,255,0.7)"/>
+  <circle cx="52.2" cy="5.2" r="0.9" fill="rgba(255,255,255,0.7)"/>
 </svg>
 
 <!-- ============================================================
@@ -2108,75 +2375,187 @@
     gallery: false,
     contactForm: false,
     store: false,
-    navStyle: 'modern'
+    testimonials: false,
+    pricing: false,
+    chatWidget: false,
+    mapEmbed: false,
+    newsletter: false,
+    countdown: false,
+    navStyle: 'modern',
+    layout: 'centered',
+    btnStyle: 'square',
+    font: 'modern',
+    brandName: 'YourBrand'
   };
+
+  // Countdown ticker
+  let cdInterval = null;
+  function startCountdown() {
+    if (cdInterval) return;
+    cdInterval = setInterval(() => {
+      if (!state.countdown) { clearInterval(cdInterval); cdInterval = null; return; }
+      let s = parseInt(document.getElementById('pvCdSec').textContent);
+      let m = parseInt(document.getElementById('pvCdMin').textContent);
+      let h = parseInt(document.getElementById('pvCdHrs').textContent);
+      let d = parseInt(document.getElementById('pvCdDays').textContent);
+      s--; if (s < 0) { s = 59; m--; }
+      if (m < 0) { m = 59; h--; }
+      if (h < 0) { h = 23; d--; }
+      if (d < 0) d = 0;
+      document.getElementById('pvCdSec').textContent = String(s).padStart(2,'0');
+      document.getElementById('pvCdMin').textContent = String(m).padStart(2,'0');
+      document.getElementById('pvCdHrs').textContent = String(h).padStart(2,'0');
+      document.getElementById('pvCdDays').textContent = String(d).padStart(2,'0');
+    }, 1000);
+  }
+
+  function updateFeatureCount() {
+    const featureKeys = ['videoBackground','animations','gallery','contactForm','store',
+      'testimonials','pricing','chatWidget','mapEmbed','newsletter','countdown'];
+    const count = featureKeys.filter(k => state[k]).length;
+    const el = document.getElementById('featureCount');
+    if (el) el.textContent = count + ' feature' + (count !== 1 ? 's' : '') + ' active';
+  }
 
   function applyPreview() {
     const site = document.getElementById('pvSite');
-    site.className = 'pv-site ' + state.theme;
 
-    // Color
-    document.getElementById('pvBtn').style.background = state.color;
-    document.getElementById('pvBtn').style.color = state.theme === 'light' ? '#fff' : '#0D1B2E';
-    if (state.theme !== 'light') document.getElementById('pvBtn').style.color = '#0D1B2E';
-    document.getElementById('pvAccentText').style.color = state.color;
-    if (document.getElementById('pvFormBtn')) {
-      document.getElementById('pvFormBtn').style.background = state.color;
-    }
-    if (document.getElementById('pvBuyBtn')) {
-      document.getElementById('pvBuyBtn').style.color = state.color;
-      document.getElementById('pvBuyBtn2').style.color = state.color;
-    }
+    // Theme
+    const themes = {
+      dark:     { bg:'#0a0f1a', navBg:'rgba(8,14,26,0.85)', text:'#fff', subText:'rgba(255,255,255,0.55)' },
+      light:    { bg:'#f4f6fa', navBg:'#fff', text:'#111', subText:'rgba(0,0,0,0.45)' },
+      midnight: { bg:'#050810', navBg:'rgba(5,8,16,0.9)', text:'#e8ecf5', subText:'rgba(232,236,245,0.45)' }
+    };
+    const t = themes[state.theme] || themes.dark;
+    site.style.background = t.bg;
+    site.style.color = t.text;
+
+    // Font
+    const fonts = { modern:'Outfit,sans-serif', serif:'"Georgia",serif', mono:'"Courier New",monospace' };
+    site.style.fontFamily = fonts[state.font] || fonts.modern;
+
+    // Brand name
+    const brand = state.brandName || 'YourBrand';
+    ['pvNavBrand','pvFooterBrand'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = brand;
+    });
+    const url = document.getElementById('pvUrl');
+    if (url) url.textContent = '🔒 ' + brand.toLowerCase().replace(/\s+/g,'') + '.com';
+
+    // Color: accent everything
+    const c = state.color;
+    document.getElementById('pvAccentText').style.color = c;
+    document.getElementById('pvNavBrand').style.color = c;
+
+    // Btn style
+    const radii = { square:'3px', rounded:'8px', pill:'50px' };
+    const r = radii[state.btnStyle] || '3px';
+    const pvBtn = document.getElementById('pvBtn');
+    const pvBtn2 = document.getElementById('pvBtn2');
+    pvBtn.style.background = c; pvBtn.style.color = '#0D1B2E'; pvBtn.style.borderRadius = r;
+    pvBtn2.style.border = '1.5px solid '+c; pvBtn2.style.color = c; pvBtn2.style.background = 'transparent'; pvBtn2.style.borderRadius = r;
+    const pvNavCta = document.getElementById('pvNavCta');
+    if (pvNavCta) { pvNavCta.style.background = c; pvNavCta.style.color = '#0D1B2E'; pvNavCta.style.borderRadius = r; }
+
+    // Form btn
+    const fb = document.getElementById('pvFormBtn'); if (fb) { fb.style.background = c; fb.style.color = '#0D1B2E'; fb.style.borderRadius = r; }
+    const nb = document.getElementById('pvNewsBtn'); if (nb) { nb.style.background = c; nb.style.color = '#0D1B2E'; nb.style.borderRadius = r; }
+
+    // Buy btns
+    ['pvBuyBtn','pvBuyBtn2','pvBuyBtn3','pvBuyBtn4'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.style.color = c;
+    });
+
+    // Stats color
+    ['pvStat1Color','pvStat2Color','pvStat3Color'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.style.color = c;
+    });
 
     // Gallery colors
     ['pvGImg1','pvGImg2','pvGImg3'].forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.style.background = state.color + '33';
+      if (el) el.style.background = 'linear-gradient(135deg,' + c + '44,' + c + '11)';
     });
+
+    // Testimonials star color
+    ['pvTstColor1','pvTstColor2'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.style.color = c;
+    });
+
+    // Pricing highlight
+    const ph = document.getElementById('pvPricingHighlight');
+    if (ph) { ph.style.background = c + '22'; ph.style.border = '1.5px solid '+c; ph.style.color = t.text; }
+    ['pvPriceColor1','pvPriceColor2','pvPriceColor3'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.style.color = c;
+    });
+
+    // Chat widget
+    const chatBtn = document.getElementById('pvChatBtn');
+    if (chatBtn) { chatBtn.style.background = c; chatBtn.style.color = '#0D1B2E'; }
 
     // Video bg
     document.getElementById('pvVideo').classList.toggle('show', state.videoBackground);
 
-    // Gallery
-    document.getElementById('pvGallery').classList.toggle('show', state.gallery);
-
-    // Form
-    document.getElementById('pvForm').classList.toggle('show', state.contactForm);
-
-    // Store
-    document.getElementById('pvStore').classList.toggle('show', state.store);
-
-    // Animations/particles
+    // Particles
     const pc = document.getElementById('pvParticles');
     pc.innerHTML = '';
     if (state.animations) {
-      for (let i = 0; i < 12; i++) {
+      for (let i = 0; i < 14; i++) {
         const p = document.createElement('div');
         p.className = 'pv-anim-particle';
         p.style.left = Math.random() * 100 + '%';
         p.style.bottom = '0';
-        p.style.background = state.color;
+        p.style.background = c;
         p.style.animationDuration = (3 + Math.random() * 4) + 's';
         p.style.animationDelay = (Math.random() * 4) + 's';
         pc.appendChild(p);
       }
     }
 
+    // Hero layout
+    const hero = document.getElementById('pvHero');
+    if (state.layout === 'left') {
+      hero.style.textAlign = 'left'; hero.style.alignItems = 'flex-start';
+      document.getElementById('pvH1').style.fontSize = '1.6rem';
+    } else if (state.layout === 'bold') {
+      hero.style.textAlign = 'center'; hero.style.alignItems = 'center';
+      hero.style.background = c + '15'; hero.style.padding = '30px 20px';
+      document.getElementById('pvH1').style.fontSize = '2rem';
+    } else {
+      hero.style.textAlign = 'center'; hero.style.alignItems = 'center';
+      hero.style.background = ''; hero.style.padding = '40px 20px';
+      document.getElementById('pvH1').style.fontSize = '1.8rem';
+    }
+
+    // Feature sections
+    document.getElementById('pvGallery').classList.toggle('show', state.gallery);
+    document.getElementById('pvForm').classList.toggle('show', state.contactForm);
+    document.getElementById('pvStore').classList.toggle('show', state.store);
+    const showHide = (id, on) => { const el = document.getElementById(id); if (el) el.style.display = on ? '' : 'none'; };
+    showHide('pvTestimonials', state.testimonials);
+    showHide('pvPricing', state.pricing);
+    showHide('pvChat', state.chatWidget);
+    showHide('pvMap', state.mapEmbed);
+    showHide('pvNewsletter', state.newsletter);
+    showHide('pvCountdown', state.countdown);
+    if (state.countdown) startCountdown();
+
     // Nav style
     const nav = document.getElementById('pvNav');
     if (state.navStyle === 'bold') {
-      nav.style.background = state.color;
-      nav.style.color = '#0D1B2E';
+      nav.style.background = c; nav.style.backdropFilter = '';
       document.getElementById('pvNavBrand').style.color = '#0D1B2E';
+      if (pvNavCta) { pvNavCta.style.background = '#0D1B2E'; pvNavCta.style.color = c; }
     } else if (state.navStyle === 'minimal') {
-      nav.style.background = 'transparent';
-      nav.style.borderBottom = '1px solid ' + state.color + '33';
-      document.getElementById('pvNavBrand').style.color = state.color;
+      nav.style.background = 'transparent'; nav.style.borderBottom = '1px solid '+c+'44'; nav.style.backdropFilter = '';
+      document.getElementById('pvNavBrand').style.color = c;
     } else {
-      nav.style.background = 'rgba(0,0,0,0.4)';
-      nav.style.backdropFilter = 'blur(8px)';
-      document.getElementById('pvNavBrand').style.color = state.color;
+      nav.style.background = t.navBg; nav.style.backdropFilter = 'blur(8px)';
+      document.getElementById('pvNavBrand').style.color = c;
     }
+
+    updateFeatureCount();
   }
 
   function setTheme(el) {
@@ -2195,10 +2574,36 @@
     applyPreview();
   }
 
+  function setLayout(el) {
+    document.querySelectorAll('#layoutOptions .ctrl-option').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+    state.layout = el.dataset.layout;
+    applyPreview();
+  }
+
+  function setBtnStyle(el) {
+    document.querySelectorAll('#btnStyleOptions .ctrl-option').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+    state.btnStyle = el.dataset.btn;
+    applyPreview();
+  }
+
+  function setFont(el) {
+    document.querySelectorAll('#fontOptions .ctrl-option').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+    state.font = el.dataset.font;
+    applyPreview();
+  }
+
+  function setBrandName(val) {
+    state.brandName = val || 'YourBrand';
+    applyPreview();
+  }
+
   function toggleFeature(key) {
     state[key] = !state[key];
     const sw = document.getElementById('toggle-' + key);
-    sw.classList.toggle('on', state[key]);
+    if (sw) sw.classList.toggle('on', state[key]);
     applyPreview();
   }
 
@@ -2207,6 +2612,30 @@
     el.classList.add('active');
     state.navStyle = style;
     applyPreview();
+  }
+
+  function setPvDevice(device) {
+    const frame = document.getElementById('pvFrame');
+    const site = document.getElementById('pvSite');
+    const mobileWrap = document.getElementById('pvMobileWrap');
+    const desktopBtn = document.getElementById('pvDevDesktop');
+    const mobileBtn = document.getElementById('pvDevMobile');
+    if (device === 'mobile') {
+      site.style.display = 'none';
+      mobileWrap.style.display = 'flex';
+      // Clone site into mobile viewer
+      const clone = site.cloneNode(true);
+      clone.style.display = '';
+      document.getElementById('pvMobileSite').innerHTML = '';
+      document.getElementById('pvMobileSite').appendChild(clone);
+      desktopBtn.style.borderColor = 'var(--navy-border)'; desktopBtn.style.color = 'var(--gray)';
+      mobileBtn.style.borderColor = 'var(--gold)'; mobileBtn.style.color = 'var(--gold)';
+    } else {
+      site.style.display = '';
+      mobileWrap.style.display = 'none';
+      desktopBtn.style.borderColor = 'var(--gold)'; desktopBtn.style.color = 'var(--gold)';
+      mobileBtn.style.borderColor = 'var(--navy-border)'; mobileBtn.style.color = 'var(--gray)';
+    }
   }
 
   applyPreview();
