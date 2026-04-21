@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="BeezerBuilt — Custom websites built to your vision. Domain, hosting, SSL, and ongoing support included. You don't pay until you're satisfied." />
   <title>BeezerBuilt — Imagine It. We'll Build It & Maintain It.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -55,66 +56,11 @@
     }
     #loader.hidden { opacity:0; visibility:hidden; }
 
-    /* =========================================================
-       LANGUAGE PICKER
-    ========================================================= */
-    #langPicker {
-      position:absolute; bottom:0; left:0; right:0;
-      display:flex; flex-direction:column; align-items:center;
-      padding:40px 20px 60px;
-      opacity:0;
-      animation: fadeUp .8s ease forwards 3.6s;
-    }
-    .lang-prompt {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:clamp(1.3rem, 3vw, 2rem);
-      letter-spacing:.08em;
-      color:var(--white);
-      text-align:center;
-      margin-bottom:32px;
-      line-height:1.3;
-    }
-    .lang-prompt span {
-      color:var(--gold);
-      display:block;
-    }
-    .lang-btns {
-      display:flex; align-items:center; gap:0;
-      background:var(--navy-card);
-      border:1px solid var(--navy-border);
-      border-radius:12px;
-      overflow:hidden;
-      box-shadow:0 20px 60px rgba(0,0,0,.5);
-    }
-    .lang-btn {
-      display:flex; flex-direction:column; align-items:center; gap:10px;
-      padding:28px 48px;
-      background:none; border:none; cursor:pointer;
-      font-family:'Outfit', sans-serif;
-      transition: background .2s, transform .15s;
-      position:relative;
-    }
-    .lang-btn:hover { background:rgba(201,162,39,.08); transform:scale(1.03); }
-    .lang-btn:active { transform:scale(0.97); }
-    .lang-flag { font-size:2.8rem; display:block; }
-    .lang-name {
-      font-size:1.05rem; font-weight:700;
-      letter-spacing:.1em; text-transform:uppercase;
-      color:var(--gray-light);
-    }
-    .lang-btn:hover .lang-name { color:var(--gold); }
-    .lang-divider {
-      width:1px; height:80px;
-      background:var(--navy-border);
-      flex-shrink:0;
-    }
-
     .loader-stage {
       position:relative;
       display:flex; flex-direction:column; align-items:center; gap:16px;
     }
 
-    /* Bee in loader */
     .loader-bee-wrap {
       position:relative; width:100vw; height:90px;
       overflow:hidden;
@@ -131,7 +77,6 @@
       100% { left:calc(100% + 80px); transform:rotate(-10deg); }
     }
 
-    /* Tagline reveal behind bee */
     .loader-tagline-wrap {
       position:relative;
       text-align:center; padding:0 20px;
@@ -188,8 +133,7 @@
       position:fixed; top:0; left:0; right:0; z-index:1000;
       padding:18px 5%;
       display:flex; align-items:center; justify-content:space-between;
-      background:#ffffff;
-      backdrop-filter:blur(12px);
+      background: var(--navy);
       border-bottom:1px solid rgba(201,162,39,.2);
       transition: padding .3s ease;
     }
@@ -200,9 +144,17 @@
       font-family:'Bebas Neue', sans-serif;
       font-size:1.7rem;
       letter-spacing:.06em;
-      color:var(--navy);
+      color: var(--white);
     }
     .nav-logo span { color:var(--gold); }
+    .nav-logo-img-wrap {
+      background: white;
+      border-radius: 50%;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     .nav-logo-bee { width:72px; height:72px; }
 
     .nav-links {
@@ -210,7 +162,7 @@
     }
     .nav-links a {
       font-size:.9rem; font-weight:500;
-      color:var(--navy-mid);
+      color: var(--gray-light);
       letter-spacing:.05em;
       transition:color .2s;
     }
@@ -233,22 +185,22 @@
     }
     .nav-hamburger span {
       display:block; width:24px; height:2px;
-      background:var(--navy); border-radius:2px;
+      background: var(--white);
+      border-radius:2px;
       transition:all .3s ease;
     }
 
-    /* Mobile nav */
     .nav-mobile {
       display:none; flex-direction:column;
       position:fixed; top:70px; left:0; right:0;
-      background:#ffffff;
+      background: var(--navy-mid);
       padding:20px 5%;
       border-bottom:1px solid rgba(201,162,39,.2);
       gap:16px;
       z-index:999;
     }
     .nav-mobile.open { display:flex; }
-    .nav-mobile a { font-size:1.1rem; font-weight:500; color:var(--navy-mid); }
+    .nav-mobile a { font-size:1.1rem; font-weight:500; color:var(--white); }
     .nav-mobile a:hover { color:var(--gold); }
 
     @media(max-width:768px){
@@ -256,6 +208,49 @@
       .nav-cta { display:none; }
       .nav-hamburger { display:flex; }
     }
+
+    /* =========================================================
+       TAB BAR (POLISHED)
+    ========================================================= */
+    .tab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px 5% 12px;
+      background: rgba(15, 28, 48, 0.7);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--navy-border);
+      position: sticky;
+      top: 70px;
+      z-index: 900;
+    }
+    .tab-btn {
+      padding: 10px 20px;
+      background: transparent;
+      border: 1.5px solid transparent;
+      border-radius: 30px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      color: var(--gray);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      color: var(--gold);
+      border-color: rgba(201,162,39,0.3);
+      background: rgba(201,162,39,0.05);
+    }
+    .tab-btn.active {
+      color: var(--gold);
+      border-color: var(--gold);
+      background: rgba(201,162,39,0.08);
+    }
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
 
     /* =========================================================
        HERO
@@ -267,7 +262,6 @@
       padding:120px 5% 80px;
     }
 
-    /* Hexagon bg pattern */
     .hero-bg {
       position:absolute; inset:0; z-index:0;
       background:
@@ -281,7 +275,6 @@
       background-size:56px 100px;
     }
 
-    /* Floating particles */
     .particles { position:absolute; inset:0; z-index:0; pointer-events:none; }
     .particle {
       position:absolute;
@@ -291,7 +284,6 @@
       opacity:0;
       animation:particleFloat linear infinite;
     }
-
     @keyframes particleFloat {
       0%   { opacity:0; transform:translateY(0) scale(1); }
       10%  { opacity:.8; }
@@ -374,11 +366,9 @@
     }
     .btn-outline:hover { background:rgba(201,162,39,.1); transform:translateY(-2px); }
 
-    /* Floating bee mascot in hero */
     .hero-bee {
       position:absolute; right:8%; bottom:15%;
       width:90px; height:90px;
-      animation:beeBob 3s ease-in-out infinite;
       filter:drop-shadow(0 0 20px rgba(201,162,39,.3));
       opacity:0;
       animation:beeBob 3s ease-in-out infinite, fadeUp .8s ease forwards 1.5s;
@@ -432,7 +422,6 @@
     }
     .gold { color:var(--gold); }
 
-    /* reveal on scroll */
     .reveal {
       opacity:0; transform:translateY(40px);
       transition:opacity .7s ease, transform .7s ease;
@@ -513,7 +502,7 @@
     }
 
     /* =========================================================
-       CAPABILITIES — what we can build
+       CAPABILITIES
     ========================================================= */
     #capabilities {
       background:var(--navy-mid);
@@ -543,215 +532,7 @@
     .cap-desc { font-size:.85rem; color:var(--gray); line-height:1.5; }
 
     /* =========================================================
-       SANDBOX
-    ========================================================= */
-    #sandbox { background:var(--navy); }
-
-    .sandbox-disclaimer {
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 20px;
-      background:rgba(201,162,39,.1);
-      border:1px solid rgba(201,162,39,.3);
-      border-radius:4px;
-      font-size:.85rem; color:var(--gold);
-      margin-bottom:40px;
-    }
-
-    .sandbox-layout {
-      display:grid;
-      grid-template-columns:300px 1fr;
-      gap:24px;
-      min-height:540px;
-    }
-    @media(max-width:768px){
-      .sandbox-layout{ grid-template-columns:1fr; }
-    }
-
-    .sandbox-controls {
-      background:var(--navy-card);
-      border:1px solid var(--navy-border);
-      border-radius:8px;
-      padding:24px;
-      overflow-y:auto;
-      max-height:580px;
-    }
-    .sandbox-controls h3 {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:1.3rem; letter-spacing:.05em;
-      color:var(--gold); margin-bottom:20px;
-    }
-    .ctrl-group { margin-bottom:24px; }
-    .ctrl-group-title {
-      font-size:.75rem; font-weight:700;
-      letter-spacing:.2em; text-transform:uppercase;
-      color:var(--gray); margin-bottom:12px;
-      padding-bottom:6px;
-      border-bottom:1px solid var(--navy-border);
-    }
-
-    .ctrl-toggle {
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:12px; cursor:pointer;
-    }
-    .ctrl-toggle-label { font-size:.9rem; font-weight:500; }
-    .toggle-switch {
-      width:40px; height:22px; border-radius:11px;
-      background:var(--navy-border);
-      position:relative; transition:background .2s;
-      flex-shrink:0;
-    }
-    .toggle-switch.on { background:var(--gold); }
-    .toggle-switch::after {
-      content:''; position:absolute;
-      width:16px; height:16px; border-radius:50%;
-      background:#fff; top:3px; left:3px;
-      transition:transform .2s;
-    }
-    .toggle-switch.on::after { transform:translateX(18px); }
-
-    .ctrl-options {
-      display:flex; flex-wrap:wrap; gap:8px;
-      margin-bottom:12px;
-    }
-    .ctrl-option {
-      padding:6px 14px;
-      border:1.5px solid var(--navy-border);
-      border-radius:4px;
-      font-size:.8rem; font-weight:600; cursor:pointer;
-      color:var(--gray); transition:all .2s;
-    }
-    .ctrl-option.active {
-      border-color:var(--gold); color:var(--gold);
-      background:rgba(201,162,39,.1);
-    }
-
-    /* Preview window */
-    .sandbox-preview {
-      background:var(--navy-card);
-      border:1px solid var(--navy-border);
-      border-radius:8px;
-      overflow:hidden;
-      display:flex; flex-direction:column;
-    }
-    .preview-topbar {
-      background:var(--navy-mid);
-      padding:10px 16px;
-      display:flex; align-items:center; gap:8px;
-      border-bottom:1px solid var(--navy-border);
-    }
-    .preview-dot { width:10px; height:10px; border-radius:50%; }
-    .preview-url {
-      flex:1; background:rgba(255,255,255,.05);
-      border-radius:4px; padding:4px 12px;
-      font-size:.75rem; color:var(--gray);
-      margin:0 12px;
-      font-family:monospace;
-    }
-    .preview-frame {
-      flex:1; position:relative;
-      overflow:hidden; min-height:480px;
-      transition:background .4s ease;
-    }
-
-    /* Preview website content */
-    .pv-site {
-      width:100%; height:100%;
-      font-family:'Outfit', sans-serif;
-      position:relative;
-      overflow-y:auto;
-      overflow-x:hidden;
-      display:flex;
-      flex-direction:column;
-    }
-    .pv-nav {
-      padding:12px 20px;
-      display:flex; align-items:center; justify-content:space-between;
-      border-bottom:1px solid rgba(255,255,255,.1);
-      font-size:.75rem; font-weight:700;
-      letter-spacing:.05em;
-    }
-    .pv-hero {
-      padding:40px 20px;
-      display:flex; flex-direction:column; gap:10px;
-    }
-    .pv-h1 { font-size:1.8rem; font-weight:800; line-height:1; }
-    .pv-p { font-size:.8rem; opacity:.7; line-height:1.5; max-width:300px; }
-    .pv-btn {
-      display:inline-block; padding:8px 20px;
-      border-radius:4px; font-size:.8rem; font-weight:700;
-      width:fit-content;
-    }
-    .pv-gallery {
-      display:none; padding:0 20px 20px;
-      gap:8px;
-      grid-template-columns:repeat(3,1fr);
-    }
-    .pv-gallery.show { display:grid; }
-    .pv-gallery-img {
-      height:60px; border-radius:4px;
-      background:rgba(255,255,255,.1);
-    }
-    .pv-form {
-      display:none; padding:0 20px 20px; flex-direction:column; gap:8px;
-    }
-    .pv-form.show { display:flex; }
-    .pv-input {
-      background:rgba(255,255,255,.07);
-      border:1px solid rgba(255,255,255,.15);
-      border-radius:4px; padding:6px 10px;
-      font-size:.75rem; color:inherit;
-    }
-    .pv-store {
-      display:none; padding:0 20px 20px;
-      gap:8px; grid-template-columns:repeat(2,1fr);
-    }
-    .pv-store.show { display:grid; }
-    .pv-product {
-      background:rgba(255,255,255,.07);
-      border-radius:4px; padding:10px;
-      font-size:.7rem;
-    }
-    .pv-product-img {
-      height:50px; background:rgba(255,255,255,.1);
-      border-radius:3px; margin-bottom:6px;
-    }
-    .pv-video-bg {
-      position:absolute; inset:0; z-index:0;
-      display:none;
-      align-items:center; justify-content:center;
-    }
-    .pv-video-bg.show { display:flex; }
-    .pv-video-bg-inner {
-      width:100%; height:100%;
-      background:linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
-      background-size:300% 300%;
-      animation:bgShift 4s ease infinite;
-    }
-    @keyframes bgShift {
-      0%{ background-position:0% 50%; }
-      50%{ background-position:100% 50%; }
-      100%{ background-position:0% 50%; }
-    }
-    .pv-anim-particle {
-      position:absolute;
-      width:4px; height:4px; border-radius:50%;
-      animation:pvFloat 3s linear infinite;
-    }
-    @keyframes pvFloat {
-      0%  { transform:translateY(100%) rotate(0deg); opacity:0; }
-      10% { opacity:.8; }
-      100%{ transform:translateY(-500%) rotate(360deg); opacity:0; }
-    }
-
-    /* Dark mode preview styles */
-    .pv-site.dark { background:#0a0a0a; color:#fff; }
-    .pv-site.dark .pv-nav { background:#111; }
-    .pv-site.light { background:#f5f5f5; color:#111; }
-    .pv-site.light .pv-nav { background:#fff; color:#111; border-bottom-color:rgba(0,0,0,.1); }
-    .pv-site.light .pv-input { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,.15); color:#111; }
-
-    /* =========================================================
-       PROCESS / HOW IT WORKS
+       PROCESS
     ========================================================= */
     #process {
       background:var(--navy-mid);
@@ -775,15 +556,11 @@
     .step-desc { font-size:.875rem; color:var(--gray); line-height:1.6; }
 
     /* =========================================================
-       CONTACT / QUESTIONNAIRE
+       CONTACT
     ========================================================= */
     #contact { background:var(--navy); }
+    .form-wrapper { max-width:700px; margin:0 auto; }
 
-    .form-wrapper {
-      max-width:700px; margin:0 auto;
-    }
-
-    /* Step indicators */
     .step-indicators {
       display:flex; align-items:center; gap:0;
       margin-bottom:40px;
@@ -823,7 +600,6 @@
     }
     .step-ind.active .step-ind-label { color:var(--gold); }
 
-    /* Form steps */
     .form-step { display:none; }
     .form-step.active { display:block; animation:fadeUp .4s ease; }
 
@@ -864,7 +640,6 @@
     .field-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
     @media(max-width:550px){ .field-row{ grid-template-columns:1fr; } }
 
-    /* Type of site selector */
     .site-types {
       display:grid; grid-template-columns:repeat(auto-fill, minmax(170px, 1fr));
       gap:12px;
@@ -885,7 +660,6 @@
     .site-type-name { font-weight:700; font-size:.9rem; margin-bottom:4px; }
     .site-type-desc { font-size:.78rem; color:var(--gray); line-height:1.4; }
 
-    /* Feature checklist */
     .features-list { display:flex; flex-direction:column; gap:12px; }
     .feature-item {
       background:var(--navy-card);
@@ -913,7 +687,6 @@
     .feature-note { font-size:.8rem; color:var(--gray); line-height:1.5; }
     .feature-price { font-size:.75rem; color:var(--gold); font-weight:600; margin-top:4px; }
 
-    /* Timeline options */
     .timeline-options {
       display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));
       gap:10px;
@@ -928,7 +701,6 @@
     .timeline-opt:hover { border-color:rgba(201,162,39,.4); }
     .timeline-opt.selected { border-color:var(--gold); color:var(--gold); background:rgba(201,162,39,.08); }
 
-    /* Contact time */
     .time-options {
       display:flex; flex-wrap:wrap; gap:10px;
     }
@@ -942,7 +714,6 @@
     }
     .time-opt.selected { border-color:var(--gold); color:var(--gold); background:rgba(201,162,39,.08); }
 
-    /* Consent */
     .consent-box {
       display:flex; align-items:flex-start; gap:12px;
       background:var(--navy-card);
@@ -966,7 +737,6 @@
     .consent-text { font-size:.85rem; color:var(--gray); line-height:1.6; }
     .consent-text a { color:var(--gold); text-decoration:underline; }
 
-    /* Form nav buttons */
     .form-nav {
       display:flex; justify-content:space-between; align-items:center;
       margin-top:32px; gap:12px;
@@ -989,7 +759,6 @@
     }
     .btn-next:hover { background:var(--gold-light); }
 
-    /* Success message */
     .form-success {
       display:none; text-align:center; padding:60px 20px;
       flex-direction:column; align-items:center; gap:16px;
@@ -1000,8 +769,9 @@
     .success-sub { font-size:1rem; color:var(--gray); max-width:400px; line-height:1.6; }
 
     /* =========================================================
-       GUARANTEE STRIP
+       GUARANTEE
     ========================================================= */
+    #guarantee .section-title { font-size:clamp(2.5rem, 5vw, 4rem); }
     #guarantee {
       padding:80px 5%;
       background:linear-gradient(135deg, var(--navy-mid) 0%, rgba(201,162,39,.07) 100%);
@@ -1027,6 +797,51 @@
     .guarantee-desc { font-size:.85rem; color:var(--gray); line-height:1.6; }
 
     /* =========================================================
+       RESTAURANT FEATURES
+    ========================================================= */
+    #restaurant-features { background: var(--navy); }
+    .resto-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .resto-card {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 8px;
+      padding: 28px 24px;
+      transition: all 0.2s;
+    }
+    .resto-card:hover {
+      border-color: rgba(201,162,39,0.4);
+      transform: translateY(-3px);
+    }
+    .resto-icon { font-size: 2.2rem; margin-bottom: 16px; }
+    .resto-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.03em;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .resto-desc { font-size: 0.9rem; color: var(--gray); line-height: 1.6; }
+    .resto-footer-note {
+      margin-top: 40px;
+      color: var(--gold);
+      font-weight: 600;
+      text-align: center;
+    }
+    .resto-note {
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: var(--gold-light);
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
        FOOTER
     ========================================================= */
     footer {
@@ -1047,6 +862,14 @@
       margin-bottom:16px;
     }
     .footer-logo span { color:var(--gold); }
+    .footer-logo-img-wrap {
+      background: white;
+      border-radius: 50%;
+      padding: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     .footer-tagline { font-size:.95rem; color:var(--gray); line-height:1.7; }
     .footer-links-group h4 {
       font-size:.8rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
@@ -1067,7 +890,7 @@
     .footer-bottom a:hover { color:var(--gold); }
 
     /* =========================================================
-       FLOATING BEE MASCOT (site-wide)
+       FLOATING BEE
     ========================================================= */
     #floating-bee {
       position:fixed; bottom:32px; right:32px; z-index:800;
@@ -1082,8 +905,6 @@
       0%,100%{ transform:translateY(0); }
       50%    { transform:translateY(-10px); }
     }
-
-    /* Tooltip on bee */
     #floating-bee::after {
       content:'Need help?';
       position:absolute; right:70px; top:50%; transform:translateY(-50%);
@@ -1095,7 +916,7 @@
     #floating-bee:hover::after { opacity:1; }
 
     /* =========================================================
-       PRIVACY & TERMS MODAL
+       MODALS
     ========================================================= */
     .modal-overlay {
       position:fixed; inset:0; z-index:2000;
@@ -1128,9 +949,6 @@
     .modal-content { font-size:.9rem; color:var(--gray); line-height:1.8; }
     .modal-content h3 { color:var(--white); font-size:1.1rem; margin:20px 0 8px; }
 
-    /* =========================================================
-       RESPONSIVE HELPERS
-    ========================================================= */
     @media(max-width:600px){
       section { padding:70px 5%; }
       .hero-bee { display:none; }
@@ -1139,12 +957,9 @@
 </head>
 <body>
 
-<!-- ============================================================
-     LOADER
-============================================================ -->
+<!-- LOADER -->
 <div id="loader">
   <div class="loader-stage">
-    <!-- Bee moving across -->
     <div class="loader-bee-wrap">
       <svg class="loader-bee" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -1164,53 +979,37 @@
             <stop offset="100%" stop-color="rgba(200,220,255,0.55)"/>
           </linearGradient>
         </defs>
-        <!-- Upper wings -->
         <ellipse cx="19" cy="26" rx="17" ry="8.5" fill="url(#wingGrad)" transform="rotate(-28 19 26)" filter="url(#wingBlur)"/>
         <ellipse cx="61" cy="26" rx="17" ry="8.5" fill="url(#wingGrad)" transform="rotate(28 61 26)" filter="url(#wingBlur)"/>
-        <!-- Wing veins -->
         <line x1="19" y1="26" x2="6" y2="19" stroke="rgba(100,160,255,0.35)" stroke-width="0.7"/>
         <line x1="19" y1="26" x2="10" y2="22" stroke="rgba(100,160,255,0.25)" stroke-width="0.5"/>
         <line x1="61" y1="26" x2="74" y2="19" stroke="rgba(100,160,255,0.35)" stroke-width="0.7"/>
         <line x1="61" y1="26" x2="70" y2="22" stroke="rgba(100,160,255,0.25)" stroke-width="0.5"/>
-        <!-- Lower wings (smaller) -->
         <ellipse cx="23" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.55)" transform="rotate(-15 23 36)"/>
         <ellipse cx="57" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.55)" transform="rotate(15 57 36)"/>
-        <!-- Body (abdomen) -->
         <ellipse cx="40" cy="54" rx="13" ry="16" fill="url(#bodyGrad)"/>
-        <!-- Body stripes -->
         <rect x="27.5" y="47" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
         <rect x="27.5" y="54" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
         <rect x="29" y="61" width="22" height="3" rx="1.5" fill="#0D1B2E" opacity="0.5"/>
-        <!-- Body sheen -->
         <ellipse cx="35" cy="47" rx="5" ry="2.5" fill="rgba(255,255,255,0.18)" transform="rotate(-10 35 47)"/>
-        <!-- Head (teardrop / rounded) -->
         <ellipse cx="40" cy="26" rx="13" ry="14" fill="url(#headGrad)"/>
-        <!-- Head sheen -->
         <ellipse cx="36" cy="20" rx="5" ry="3" fill="rgba(255,255,255,0.22)" transform="rotate(-15 36 20)"/>
-        <!-- Eyes -->
         <ellipse cx="34" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
         <ellipse cx="46" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
         <circle cx="35.2" cy="22.8" r="1.1" fill="white"/>
         <circle cx="47.2" cy="22.8" r="1.1" fill="white"/>
-        <!-- Mouth / smile -->
         <path d="M36 31 Q40 34 44 31" stroke="#0D1B2E" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.8"/>
-        <!-- Code bracket on body -->
         <text x="29.5" y="56" font-size="9.5" fill="#0D1B2E" font-family="monospace" font-weight="bold" opacity="0.9">&lt;/&gt;</text>
-        <!-- Stinger -->
         <polygon points="40,70 37,76 43,76" fill="#7A5F0A"/>
         <polygon points="40,72 38.5,75.5 41.5,75.5" fill="#9A7A10"/>
-        <!-- Antennae -->
         <path d="M36 13 Q32 8 27 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
         <path d="M44 13 Q48 8 53 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-        <!-- Antenna tips -->
         <circle cx="27" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
         <circle cx="53" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
-        <!-- Antenna tip shine -->
         <circle cx="26.2" cy="5.2" r="0.9" fill="rgba(255,255,255,0.7)"/>
         <circle cx="52.2" cy="5.2" r="0.9" fill="rgba(255,255,255,0.7)"/>
       </svg>
     </div>
-    <!-- Tagline reveal -->
     <div class="loader-tagline-wrap">
       <div class="loader-tagline">BEEZERBUILT</div>
     </div>
@@ -1221,59 +1020,35 @@
       <div class="loader-dot"></div>
     </div>
   </div>
-
-  <!-- Language picker — fades in after bee animation -->
-  <div id="langPicker">
-    <p class="lang-prompt">Choose Your Language<br/><span>Elige Tu Idioma</span></p>
-    <div class="lang-btns">
-      <button class="lang-btn" onclick="pickLanguage('en')">
-        <span class="lang-flag">🇺🇸</span>
-        <span class="lang-name">English</span>
-      </button>
-      <div class="lang-divider"></div>
-      <button class="lang-btn" onclick="pickLanguage('es')">
-        <span class="lang-flag">🇪🇸</span>
-        <span class="lang-name">Español</span>
-      </button>
-    </div>
-  </div>
 </div>
 
-<!-- ============================================================
-     NAVIGATION
-============================================================ -->
+<!-- NAVIGATION -->
 <nav id="navbar">
-  <a href="#hero" class="nav-logo">
-    <img src="https://i.imgur.com/gHWuxr0.png" class="nav-logo-bee" alt="BeezerBuilt Logo" style="width:72px;height:72px;object-fit:contain;"/>
+  <a href="#" class="nav-logo" onclick="switchTab('services'); return false;">
+    <div class="nav-logo-img-wrap">
+      <img src="https://i.imgur.com/gHWuxr0.png" class="nav-logo-bee" alt="BeezerBuilt Logo">
+    </div>
     Beezer<span>Built</span>
   </a>
   <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#sandbox">Demo Builder</a></li>
-    <li><a href="#process">How It Works</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#" onclick="switchTab('services'); return false;">Services</a></li>
+    <li><a href="#" onclick="switchTab('capabilities'); return false;">Capabilities</a></li>
+    <li><a href="#" onclick="switchTab('process'); return false;">How It Works</a></li>
+    <li><a href="#" onclick="switchTab('contact'); return false;">Contact</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Get A Quote →</a>
-  <button id="langToggleBtn" onclick="switchLanguage()" title="Switch language" style="
-    padding:8px 14px; border:1.5px solid var(--gold); border-radius:4px;
-    color:var(--gold); font-family:'Outfit',sans-serif; font-size:.8rem;
-    font-weight:700; letter-spacing:.05em; cursor:pointer; background:none;
-    transition:all .2s; display:flex; align-items:center; gap:6px;
-  ">🌐 <span id="langToggleLabel">ES</span></button>
+  <a href="#" class="nav-cta" onclick="switchTab('contact'); return false;">Get A Quote →</a>
   <div class="nav-hamburger" id="hamburger" onclick="toggleMobileNav()">
     <span></span><span></span><span></span>
   </div>
 </nav>
 <div class="nav-mobile" id="mobileNav">
-  <a href="#services" onclick="toggleMobileNav()">Services</a>
-  <a href="#sandbox" onclick="toggleMobileNav()">Demo Builder</a>
-  <a href="#process" onclick="toggleMobileNav()">How It Works</a>
-  <a href="#contact" onclick="toggleMobileNav()">Get A Quote</a>
+  <a href="#" onclick="switchTab('services'); toggleMobileNav(); return false;">Services</a>
+  <a href="#" onclick="switchTab('capabilities'); toggleMobileNav(); return false;">Capabilities</a>
+  <a href="#" onclick="switchTab('process'); toggleMobileNav(); return false;">How It Works</a>
+  <a href="#" onclick="switchTab('contact'); toggleMobileNav(); return false;">Get A Quote</a>
 </div>
 
-<!-- ============================================================
-     HERO
-============================================================ -->
+<!-- HERO -->
 <section id="hero">
   <div class="hero-bg"></div>
   <div class="hex-grid"></div>
@@ -1292,12 +1067,10 @@
       You don't pay until you're satisfied.
     </p>
     <div class="hero-btns">
-      <a href="#contact" class="btn-primary">Start Your Project →</a>
-      <a href="#sandbox" class="btn-outline">Try The Demo Builder</a>
+      <a href="#" class="btn-primary" onclick="switchTab('contact'); return false;">Start Your Project →</a>
     </div>
   </div>
 
-  <!-- Floating bee hero -->
   <svg class="hero-bee" viewBox="0 0 80 80" fill="none" title="BeezerBuilt Mascot">
     <defs>
       <radialGradient id="hBodyGrad" cx="40%" cy="35%" r="60%">
@@ -1313,22 +1086,17 @@
         <stop offset="100%" stop-color="rgba(200,220,255,0.55)"/>
       </linearGradient>
     </defs>
-    <!-- Upper wings -->
     <ellipse cx="19" cy="26" rx="17" ry="8.5" fill="url(#hWingGrad)" transform="rotate(-28 19 26)"/>
     <ellipse cx="61" cy="26" rx="17" ry="8.5" fill="url(#hWingGrad)" transform="rotate(28 61 26)"/>
-    <!-- Wing veins -->
     <line x1="19" y1="26" x2="6" y2="19" stroke="rgba(100,160,255,0.3)" stroke-width="0.7"/>
     <line x1="61" y1="26" x2="74" y2="19" stroke="rgba(100,160,255,0.3)" stroke-width="0.7"/>
-    <!-- Lower wings -->
     <ellipse cx="23" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.5)" transform="rotate(-15 23 36)"/>
     <ellipse cx="57" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.5)" transform="rotate(15 57 36)"/>
-    <!-- Body -->
     <ellipse cx="40" cy="54" rx="13" ry="16" fill="url(#hBodyGrad)"/>
     <rect x="27.5" y="47" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
     <rect x="27.5" y="54" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
     <rect x="29" y="61" width="22" height="3" rx="1.5" fill="#0D1B2E" opacity="0.5"/>
     <ellipse cx="35" cy="47" rx="5" ry="2.5" fill="rgba(255,255,255,0.18)" transform="rotate(-10 35 47)"/>
-    <!-- Head -->
     <ellipse cx="40" cy="26" rx="13" ry="14" fill="url(#hHeadGrad)"/>
     <ellipse cx="36" cy="20" rx="5" ry="3" fill="rgba(255,255,255,0.22)" transform="rotate(-15 36 20)"/>
     <ellipse cx="34" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
@@ -1352,9 +1120,7 @@
   </div>
 </section>
 
-<!-- ============================================================
-     TRUST BAR
-============================================================ -->
+<!-- TRUST BAR -->
 <div id="trust">
   <div class="trust-grid">
     <div class="trust-item reveal">
@@ -1384,932 +1150,251 @@
   </div>
 </div>
 
-<!-- ============================================================
-     SERVICES
-============================================================ -->
-<section id="services">
-  <div class="section-label">What We Do</div>
-  <h2 class="section-title">Full-Stack <span class="gold">Services</span></h2>
-  <p class="section-desc">
-    Everything your web presence needs — under one roof, handled by one person who actually cares.
-  </p>
-
-  <div class="services-grid">
-    <div class="service-card reveal">
-      <span class="service-icon">💻</span>
-      <div class="service-title">Custom Web Development</div>
-      <div class="service-desc">Hand-coded websites built to your exact vision — no drag-and-drop templates. Every line written with purpose.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">🌐</span>
-      <div class="service-title">Domain Registration</div>
-      <div class="service-desc">Your own custom web address (e.g. yourbusiness.com). Pricing varies based on availability — we'll find what fits you.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">🖥️</span>
-      <div class="service-title">Web Hosting</div>
-      <div class="service-desc">Your site lives on reliable servers so it's fast and accessible 24/7. We handle all the technical setup for you.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">🔒</span>
-      <div class="service-title">SSL Certificate</div>
-      <div class="service-desc">That little padlock next to your URL. It encrypts your site so visitors know they're safe — Google requires it too.</div>
-      <span class="service-badge">Mandatory for trust</span>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">📧</span>
-      <div class="service-title">Custom Email</div>
-      <div class="service-desc">Look professional with a branded email address like you@yourbusiness.com instead of a generic Gmail.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">🛍️</span>
-      <div class="service-title">E-Commerce & Stores</div>
-      <div class="service-desc">Sell products, merch, or services online with a full shopping experience — carts, checkout, and payment processing.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">⚙️</span>
-      <div class="service-title">Custom Programs & Apps</div>
-      <div class="service-desc">Need a custom tool — batch dialers, portals, calculators? If you can imagine it, we'll code it from scratch.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">🎨</span>
-      <div class="service-title">Logo Design</div>
-      <div class="service-desc">Professional logo design to give your brand a visual identity that stands out. Custom, original, all yours.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">📊</span>
-      <div class="service-title">Analytics & SEO</div>
-      <div class="service-desc">Track who visits your site and help more people find you on Google. Data-driven growth, set up for you.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">🛡️</span>
-      <div class="service-title">Maintenance & Support</div>
-      <div class="service-desc">Something breaks? I fix it free. Business hours support to keep your site running smooth — rain or shine.</div>
-      <span class="service-badge">Always included</span>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     CAPABILITIES
-============================================================ -->
-<section id="capabilities">
-  <div class="section-label">What's Possible</div>
-  <h2 class="section-title">Modern Web <span class="gold">Capabilities</span></h2>
-  <p class="section-desc">
-    Your website can do way more than you think. Here's a taste of what modern web tech makes possible.
-  </p>
-  <div class="cap-grid">
-    <div class="cap-card reveal">
-      <div class="cap-icon">✨</div>
-      <div class="cap-title">Smooth Animations</div>
-      <div class="cap-desc">Elements that slide, fade, and pop as users scroll — making your site feel alive and premium.</div>
-    </div>
-    <div class="cap-card reveal">
-      <div class="cap-icon">🎬</div>
-      <div class="cap-title">Video Backgrounds</div>
-      <div class="cap-desc">Cinematic video playing behind your content for an immersive, high-end first impression.</div>
-    </div>
-    <div class="cap-card reveal">
-      <div class="cap-icon">🖼️</div>
-      <div class="cap-title">Image Galleries</div>
-      <div class="cap-desc">Beautiful photo layouts with lightboxes, lazy loading, and smooth transitions.</div>
-    </div>
-    <div class="cap-card reveal">
-      <div class="cap-icon">📋</div>
-      <div class="cap-title">Smart Contact Forms</div>
-      <div class="cap-desc">Forms that actually reach you — no spam, secure, and easy to manage.</div>
-    </div>
-    <div class="cap-card reveal">
-      <div class="cap-icon">🌙</div>
-      <div class="cap-title">Dark / Light Mode</div>
-      <div class="cap-desc">Let users pick their preference. Modern and accessible for everyone.</div>
-    </div>
-    <div class="cap-card reveal">
-      <div class="cap-icon">📱</div>
-      <div class="cap-title">Mobile-First Design</div>
-      <div class="cap-desc">Your site looks and works perfectly on phones, tablets, and desktops.</div>
-    </div>
-    <div class="cap-card reveal">
-      <div class="cap-icon">🛒</div>
-      <div class="cap-title">Online Stores</div>
-      <div class="cap-desc">Full e-commerce with product pages, carts, and payment integrations like Stripe or Buy Me a Coffee.</div>
-    </div>
-    <div class="cap-card reveal">
-      <div class="cap-icon">🔄</div>
-      <div class="cap-title">Parallax Scrolling</div>
-      <div class="cap-desc">Background layers move at different speeds as you scroll — a stunning depth effect.</div>
-    </div>
-    <div class="cap-card reveal">
-      <div class="cap-icon">🔍</div>
-      <div class="cap-title">SEO Optimized</div>
-      <div class="cap-desc">Built so Google can find and rank your site. More visibility = more customers.</div>
-    </div>
-    <div class="cap-card reveal">
-      <div class="cap-icon">⚡</div>
-      <div class="cap-title">Blazing Fast Load</div>
-      <div class="cap-desc">Optimized code means your site loads in seconds, keeping visitors engaged.</div>
-    </div>
-    <div class="cap-card reveal">
-      <div class="cap-icon">🎠</div>
-      <div class="cap-title">Carousels & Sliders</div>
-      <div class="cap-desc">Auto-sliding banners, testimonial carousels, product showcases — smooth and interactive.</div>
-    </div>
-    <div class="cap-card reveal">
-      <div class="cap-icon">🗺️</div>
-      <div class="cap-title">Maps & Location</div>
-      <div class="cap-desc">Interactive Google Maps, business hours, and directions embedded right into your site.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     SANDBOX / INTERACTIVE DEMO BUILDER
-============================================================ -->
-<section id="sandbox">
-  <div class="section-label">Try It Yourself</div>
-  <h2 class="section-title">Build Your Own <span class="gold">Demo</span></h2>
-  <p class="section-desc">
-    Customize a website preview right here. No coding needed — just click what you like. This is what we can build for you.
-  </p>
-
-  <div class="sandbox-disclaimer">
-    ⚠️ <strong>Demo Mode Only</strong> — Nothing here is real or live. This is just a preview of possibilities. Contact us to build the real thing.
-  </div>
-
-  <div class="sandbox-layout">
-    <!-- Controls -->
-    <div class="sandbox-controls">
-      <h3>🎛️ Customize Your Site</h3>
-
-      <!-- Business Name -->
-      <div class="ctrl-group">
-        <div class="ctrl-group-title">Business Name</div>
-        <input type="text" id="sbBrandInput" placeholder="YourBrand" oninput="setBrandName(this.value)"
-          style="width:100%;background:var(--navy-mid);border:1.5px solid var(--navy-border);border-radius:5px;padding:8px 12px;color:var(--white);font-family:'Outfit',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;"
-          onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--navy-border)'"/>
-      </div>
-
-      <div class="ctrl-group">
-        <div class="ctrl-group-title">Theme</div>
-        <div class="ctrl-options" id="themeOptions">
-          <div class="ctrl-option active" data-theme="dark" onclick="setTheme(this)">Dark</div>
-          <div class="ctrl-option" data-theme="light" onclick="setTheme(this)">Light</div>
-          <div class="ctrl-option" data-theme="midnight" onclick="setTheme(this)">Midnight</div>
-        </div>
-      </div>
-
-      <div class="ctrl-group">
-        <div class="ctrl-group-title">Color Accent</div>
-        <div class="ctrl-options" id="colorOptions">
-          <div class="ctrl-option active" data-color="#C9A227" onclick="setColor(this)" style="border-color:#C9A227;color:#C9A227;">Gold</div>
-          <div class="ctrl-option" data-color="#3B82F6" onclick="setColor(this)">Blue</div>
-          <div class="ctrl-option" data-color="#10B981" onclick="setColor(this)">Green</div>
-          <div class="ctrl-option" data-color="#EF4444" onclick="setColor(this)">Red</div>
-          <div class="ctrl-option" data-color="#8B5CF6" onclick="setColor(this)">Purple</div>
-          <div class="ctrl-option" data-color="#F97316" onclick="setColor(this)">Orange</div>
-          <div class="ctrl-option" data-color="#EC4899" onclick="setColor(this)">Pink</div>
-        </div>
-      </div>
-
-      <div class="ctrl-group">
-        <div class="ctrl-group-title">Hero Layout</div>
-        <div class="ctrl-options" id="layoutOptions">
-          <div class="ctrl-option active" data-layout="centered" onclick="setLayout(this)">Centered</div>
-          <div class="ctrl-option" data-layout="left" onclick="setLayout(this)">Left-Split</div>
-          <div class="ctrl-option" data-layout="bold" onclick="setLayout(this)">Bold Full</div>
-        </div>
-      </div>
-
-      <div class="ctrl-group">
-        <div class="ctrl-group-title">Button Style</div>
-        <div class="ctrl-options" id="btnStyleOptions">
-          <div class="ctrl-option active" data-btn="square" onclick="setBtnStyle(this)">Sharp</div>
-          <div class="ctrl-option" data-btn="rounded" onclick="setBtnStyle(this)">Rounded</div>
-          <div class="ctrl-option" data-btn="pill" onclick="setBtnStyle(this)">Pill</div>
-        </div>
-      </div>
-
-      <div class="ctrl-group">
-        <div class="ctrl-group-title">Font Style</div>
-        <div class="ctrl-options" id="fontOptions">
-          <div class="ctrl-option active" data-font="modern" onclick="setFont(this)">Modern</div>
-          <div class="ctrl-option" data-font="serif" onclick="setFont(this)">Serif</div>
-          <div class="ctrl-option" data-font="mono" onclick="setFont(this)">Tech</div>
-        </div>
-      </div>
-
-      <div class="ctrl-group">
-        <div class="ctrl-group-title">Navigation Style</div>
-        <div class="ctrl-options">
-          <div class="ctrl-option active" onclick="setNavStyle(this,'modern')">Glass</div>
-          <div class="ctrl-option" onclick="setNavStyle(this,'minimal')">Minimal</div>
-          <div class="ctrl-option" onclick="setNavStyle(this,'bold')">Solid</div>
-        </div>
-      </div>
-
-      <div class="ctrl-group">
-        <div class="ctrl-group-title">Sections & Features</div>
-        <div class="ctrl-toggle" onclick="toggleFeature('videoBackground')">
-          <span class="ctrl-toggle-label">🎬 Video Background</span>
-          <div class="toggle-switch" id="toggle-videoBackground"></div>
-        </div>
-        <div class="ctrl-toggle" onclick="toggleFeature('animations')">
-          <span class="ctrl-toggle-label">✨ Particle Animations</span>
-          <div class="toggle-switch on" id="toggle-animations"></div>
-        </div>
-        <div class="ctrl-toggle" onclick="toggleFeature('gallery')">
-          <span class="ctrl-toggle-label">🖼️ Image Gallery</span>
-          <div class="toggle-switch" id="toggle-gallery"></div>
-        </div>
-        <div class="ctrl-toggle" onclick="toggleFeature('contactForm')">
-          <span class="ctrl-toggle-label">📋 Contact Form</span>
-          <div class="toggle-switch" id="toggle-contactForm"></div>
-        </div>
-        <div class="ctrl-toggle" onclick="toggleFeature('store')">
-          <span class="ctrl-toggle-label">🛒 Online Store</span>
-          <div class="toggle-switch" id="toggle-store"></div>
-        </div>
-        <div class="ctrl-toggle" onclick="toggleFeature('testimonials')">
-          <span class="ctrl-toggle-label">⭐ Testimonials</span>
-          <div class="toggle-switch" id="toggle-testimonials"></div>
-        </div>
-        <div class="ctrl-toggle" onclick="toggleFeature('pricing')">
-          <span class="ctrl-toggle-label">💰 Pricing Table</span>
-          <div class="toggle-switch" id="toggle-pricing"></div>
-        </div>
-        <div class="ctrl-toggle" onclick="toggleFeature('chatWidget')">
-          <span class="ctrl-toggle-label">💬 Chat Widget</span>
-          <div class="toggle-switch" id="toggle-chatWidget"></div>
-        </div>
-        <div class="ctrl-toggle" onclick="toggleFeature('mapEmbed')">
-          <span class="ctrl-toggle-label">🗺️ Map / Location</span>
-          <div class="toggle-switch" id="toggle-mapEmbed"></div>
-        </div>
-        <div class="ctrl-toggle" onclick="toggleFeature('newsletter')">
-          <span class="ctrl-toggle-label">📧 Newsletter Signup</span>
-          <div class="toggle-switch" id="toggle-newsletter"></div>
-        </div>
-        <div class="ctrl-toggle" onclick="toggleFeature('countdown')">
-          <span class="ctrl-toggle-label">⏳ Countdown Timer</span>
-          <div class="toggle-switch" id="toggle-countdown"></div>
-        </div>
-      </div>
-
-      <!-- Feature summary count -->
-      <div id="featureCount" style="font-size:.78rem;color:var(--gold);font-weight:600;padding:10px 0 0;border-top:1px solid var(--navy-border);margin-top:4px;">
-        1 feature active
-      </div>
-    </div>
-
-    <!-- Preview -->
-    <div class="sandbox-preview">
-      <div class="preview-topbar">
-        <div class="preview-dot" style="background:#FF5F57"></div>
-        <div class="preview-dot" style="background:#FEBC2E"></div>
-        <div class="preview-dot" style="background:#28C840"></div>
-        <div class="preview-url" id="pvUrl">🔒 yourwebsite.com</div>
-        <div style="display:flex;gap:6px;margin-left:auto;">
-          <div id="pvDevDesktop" onclick="setPvDevice('desktop')" title="Desktop"
-            style="cursor:pointer;font-size:.8rem;padding:2px 6px;border-radius:3px;border:1px solid var(--gold);color:var(--gold);">🖥</div>
-          <div id="pvDevMobile" onclick="setPvDevice('mobile')" title="Mobile"
-            style="cursor:pointer;font-size:.8rem;padding:2px 6px;border-radius:3px;border:1px solid var(--navy-border);color:var(--gray);">📱</div>
-        </div>
-      </div>
-      <div class="preview-frame" id="pvFrame">
-        <!-- Mobile wrapper (shown conditionally) -->
-        <div id="pvMobileWrap" style="display:none;align-items:center;justify-content:center;height:100%;background:#111;padding:16px;">
-          <div style="width:200px;background:#1a1a1a;border-radius:24px;border:3px solid #333;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6);">
-            <div id="pvMobileSite" style="transform:scale(0.52);transform-origin:top left;width:384px;height:580px;overflow:hidden;">
-            </div>
-          </div>
-        </div>
-        <div class="pv-site dark" id="pvSite">
-          <!-- Video background -->
-          <div class="pv-video-bg" id="pvVideo">
-            <div class="pv-video-bg-inner"></div>
-          </div>
-          <!-- Particles -->
-          <div id="pvParticles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;"></div>
-          <!-- Nav -->
-          <div class="pv-nav" id="pvNav" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(8px);position:relative;z-index:2;">
-            <strong id="pvNavBrand" style="color:#C9A227;">YourBrand</strong>
-            <div style="display:flex;gap:12px;font-size:.7rem;opacity:.7;" id="pvNavLinks">
-              <span>Home</span><span>About</span><span>Services</span><span>Contact</span>
-            </div>
-            <div id="pvNavCta" style="font-size:.65rem;font-weight:700;padding:4px 10px;border-radius:3px;background:#C9A227;color:#0D1B2E;">Get Quote</div>
-          </div>
-          <!-- Hero -->
-          <div class="pv-hero" id="pvHero" style="position:relative;z-index:1;text-align:center;align-items:center;">
-            <div class="pv-h1" id="pvH1">Your Website<br/><span id="pvAccentText" style="color:#C9A227;">Starts Here</span></div>
-            <p class="pv-p" id="pvTagline">Beautiful, fast, and custom-built for your business. Imagine it — we'll build it.</p>
-            <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-              <div class="pv-btn" id="pvBtn" style="background:#C9A227;color:#0D1B2E;border-radius:4px;">Get Started →</div>
-              <div class="pv-btn" id="pvBtn2" style="border:1.5px solid #C9A227;color:#C9A227;background:transparent;border-radius:4px;">Learn More</div>
-            </div>
-          </div>
-          <!-- Stats bar (always visible) -->
-          <div id="pvStats" style="display:flex;gap:0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);position:relative;z-index:1;">
-            <div style="flex:1;padding:8px 6px;text-align:center;border-right:1px solid rgba(255,255,255,.08);">
-              <div style="font-size:1rem;font-weight:800;" id="pvStat1Color">200+</div>
-              <div style="font-size:.55rem;opacity:.5;">Projects</div>
-            </div>
-            <div style="flex:1;padding:8px 6px;text-align:center;border-right:1px solid rgba(255,255,255,.08);">
-              <div style="font-size:1rem;font-weight:800;" id="pvStat2Color">98%</div>
-              <div style="font-size:.55rem;opacity:.5;">Satisfied</div>
-            </div>
-            <div style="flex:1;padding:8px 6px;text-align:center;">
-              <div style="font-size:1rem;font-weight:800;" id="pvStat3Color">24hr</div>
-              <div style="font-size:.55rem;opacity:.5;">Response</div>
-            </div>
-          </div>
-          <!-- Gallery -->
-          <div class="pv-gallery" id="pvGallery">
-            <div class="pv-gallery-img" id="pvGImg1"></div>
-            <div class="pv-gallery-img" id="pvGImg2"></div>
-            <div class="pv-gallery-img" id="pvGImg3"></div>
-          </div>
-          <!-- Testimonials -->
-          <div id="pvTestimonials" style="display:none;padding:10px 16px;position:relative;z-index:1;">
-            <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin-bottom:6px;">What Clients Say</div>
-            <div style="display:flex;gap:6px;">
-              <div style="flex:1;background:rgba(255,255,255,.06);border-radius:5px;padding:8px;font-size:.62rem;line-height:1.4;">
-                <div style="color:#C9A227;margin-bottom:3px;" id="pvTstColor1">★★★★★</div>
-                <div style="opacity:.8;">"Absolutely transformed our online presence!"</div>
-                <div style="opacity:.4;margin-top:4px;font-size:.58rem;">— Sarah M.</div>
-              </div>
-              <div style="flex:1;background:rgba(255,255,255,.06);border-radius:5px;padding:8px;font-size:.62rem;line-height:1.4;">
-                <div style="color:#C9A227;margin-bottom:3px;" id="pvTstColor2">★★★★★</div>
-                <div style="opacity:.8;">"Fast, professional, and worth every penny."</div>
-                <div style="opacity:.4;margin-top:4px;font-size:.58rem;">— James K.</div>
-              </div>
-            </div>
-          </div>
-          <!-- Pricing Table -->
-          <div id="pvPricing" style="display:none;padding:10px 16px;position:relative;z-index:1;">
-            <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin-bottom:6px;">Pricing Plans</div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;">
-              <div style="background:rgba(255,255,255,.05);border-radius:4px;padding:8px;text-align:center;font-size:.58rem;">
-                <div style="font-weight:800;font-size:.8rem;margin-bottom:3px;">Starter</div>
-                <div style="font-weight:700;margin-bottom:3px;" id="pvPriceColor1">$29<span style="font-size:.55rem;opacity:.5;">/mo</span></div>
-                <div style="opacity:.4;">Basic features</div>
-              </div>
-              <div style="border-radius:4px;padding:8px;text-align:center;font-size:.58rem;" id="pvPricingHighlight">
-                <div style="font-weight:800;font-size:.8rem;margin-bottom:3px;">Pro</div>
-                <div style="font-weight:700;margin-bottom:3px;" id="pvPriceColor2">$79<span style="font-size:.55rem;opacity:.5;">/mo</span></div>
-                <div>Most popular ✓</div>
-              </div>
-              <div style="background:rgba(255,255,255,.05);border-radius:4px;padding:8px;text-align:center;font-size:.58rem;">
-                <div style="font-weight:800;font-size:.8rem;margin-bottom:3px;">Elite</div>
-                <div style="font-weight:700;margin-bottom:3px;" id="pvPriceColor3">$199<span style="font-size:.55rem;opacity:.5;">/mo</span></div>
-                <div style="opacity:.4;">Full package</div>
-              </div>
-            </div>
-          </div>
-          <!-- Contact Form -->
-          <div class="pv-form" id="pvForm">
-            <div style="font-size:.8rem;font-weight:700;margin-bottom:4px;">Contact Us</div>
-            <input class="pv-input" placeholder="Your Name" readonly />
-            <input class="pv-input" placeholder="Your Email" readonly />
-            <textarea class="pv-input" placeholder="Message..." readonly style="height:40px;resize:none;"></textarea>
-            <div class="pv-btn" id="pvFormBtn" style="background:#C9A227;color:#0D1B2E;font-size:.75rem;padding:6px 14px;border-radius:3px;">Send Message</div>
-          </div>
-          <!-- Newsletter -->
-          <div id="pvNewsletter" style="display:none;padding:8px 16px;position:relative;z-index:1;">
-            <div style="background:rgba(255,255,255,.05);border-radius:5px;padding:10px;text-align:center;">
-              <div style="font-size:.7rem;font-weight:700;margin-bottom:4px;">📧 Stay in the Loop</div>
-              <div style="display:flex;gap:4px;">
-                <input class="pv-input" placeholder="your@email.com" readonly style="flex:1;"/>
-                <div class="pv-btn" id="pvNewsBtn" style="background:#C9A227;color:#0D1B2E;font-size:.65rem;padding:6px 10px;border-radius:3px;white-space:nowrap;">Subscribe</div>
-              </div>
-            </div>
-          </div>
-          <!-- Store -->
-          <div class="pv-store" id="pvStore">
-            <div class="pv-product">
-              <div class="pv-product-img"></div>
-              <div style="font-weight:700;font-size:.75rem;">Product 1</div>
-              <div style="font-size:.7rem;opacity:.6;">$29.99</div>
-              <div style="margin-top:4px;font-size:.7rem;font-weight:700;" id="pvBuyBtn">Buy Now</div>
-            </div>
-            <div class="pv-product">
-              <div class="pv-product-img"></div>
-              <div style="font-weight:700;font-size:.75rem;">Product 2</div>
-              <div style="font-size:.7rem;opacity:.6;">$49.99</div>
-              <div style="margin-top:4px;font-size:.7rem;font-weight:700;" id="pvBuyBtn2">Buy Now</div>
-            </div>
-            <div class="pv-product">
-              <div class="pv-product-img"></div>
-              <div style="font-weight:700;font-size:.75rem;">Product 3</div>
-              <div style="font-size:.7rem;opacity:.6;">$19.99</div>
-              <div style="margin-top:4px;font-size:.7rem;font-weight:700;" id="pvBuyBtn3">Buy Now</div>
-            </div>
-            <div class="pv-product">
-              <div class="pv-product-img"></div>
-              <div style="font-weight:700;font-size:.75rem;">Product 4</div>
-              <div style="font-size:.7rem;opacity:.6;">$89.99</div>
-              <div style="margin-top:4px;font-size:.7rem;font-weight:700;" id="pvBuyBtn4">Buy Now</div>
-            </div>
-          </div>
-          <!-- Map Embed -->
-          <div id="pvMap" style="display:none;padding:8px 16px 12px;position:relative;z-index:1;">
-            <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin-bottom:6px;">Our Location</div>
-            <div style="height:70px;border-radius:5px;background:linear-gradient(135deg,#1a2a1a,#2a3a2a);display:flex;align-items:center;justify-content:center;gap:6px;font-size:.7rem;opacity:.6;border:1px solid rgba(255,255,255,.1);">
-              📍 Interactive Map Embed
-            </div>
-          </div>
-          <!-- Countdown Timer -->
-          <div id="pvCountdown" style="display:none;padding:8px 16px;position:relative;z-index:1;">
-            <div style="background:rgba(255,255,255,.04);border-radius:5px;padding:10px;text-align:center;">
-              <div style="font-size:.65rem;opacity:.5;margin-bottom:5px;letter-spacing:.1em;text-transform:uppercase;">Launch / Event Countdown</div>
-              <div style="display:flex;gap:6px;justify-content:center;">
-                <div style="background:rgba(0,0,0,.3);border-radius:4px;padding:5px 8px;text-align:center;">
-                  <div style="font-size:.95rem;font-weight:800;" id="pvCdDays">14</div>
-                  <div style="font-size:.5rem;opacity:.4;">days</div>
-                </div>
-                <div style="background:rgba(0,0,0,.3);border-radius:4px;padding:5px 8px;text-align:center;">
-                  <div style="font-size:.95rem;font-weight:800;" id="pvCdHrs">06</div>
-                  <div style="font-size:.5rem;opacity:.4;">hrs</div>
-                </div>
-                <div style="background:rgba(0,0,0,.3);border-radius:4px;padding:5px 8px;text-align:center;">
-                  <div style="font-size:.95rem;font-weight:800;" id="pvCdMin">32</div>
-                  <div style="font-size:.5rem;opacity:.4;">min</div>
-                </div>
-                <div style="background:rgba(0,0,0,.3);border-radius:4px;padding:5px 8px;text-align:center;">
-                  <div style="font-size:.95rem;font-weight:800;" id="pvCdSec">59</div>
-                  <div style="font-size:.5rem;opacity:.4;">sec</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Chat Widget -->
-          <div id="pvChat" style="display:none;position:absolute;bottom:12px;right:12px;z-index:10;">
-            <div style="width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.4);" id="pvChatBtn">💬</div>
-          </div>
-          <!-- Footer bar -->
-          <div id="pvFooter" style="padding:8px 16px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;font-size:.6rem;opacity:.4;margin-top:auto;position:relative;z-index:1;">
-            <span id="pvFooterBrand">YourBrand</span>
-            <span>© 2025 · Privacy · Terms</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div style="text-align:center;margin-top:40px;">
-    <p style="color:var(--gray);margin-bottom:16px;">Like what you see? Let's build the real version for your business.</p>
-    <a href="#contact" class="btn-primary">Start My Project →</a>
-  </div>
-</section>
-
-<!-- ============================================================
-     PROCESS
-============================================================ -->
-<section id="process">
-  <div class="section-label">How It Works</div>
-  <h2 class="section-title">Simple <span class="gold">Process</span></h2>
-  <p class="section-desc">No stress, no confusion. Here's exactly how we work together.</p>
-
-  <div class="process-steps">
-    <div class="process-step reveal">
-      <div class="step-num">01</div>
-      <div class="step-title">Fill Out The Form</div>
-      <div class="step-desc">Tell me what you need — your name, type of website, features, and timeline. Takes about 2 minutes.</div>
-    </div>
-    <div class="process-step reveal">
-      <div class="step-num">02</div>
-      <div class="step-title">Get Your Custom Quote</div>
-      <div class="step-desc">I review your request and reach out with a personalized quote — no generic pricing, it's built around what you actually need.</div>
-    </div>
-    <div class="process-step reveal">
-      <div class="step-num">03</div>
-      <div class="step-title">We Build It Together</div>
-      <div class="step-desc">I build your site and show you progress. You give feedback, I refine it until it's exactly right.</div>
-    </div>
-    <div class="process-step reveal">
-      <div class="step-num">04</div>
-      <div class="step-title">You Approve & Pay</div>
-      <div class="step-desc">Happy with it? That's when you pay. Not a second before. We go live and your site starts working for you.</div>
-    </div>
-    <div class="process-step reveal">
-      <div class="step-num">05</div>
-      <div class="step-title">Ongoing Support</div>
-      <div class="step-desc">I'm on it if anything breaks. Business-hours support to keep your site fast, live, and looking great — always.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     GUARANTEE
-============================================================ -->
-<div id="guarantee">
-  <div class="section-label">Our Promise</div>
-  <h2 class="section-title" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);">We've Got Your Back — <span class="gold">Guaranteed</span></h2>
-  <div class="guarantee-grid">
-    <div class="guarantee-item reveal">
-      <div class="guarantee-icon">💳</div>
-      <div class="guarantee-title">Pay When Satisfied</div>
-      <div class="guarantee-desc">You don't pay a single dollar until you're 100% happy with the result. Zero risk to you.</div>
-    </div>
-    <div class="guarantee-item reveal">
-      <div class="guarantee-icon">🔧</div>
-      <div class="guarantee-title">Free Bug Fixes</div>
-      <div class="guarantee-desc">If anything breaks or stops working, I fix it at no extra charge. Your investment is protected.</div>
-    </div>
-    <div class="guarantee-item reveal">
-      <div class="guarantee-icon">⚡</div>
-      <div class="guarantee-title">Always Online</div>
-      <div class="guarantee-desc">Rain or shine — your website stays up. I monitor and maintain it so you never lose business due to downtime.</div>
-    </div>
-    <div class="guarantee-item reveal">
-      <div class="guarantee-icon">🔒</div>
-      <div class="guarantee-title">Legally Covered</div>
-      <div class="guarantee-desc">Privacy Policy, Terms & Conditions, SSL — everything your site needs to be compliant and trustworthy.</div>
-    </div>
-    <div class="guarantee-item reveal">
-      <div class="guarantee-icon">📞</div>
-      <div class="guarantee-title">Business Hours Support</div>
-      <div class="guarantee-desc">Questions or changes? Reach out during business hours and I'll get back to you fast. Real human, not a chatbot.</div>
-    </div>
-  </div>
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="services" onclick="switchTab('services')">Services</button>
+  <button class="tab-btn" data-tab="capabilities" onclick="switchTab('capabilities')">Capabilities</button>
+  <button class="tab-btn" data-tab="process" onclick="switchTab('process')">How It Works</button>
+  <button class="tab-btn" data-tab="guarantee" onclick="switchTab('guarantee')">Our Promise</button>
+  <button class="tab-btn" data-tab="restaurant" onclick="switchTab('restaurant')">🍽️ Restaurant Features</button>
+  <button class="tab-btn" data-tab="contact" onclick="switchTab('contact')">Get a Quote</button>
 </div>
 
-<!-- ============================================================
-     CONTACT / QUESTIONNAIRE
-============================================================ -->
-<section id="contact">
-  <div class="section-label">Get Started</div>
-  <h2 class="section-title">Request Your <span class="gold">Quote</span></h2>
-  <p class="section-desc">
-    Tell me what you need and I'll reach out with a personalized quote. Simple, fast, no obligation.
-  </p>
-
-  <div class="form-wrapper">
-    <!-- Step indicators -->
-    <div class="step-indicators">
-      <div class="step-ind active" id="sind-1">
-        <div class="step-circle">1</div>
-        <div class="step-ind-label">You</div>
-      </div>
-      <div class="step-ind" id="sind-2">
-        <div class="step-circle">2</div>
-        <div class="step-ind-label">Location</div>
-      </div>
-      <div class="step-ind" id="sind-3">
-        <div class="step-circle">3</div>
-        <div class="step-ind-label">Site Type</div>
-      </div>
-      <div class="step-ind" id="sind-4">
-        <div class="step-circle">4</div>
-        <div class="step-ind-label">Features</div>
-      </div>
-      <div class="step-ind" id="sind-5">
-        <div class="step-circle">5</div>
-        <div class="step-ind-label">Finish</div>
-      </div>
+<div id="tab-services" class="tab-section active">
+  <section id="services">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Full-Stack <span class="gold">Services</span></h2>
+    <p class="section-desc">
+      Everything your web presence needs — under one roof, handled by one person who actually cares.
+    </p>
+    <div class="services-grid">
+      <div class="service-card reveal"><span class="service-icon">💻</span><div class="service-title">Custom Web Development</div><div class="service-desc">Hand-coded websites built to your exact vision — no drag-and-drop templates. Every line written with purpose.</div></div>
+      <div class="service-card reveal"><span class="service-icon">🌐</span><div class="service-title">Domain Registration</div><div class="service-desc">Your own custom web address (e.g. yourbusiness.com). Pricing varies based on availability — we'll find what fits you.</div></div>
+      <div class="service-card reveal"><span class="service-icon">🖥️</span><div class="service-title">Web Hosting</div><div class="service-desc">Your site lives on reliable servers so it's fast and accessible 24/7. We handle all the technical setup for you.</div></div>
+      <div class="service-card reveal"><span class="service-icon">🔒</span><div class="service-title">SSL Certificate</div><div class="service-desc">That little padlock next to your URL. It encrypts your site so visitors know they're safe — Google requires it too.</div><span class="service-badge">Mandatory for trust</span></div>
+      <div class="service-card reveal"><span class="service-icon">📧</span><div class="service-title">Custom Email</div><div class="service-desc">Look professional with a branded email address like you@yourbusiness.com instead of a generic Gmail.</div></div>
+      <div class="service-card reveal"><span class="service-icon">🛍️</span><div class="service-title">E-Commerce & Stores</div><div class="service-desc">Sell products, merch, or services online with a full shopping experience — carts, checkout, and payment processing.</div></div>
+      <div class="service-card reveal"><span class="service-icon">⚙️</span><div class="service-title">Custom Programs & Apps</div><div class="service-desc">Need a custom tool — batch dialers, portals, calculators? If you can imagine it, we'll code it from scratch.</div></div>
+      <div class="service-card reveal"><span class="service-icon">🎨</span><div class="service-title">Logo Design</div><div class="service-desc">Professional logo design to give your brand a visual identity that stands out. Custom, original, all yours.</div></div>
+      <div class="service-card reveal"><span class="service-icon">📊</span><div class="service-title">Analytics & SEO</div><div class="service-desc">Track who visits your site and help more people find you on Google. Data-driven growth, set up for you.</div></div>
+      <div class="service-card reveal"><span class="service-icon">🛡️</span><div class="service-title">Maintenance & Support</div><div class="service-desc">Something breaks? I fix it free. Business hours support to keep your site running smooth — rain or shine.</div><span class="service-badge">Always included</span></div>
     </div>
+  </section>
+</div>
 
-    <!-- Form (posts to FormSpree — replace YOUR_FORMSPREE_ID) -->
-    <form id="quoteForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
-
-      <!-- HIDDEN fields for collected data -->
-      <input type="hidden" name="website_type" id="hiddenSiteType" />
-      <input type="hidden" name="timeline" id="hiddenTimeline" />
-      <input type="hidden" name="features" id="hiddenFeatures" />
-      <input type="hidden" name="contact_time" id="hiddenContactTime" />
-
-      <!-- STEP 1: Personal Info -->
-      <div class="form-step active" id="step1">
-        <div class="form-title">Let's Start With You 👋</div>
-        <p class="form-subtitle">Just the basics so I know who I'm talking to.</p>
-        <div class="field-row">
-          <div class="field-group">
-            <label class="field-label">First & Last Name *</label>
-            <input class="field-input" type="text" name="name" placeholder="John Smith" required />
-          </div>
-          <div class="field-group">
-            <label class="field-label">Phone Number *</label>
-            <input class="field-input" type="tel" name="phone" placeholder="(555) 000-0000" required />
-          </div>
-        </div>
-        <div class="field-group">
-          <label class="field-label">Email Address *</label>
-          <input class="field-input" type="email" name="email" placeholder="you@example.com" required />
-        </div>
-        <div class="field-group">
-          <label class="field-label">Business / Project Name (if any)</label>
-          <input class="field-input" type="text" name="business" placeholder="My Awesome Business" />
-        </div>
-        <div class="form-nav">
-          <button type="button" class="btn-next" onclick="nextStep(1)">Next: Location & Timing →</button>
-        </div>
-      </div>
-
-      <!-- STEP 2: Location & Timeline -->
-      <div class="form-step" id="step2">
-        <div class="form-title">Where Are You & When Do You Need It? 📍</div>
-        <p class="form-subtitle">This helps me understand your market and plan the timeline.</p>
-        <div class="field-row">
-          <div class="field-group">
-            <label class="field-label">City & State / Country *</label>
-            <input class="field-input" type="text" name="location" placeholder="Miami, FL" required />
-          </div>
-          <div class="field-group">
-            <label class="field-label">Industry / Niche</label>
-            <input class="field-input" type="text" name="industry" placeholder="Restaurant, Music, Retail..." />
-          </div>
-        </div>
-        <div class="field-group">
-          <label class="field-label">When do you need your website ready? *</label>
-          <div class="timeline-options" id="timelineOptions">
-            <div class="timeline-opt" onclick="selectTimeline(this,'ASAP — within 1 week')">ASAP<br/><small style="font-weight:400;opacity:.6;">Within 1 week</small></div>
-            <div class="timeline-opt" onclick="selectTimeline(this,'2–4 weeks')">2–4 Weeks</div>
-            <div class="timeline-opt" onclick="selectTimeline(this,'1–2 months')">1–2 Months</div>
-            <div class="timeline-opt" onclick="selectTimeline(this,'3+ months — no rush')">No Rush<br/><small style="font-weight:400;opacity:.6;">3+ months</small></div>
-            <div class="timeline-opt" onclick="selectTimeline(this,'Not sure')">Not Sure</div>
-          </div>
-        </div>
-        <div class="form-nav">
-          <button type="button" class="btn-prev" onclick="prevStep(2)">← Back</button>
-          <button type="button" class="btn-next" onclick="nextStep(2)">Next: Site Type →</button>
-        </div>
-      </div>
-
-      <!-- STEP 3: Website Type -->
-      <div class="form-step" id="step3">
-        <div class="form-title">What Kind of Website? 🌐</div>
-        <p class="form-subtitle">Pick the one that best describes your project. Don't worry, we'll customize everything.</p>
-        <div class="site-types" id="siteTypeGrid">
-          <div class="site-type-card" onclick="selectSiteType(this,'Business / Landing Page')">
-            <span class="site-type-icon">🏢</span>
-            <div class="site-type-name">Business / Landing Page</div>
-            <div class="site-type-desc">Present your services, hours, and contact info.</div>
-          </div>
-          <div class="site-type-card" onclick="selectSiteType(this,'E-Commerce / Online Store')">
-            <span class="site-type-icon">🛍️</span>
-            <div class="site-type-name">E-Commerce / Store</div>
-            <div class="site-type-desc">Sell products or services online.</div>
-          </div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Portfolio / Showcase')">
-            <span class="site-type-icon">🎨</span>
-            <div class="site-type-name">Portfolio / Showcase</div>
-            <div class="site-type-desc">Show off your work, art, or photography.</div>
-          </div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Restaurant / Menu')">
-            <span class="site-type-icon">🍽️</span>
-            <div class="site-type-name">Restaurant / Menu</div>
-            <div class="site-type-desc">Digital menu, reservations, and location.</div>
-          </div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Band / Music / Artist')">
-            <span class="site-type-icon">🎵</span>
-            <div class="site-type-name">Band / Artist</div>
-            <div class="site-type-desc">Promote your music, merch, and shows.</div>
-          </div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Blog / Content Site')">
-            <span class="site-type-icon">📝</span>
-            <div class="site-type-name">Blog / Content</div>
-            <div class="site-type-desc">Articles, news, or personal stories.</div>
-          </div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Event / Venue')">
-            <span class="site-type-icon">🎉</span>
-            <div class="site-type-name">Event / Venue</div>
-            <div class="site-type-desc">Promote events, sell tickets, share schedules.</div>
-          </div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Real Estate')">
-            <span class="site-type-icon">🏠</span>
-            <div class="site-type-name">Real Estate</div>
-            <div class="site-type-desc">Property listings, agent profiles, contact forms.</div>
-          </div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Non-Profit / Church / Community')">
-            <span class="site-type-icon">🤝</span>
-            <div class="site-type-name">Non-Profit / Community</div>
-            <div class="site-type-desc">Share your mission and accept donations.</div>
-          </div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Custom App / Program')">
-            <span class="site-type-icon">⚙️</span>
-            <div class="site-type-name">Custom App / Program</div>
-            <div class="site-type-desc">Something unique — dialers, portals, tools, you name it.</div>
-          </div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Membership / Subscription')">
-            <span class="site-type-icon">🔑</span>
-            <div class="site-type-name">Membership Site</div>
-            <div class="site-type-desc">Gated content, login areas, subscriber access.</div>
-          </div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Other / Not Sure')">
-            <span class="site-type-icon">💡</span>
-            <div class="site-type-name">Other / Not Sure</div>
-            <div class="site-type-desc">Describe it in the next step — if you can imagine it, we'll build it.</div>
-          </div>
-        </div>
-        <div class="form-nav">
-          <button type="button" class="btn-prev" onclick="prevStep(3)">← Back</button>
-          <button type="button" class="btn-next" onclick="nextStep(3)">Next: Features →</button>
-        </div>
-      </div>
-
-      <!-- STEP 4: Features Checklist -->
-      <div class="form-step" id="step4">
-        <div class="form-title">What Do You Need? ✅</div>
-        <p class="form-subtitle">Select everything you want included. Not sure? Check it anyway — I'll explain everything when we talk.</p>
-        <div class="features-list">
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Source Code Only (no hosting)')">
-            <div class="feature-checkbox"></div>
-            <div class="feature-info">
-              <div class="feature-name">💻 Source Code Only</div>
-              <div class="feature-note">I build your site and hand you the code. You host it yourself. Great if you already have hosting.</div>
-            </div>
-          </div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Web Hosting')">
-            <div class="feature-checkbox"></div>
-            <div class="feature-info">
-              <div class="feature-name">🖥️ Web Hosting</div>
-              <div class="feature-note">Your website lives on a server so it's accessible online. Required for your site to be live on the internet.</div>
-            </div>
-          </div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Custom Domain')">
-            <div class="feature-checkbox"></div>
-            <div class="feature-info">
-              <div class="feature-name">🌐 Custom Domain Name</div>
-              <div class="feature-note">Your own web address like yourbusiness.com — pricing varies based on availability. We'll check it together.</div>
-              <div class="feature-price">⚠️ Price quoted separately based on availability</div>
-            </div>
-          </div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'SSL Certificate')">
-            <div class="feature-checkbox"></div>
-            <div class="feature-info">
-              <div class="feature-name">🔒 SSL Certificate</div>
-              <div class="feature-note">Adds the padlock (🔒) next to your URL. Encrypts your site so visitors know it's safe. Google also requires this to rank your site.</div>
-            </div>
-          </div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Custom Email Address')">
-            <div class="feature-checkbox"></div>
-            <div class="feature-info">
-              <div class="feature-name">📧 Custom Email Address</div>
-              <div class="feature-note">Get a professional email like you@yourbusiness.com instead of a Gmail or Yahoo address. Builds instant trust with clients.</div>
-            </div>
-          </div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'E-Commerce / Online Store')">
-            <div class="feature-checkbox"></div>
-            <div class="feature-info">
-              <div class="feature-name">🛒 E-Commerce / Online Store</div>
-              <div class="feature-note">Sell products or services online with a full cart, checkout, and payment processing (Stripe, Buy Me a Coffee, PayPal, etc.).</div>
-            </div>
-          </div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Contact Form')">
-            <div class="feature-checkbox"></div>
-            <div class="feature-info">
-              <div class="feature-name">📋 Contact / Quote Form</div>
-              <div class="feature-note">Let visitors send you messages directly from your site. Submissions go straight to your email — no spam, secure.</div>
-            </div>
-          </div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Logo Design')">
-            <div class="feature-checkbox"></div>
-            <div class="feature-info">
-              <div class="feature-name">🎨 Logo Design</div>
-              <div class="feature-note">Need a professional logo? I'll design one from scratch that represents your brand. All rights go to you.</div>
-            </div>
-          </div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'SEO & Analytics')">
-            <div class="feature-checkbox"></div>
-            <div class="feature-info">
-              <div class="feature-name">📊 SEO & Analytics</div>
-              <div class="feature-note">Help Google find and rank your site. Plus Google Analytics so you can see who's visiting and where they're coming from.</div>
-            </div>
-          </div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Ongoing Maintenance & Support')">
-            <div class="feature-checkbox"></div>
-            <div class="feature-info">
-              <div class="feature-name">🛡️ Ongoing Maintenance & Support</div>
-              <div class="feature-note">Monthly or quarterly plan to keep your site updated, secure, and running smoothly. Includes bug fixes at no extra charge.</div>
-            </div>
-          </div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Privacy Policy & Terms of Service')">
-            <div class="feature-checkbox"></div>
-            <div class="feature-info">
-              <div class="feature-name">📄 Privacy Policy & Terms of Service</div>
-              <div class="feature-note">Legal pages that protect your business and build trust. Required by law if you collect any visitor data (even contact forms).</div>
-            </div>
-          </div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Animations & Visual Effects')">
-            <div class="feature-checkbox"></div>
-            <div class="feature-info">
-              <div class="feature-name">✨ Animations & Visual Effects</div>
-              <div class="feature-note">Smooth scroll animations, hover effects, parallax, or custom motion that makes your site feel premium and modern.</div>
-            </div>
-          </div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Video Background or Media')">
-            <div class="feature-checkbox"></div>
-            <div class="feature-info">
-              <div class="feature-name">🎬 Video Background / Media</div>
-              <div class="feature-note">Full-screen cinematic video playing in the background of your hero section. Powerful first impression.</div>
-            </div>
-          </div>
-        </div>
-        <div class="form-nav">
-          <button type="button" class="btn-prev" onclick="prevStep(4)">← Back</button>
-          <button type="button" class="btn-next" onclick="nextStep(4)">Next: Almost Done →</button>
-        </div>
-      </div>
-
-      <!-- STEP 5: Finish -->
-      <div class="form-step" id="step5">
-        <div class="form-title">Almost There! 🐝</div>
-        <p class="form-subtitle">Last few details and we're done.</p>
-
-        <div class="field-group">
-          <label class="field-label">Best time to contact you?</label>
-          <div class="time-options" id="timeOptions">
-            <div class="time-opt" onclick="selectTime(this,'Morning (9am–12pm)')">Morning</div>
-            <div class="time-opt" onclick="selectTime(this,'Afternoon (12pm–5pm)')">Afternoon</div>
-            <div class="time-opt" onclick="selectTime(this,'Evening (5pm–8pm)')">Evening</div>
-            <div class="time-opt" onclick="selectTime(this,'Anytime during business hours')">Anytime</div>
-          </div>
-        </div>
-
-        <div class="field-group" style="margin-top:20px;">
-          <label class="field-label">Anything else you want to share? (optional)</label>
-          <textarea class="field-input" name="other_notes" placeholder="Describe anything specific — inspiration sites, special features, ideas, or anything else I should know..."></textarea>
-        </div>
-
-        <!-- Consent -->
-        <div class="consent-box" id="consentBox" onclick="toggleConsent()">
-          <div class="consent-chk" id="consentChk"></div>
-          <div class="consent-text">
-            By submitting this form, I agree that BeezerBuilt may contact me about my website project using the information provided. I have read and agree to the
-            <a href="#" onclick="openModal('privacy');return false;">Privacy Policy</a> and
-            <a href="#" onclick="openModal('terms');return false;">Terms & Conditions</a>.
-          </div>
-        </div>
-
-        <div class="form-nav">
-          <button type="button" class="btn-prev" onclick="prevStep(5)">← Back</button>
-          <button type="submit" class="btn-next" id="submitBtn">🐝 Send My Request →</button>
-        </div>
-      </div>
-    </form>
-
-    <!-- Success message -->
-    <div class="form-success" id="formSuccess">
-      <div class="success-icon">🐝</div>
-      <div class="success-title">Message Sent!</div>
-      <p class="success-sub">I got your request and I'll reach out during business hours with your personalized quote. Talk soon!</p>
+<div id="tab-capabilities" class="tab-section">
+  <section id="capabilities">
+    <div class="section-label">What's Possible</div>
+    <h2 class="section-title">Modern Web <span class="gold">Capabilities</span></h2>
+    <p class="section-desc">Your website can do way more than you think. Here's a taste of what modern web tech makes possible.</p>
+    <div class="cap-grid">
+      <div class="cap-card reveal"><div class="cap-icon">✨</div><div class="cap-title">Smooth Animations</div><div class="cap-desc">Elements that slide, fade, and pop as users scroll — making your site feel alive and premium.</div></div>
+      <div class="cap-card reveal"><div class="cap-icon">🎬</div><div class="cap-title">Video Backgrounds</div><div class="cap-desc">Cinematic video playing behind your content for an immersive, high-end first impression.</div></div>
+      <div class="cap-card reveal"><div class="cap-icon">🖼️</div><div class="cap-title">Image Galleries</div><div class="cap-desc">Beautiful photo layouts with lightboxes, lazy loading, and smooth transitions.</div></div>
+      <div class="cap-card reveal"><div class="cap-icon">📋</div><div class="cap-title">Smart Contact Forms</div><div class="cap-desc">Forms that actually reach you — no spam, secure, and easy to manage.</div></div>
+      <div class="cap-card reveal"><div class="cap-icon">🌙</div><div class="cap-title">Dark / Light Mode</div><div class="cap-desc">Let users pick their preference. Modern and accessible for everyone.</div></div>
+      <div class="cap-card reveal"><div class="cap-icon">📱</div><div class="cap-title">Mobile-First Design</div><div class="cap-desc">Your site looks and works perfectly on phones, tablets, and desktops.</div></div>
+      <div class="cap-card reveal"><div class="cap-icon">🛒</div><div class="cap-title">Online Stores</div><div class="cap-desc">Full e-commerce with product pages, carts, and payment integrations like Stripe or Buy Me a Coffee.</div></div>
+      <div class="cap-card reveal"><div class="cap-icon">🔄</div><div class="cap-title">Parallax Scrolling</div><div class="cap-desc">Background layers move at different speeds as you scroll — a stunning depth effect.</div></div>
+      <div class="cap-card reveal"><div class="cap-icon">🔍</div><div class="cap-title">SEO Optimized</div><div class="cap-desc">Built so Google can find and rank your site. More visibility = more customers.</div></div>
+      <div class="cap-card reveal"><div class="cap-icon">⚡</div><div class="cap-title">Blazing Fast Load</div><div class="cap-desc">Optimized code means your site loads in seconds, keeping visitors engaged.</div></div>
+      <div class="cap-card reveal"><div class="cap-icon">🎠</div><div class="cap-title">Carousels & Sliders</div><div class="cap-desc">Auto-sliding banners, testimonial carousels, product showcases — smooth and interactive.</div></div>
+      <div class="cap-card reveal"><div class="cap-icon">🗺️</div><div class="cap-title">Maps & Location</div><div class="cap-desc">Interactive Google Maps, business hours, and directions embedded right into your site.</div></div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
-<!-- ============================================================
-     FOOTER
-============================================================ -->
+<div id="tab-process" class="tab-section">
+  <section id="process">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Simple <span class="gold">Process</span></h2>
+    <p class="section-desc">No stress, no confusion. Here's exactly how we work together.</p>
+    <div class="process-steps">
+      <div class="process-step reveal"><div class="step-num">01</div><div class="step-title">Fill Out The Form</div><div class="step-desc">Tell me what you need — your name, type of website, features, and timeline. Takes about 2 minutes.</div></div>
+      <div class="process-step reveal"><div class="step-num">02</div><div class="step-title">Get Your Custom Quote</div><div class="step-desc">I review your request and reach out with a personalized quote — no generic pricing, it's built around what you actually need.</div></div>
+      <div class="process-step reveal"><div class="step-num">03</div><div class="step-title">We Build It Together</div><div class="step-desc">I build your site and show you progress. You give feedback, I refine it until it's exactly right.</div></div>
+      <div class="process-step reveal"><div class="step-num">04</div><div class="step-title">You Approve & Pay</div><div class="step-desc">Happy with it? That's when you pay. Not a second before. We go live and your site starts working for you.</div></div>
+      <div class="process-step reveal"><div class="step-num">05</div><div class="step-title">Ongoing Support</div><div class="step-desc">I'm on it if anything breaks. Business-hours support to keep your site fast, live, and looking great — always.</div></div>
+    </div>
+  </section>
+</div>
+
+<div id="tab-guarantee" class="tab-section">
+  <section id="guarantee">
+    <div class="section-label">Our Promise</div>
+    <h2 class="section-title">We've Got Your Back — <span class="gold">Guaranteed</span></h2>
+    <div class="guarantee-grid">
+      <div class="guarantee-item reveal"><div class="guarantee-icon">💳</div><div class="guarantee-title">Pay When Satisfied</div><div class="guarantee-desc">You don't pay a single dollar until you're 100% happy with the result. Zero risk to you.</div></div>
+      <div class="guarantee-item reveal"><div class="guarantee-icon">🔧</div><div class="guarantee-title">Free Bug Fixes</div><div class="guarantee-desc">If anything breaks or stops working, I fix it at no extra charge. Your investment is protected.</div></div>
+      <div class="guarantee-item reveal"><div class="guarantee-icon">⚡</div><div class="guarantee-title">Always Online</div><div class="guarantee-desc">Rain or shine — your website stays up. I monitor and maintain it so you never lose business due to downtime.</div></div>
+      <div class="guarantee-item reveal"><div class="guarantee-icon">🔒</div><div class="guarantee-title">Legally Covered</div><div class="guarantee-desc">Privacy Policy, Terms & Conditions, SSL — everything your site needs to be compliant and trustworthy.</div></div>
+      <div class="guarantee-item reveal"><div class="guarantee-icon">📞</div><div class="guarantee-title">Business Hours Support</div><div class="guarantee-desc">Questions or changes? Reach out during business hours and I'll get back to you fast. Real human, not a chatbot.</div></div>
+    </div>
+  </section>
+</div>
+
+<div id="tab-restaurant" class="tab-section">
+  <section id="restaurant-features">
+    <div class="section-label">🍽️ For Restaurants</div>
+    <h2 class="section-title">Powerful <span class="gold">Restaurant Tools</span></h2>
+    <p class="section-desc">Custom features that make your restaurant website work as hard as you do. Each one is built by hand — no monthly fees, just pure functionality.</p>
+    <div class="resto-grid">
+      <div class="resto-card reveal"><div class="resto-icon">📧</div><div class="resto-title">Order-to-Email Form</div><div class="resto-desc">Customers fill out their order and it lands directly in your inbox. No third‑party commissions — you own the relationship.</div><div class="resto-note">Works with any email provider</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">📞</div><div class="resto-title">Phone Confirmation & Payment</div><div class="resto-desc">After an order is placed, the customer sees your phone number to call and confirm details or pay by card over the phone. Perfect for custom requests.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">➕</div><div class="resto-title">Smart Modifiers</div><div class="resto-desc">Extra options like “extra cheese” or “no onions” appear only when a customer selects an item that can be customized. Keeps menus clean and intuitive.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">💰</div><div class="resto-title">Live Price Updates</div><div class="resto-desc">As customers add toppings or choose sizes, the total updates instantly. No surprises at checkout.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">🛒</div><div class="resto-title">Cart That Saves</div><div class="resto-desc">Orders are saved in the browser, so if a customer accidentally closes the tab, their cart is still there when they come back.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">🌙</div><div class="resto-title">Dark Mode</div><div class="resto-desc">Automatically switches to a darker color scheme at night, making the menu easy on the eyes for late‑night browsers.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">📅</div><div class="resto-title">Daily Specials (Auto‑Rotating)</div><div class="resto-desc">Specials change by day of the week without you lifting a finger. Monday shows taco specials, Tuesday pasta — all set once.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">📆</div><div class="resto-title">Reservation Calendar</div><div class="resto-desc">Customers see available dates and times. When a spot is booked, that slot is automatically blocked so you never double‑book.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">⭐</div><div class="resto-title">Loyalty Points Tracker</div><div class="resto-desc">Returning customers earn points per order. They can view their balance and redeem rewards right on your site.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">🖼️</div><div class="resto-title">Lightning‑Fast Gallery</div><div class="resto-desc">High‑quality photos of your dishes load in a snap, even on slow connections. Optimized for mobile so hungry customers stay engaged.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">⏳</div><div class="resto-title">Live Closing Countdown</div><div class="resto-desc">A countdown timer shows exactly how long until you close, encouraging last‑minute orders.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">📊</div><div class="resto-title">“How Busy?” Toggle</div><div class="resto-desc">A simple switch you can flip to show “Not too busy — order now!” or “We're slammed — expect a short wait.”</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">🍳</div><div class="resto-title">Time‑Based Menus</div><div class="resto-desc">Breakfast items appear in the morning, lunch at noon, dinner in the evening — automatically, based on the hour.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">💬</div><div class="resto-title">Rotating Reviews Slideshow</div><div class="resto-desc">Happy customer quotes scroll automatically, building trust without taking up space.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">📝</div><div class="resto-title">Order‑Ahead with Combo Suggestions</div><div class="resto-desc">As customers build an order, the system suggests popular combos (e.g., “Add fries and a drink for $3”) and auto‑calculates the total.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">⏱️</div><div class="resto-title">Wait Time Estimator</div><div class="resto-desc">Based on the number of pending orders, an estimated wait time updates in real time — managing expectations before they arrive.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">🖨️</div><div class="resto-title">Printable Daily Specials</div><div class="resto-desc">One click generates a clean, printer‑friendly sheet of today's specials — perfect for takeout counters or delivery bags.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">🚫</div><div class="resto-title">“Out of Stock” Toggle</div><div class="resto-desc">Run out of something? Flip a switch and the item disappears from the menu instantly — no angry customers ordering what's gone.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">📍</div><div class="resto-title">Location‑Aware Hours</div><div class="resto-desc">The site detects the visitor's time zone and displays your hours in their local time. Never a “but it says you're open!” call again.</div></div>
+      <div class="resto-card reveal"><div class="resto-icon">📅</div><div class="resto-title">One‑Click “Add to Calendar”</div><div class="resto-desc">After making a reservation, customers can instantly save it to Google Calendar, Apple Calendar, or Outlook.</div></div>
+    </div>
+    <p class="resto-footer-note">⚡ All features are custom‑coded — you pay once, no monthly subscriptions.</p>
+  </section>
+</div>
+
+<div id="tab-contact" class="tab-section">
+  <section id="contact">
+    <div class="section-label">Get Started</div>
+    <h2 class="section-title">Request Your <span class="gold">Quote</span></h2>
+    <p class="section-desc">Tell me what you need and I'll reach out with a personalized quote. Simple, fast, no obligation.</p>
+    <div class="form-wrapper">
+      <div class="step-indicators">
+        <div class="step-ind active" id="sind-1"><div class="step-circle">1</div><div class="step-ind-label">You</div></div>
+        <div class="step-ind" id="sind-2"><div class="step-circle">2</div><div class="step-ind-label">Location</div></div>
+        <div class="step-ind" id="sind-3"><div class="step-circle">3</div><div class="step-ind-label">Site Type</div></div>
+        <div class="step-ind" id="sind-4"><div class="step-circle">4</div><div class="step-ind-label">Features</div></div>
+        <div class="step-ind" id="sind-5"><div class="step-circle">5</div><div class="step-ind-label">Finish</div></div>
+      </div>
+      <form id="quoteForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
+        <input type="hidden" name="website_type" id="hiddenSiteType" />
+        <input type="hidden" name="timeline" id="hiddenTimeline" />
+        <input type="hidden" name="features" id="hiddenFeatures" />
+        <input type="hidden" name="contact_time" id="hiddenContactTime" />
+        <div class="form-step active" id="step1">
+          <div class="form-title">Let's Start With You 👋</div>
+          <p class="form-subtitle">Just the basics so I know who I'm talking to.</p>
+          <div class="field-row">
+            <div class="field-group"><label class="field-label">First & Last Name *</label><input class="field-input" type="text" name="name" placeholder="John Smith" required /></div>
+            <div class="field-group"><label class="field-label">Phone Number *</label><input class="field-input" type="tel" name="phone" placeholder="(555) 000-0000" required /></div>
+          </div>
+          <div class="field-group"><label class="field-label">Email Address *</label><input class="field-input" type="email" name="email" placeholder="you@example.com" required /></div>
+          <div class="field-group"><label class="field-label">Business / Project Name (if any)</label><input class="field-input" type="text" name="business" placeholder="My Awesome Business" /></div>
+          <div class="form-nav"><button type="button" class="btn-next" onclick="nextStep(1)">Next: Location & Timing →</button></div>
+        </div>
+        <div class="form-step" id="step2">
+          <div class="form-title">Where Are You & When Do You Need It? 📍</div>
+          <p class="form-subtitle">This helps me understand your market and plan the timeline.</p>
+          <div class="field-row">
+            <div class="field-group"><label class="field-label">City & State / Country *</label><input class="field-input" type="text" name="location" placeholder="Miami, FL" required /></div>
+            <div class="field-group"><label class="field-label">Industry / Niche</label><input class="field-input" type="text" name="industry" placeholder="Restaurant, Music, Retail..." /></div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">When do you need your website ready? *</label>
+            <div class="timeline-options" id="timelineOptions">
+              <div class="timeline-opt" onclick="selectTimeline(this,'ASAP — within 1 week')">ASAP<br/><small style="font-weight:400;opacity:.6;">Within 1 week</small></div>
+              <div class="timeline-opt" onclick="selectTimeline(this,'2–4 weeks')">2–4 Weeks</div>
+              <div class="timeline-opt" onclick="selectTimeline(this,'1–2 months')">1–2 Months</div>
+              <div class="timeline-opt" onclick="selectTimeline(this,'3+ months — no rush')">No Rush<br/><small style="font-weight:400;opacity:.6;">3+ months</small></div>
+              <div class="timeline-opt" onclick="selectTimeline(this,'Not sure')">Not Sure</div>
+            </div>
+          </div>
+          <div class="form-nav"><button type="button" class="btn-prev" onclick="prevStep(2)">← Back</button><button type="button" class="btn-next" onclick="nextStep(2)">Next: Site Type →</button></div>
+        </div>
+        <div class="form-step" id="step3">
+          <div class="form-title">What Kind of Website? 🌐</div>
+          <p class="form-subtitle">Pick the one that best describes your project. Don't worry, we'll customize everything.</p>
+          <div class="site-types" id="siteTypeGrid">
+            <div class="site-type-card" onclick="selectSiteType(this,'Business / Landing Page')"><span class="site-type-icon">🏢</span><div class="site-type-name">Business / Landing Page</div><div class="site-type-desc">Present your services, hours, and contact info.</div></div>
+            <div class="site-type-card" onclick="selectSiteType(this,'E-Commerce / Online Store')"><span class="site-type-icon">🛍️</span><div class="site-type-name">E-Commerce / Store</div><div class="site-type-desc">Sell products or services online.</div></div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Portfolio / Showcase')"><span class="site-type-icon">🎨</span><div class="site-type-name">Portfolio / Showcase</div><div class="site-type-desc">Show off your work, art, or photography.</div></div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Restaurant / Menu')"><span class="site-type-icon">🍽️</span><div class="site-type-name">Restaurant / Menu</div><div class="site-type-desc">Digital menu, reservations, and location.</div></div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Band / Music / Artist')"><span class="site-type-icon">🎵</span><div class="site-type-name">Band / Artist</div><div class="site-type-desc">Promote your music, merch, and shows.</div></div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Blog / Content Site')"><span class="site-type-icon">📝</span><div class="site-type-name">Blog / Content</div><div class="site-type-desc">Articles, news, or personal stories.</div></div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Event / Venue')"><span class="site-type-icon">🎉</span><div class="site-type-name">Event / Venue</div><div class="site-type-desc">Promote events, sell tickets, share schedules.</div></div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Real Estate')"><span class="site-type-icon">🏠</span><div class="site-type-name">Real Estate</div><div class="site-type-desc">Property listings, agent profiles, contact forms.</div></div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Non-Profit / Church / Community')"><span class="site-type-icon">🤝</span><div class="site-type-name">Non-Profit / Community</div><div class="site-type-desc">Share your mission and accept donations.</div></div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Custom App / Program')"><span class="site-type-icon">⚙️</span><div class="site-type-name">Custom App / Program</div><div class="site-type-desc">Something unique — dialers, portals, tools, you name it.</div></div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Membership / Subscription')"><span class="site-type-icon">🔑</span><div class="site-type-name">Membership Site</div><div class="site-type-desc">Gated content, login areas, subscriber access.</div></div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Other / Not Sure')"><span class="site-type-icon">💡</span><div class="site-type-name">Other / Not Sure</div><div class="site-type-desc">Describe it in the next step — if you can imagine it, we'll build it.</div></div>
+          </div>
+          <div class="form-nav"><button type="button" class="btn-prev" onclick="prevStep(3)">← Back</button><button type="button" class="btn-next" onclick="nextStep(3)">Next: Features →</button></div>
+        </div>
+        <div class="form-step" id="step4">
+          <div class="form-title">What Do You Need? ✅</div>
+          <p class="form-subtitle">Select everything you want included. Not sure? Check it anyway — I'll explain everything when we talk.</p>
+          <div class="features-list">
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Source Code Only (no hosting)')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">💻 Source Code Only</div><div class="feature-note">I build your site and hand you the code. You host it yourself. Great if you already have hosting.</div></div></div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Web Hosting')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">🖥️ Web Hosting</div><div class="feature-note">Your website lives on a server so it's accessible online. Required for your site to be live on the internet.</div></div></div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Custom Domain')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">🌐 Custom Domain Name</div><div class="feature-note">Your own web address like yourbusiness.com — pricing varies based on availability. We'll check it together.</div><div class="feature-price">⚠️ Price quoted separately based on availability</div></div></div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'SSL Certificate')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">🔒 SSL Certificate</div><div class="feature-note">Adds the padlock (🔒) next to your URL. Encrypts your site so visitors know it's safe. Google also requires this to rank your site.</div></div></div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Custom Email Address')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">📧 Custom Email Address</div><div class="feature-note">Get a professional email like you@yourbusiness.com instead of a Gmail or Yahoo address. Builds instant trust with clients.</div></div></div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'E-Commerce / Online Store')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">🛒 E-Commerce / Online Store</div><div class="feature-note">Sell products or services online with a full cart, checkout, and payment processing (Stripe, Buy Me a Coffee, PayPal, etc.).</div></div></div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Contact Form')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">📋 Contact / Quote Form</div><div class="feature-note">Let visitors send you messages directly from your site. Submissions go straight to your email — no spam, secure.</div></div></div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Logo Design')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">🎨 Logo Design</div><div class="feature-note">Need a professional logo? I'll design one from scratch that represents your brand. All rights go to you.</div></div></div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'SEO & Analytics')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">📊 SEO & Analytics</div><div class="feature-note">Help Google find and rank your site. Plus Google Analytics so you can see who's visiting and where they're coming from.</div></div></div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Ongoing Maintenance & Support')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">🛡️ Ongoing Maintenance & Support</div><div class="feature-note">Monthly or quarterly plan to keep your site updated, secure, and running smoothly. Includes bug fixes at no extra charge.</div></div></div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Privacy Policy & Terms of Service')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">📄 Privacy Policy & Terms of Service</div><div class="feature-note">Legal pages that protect your business and build trust. Required by law if you collect any visitor data (even contact forms).</div></div></div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Animations & Visual Effects')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">✨ Animations & Visual Effects</div><div class="feature-note">Smooth scroll animations, hover effects, parallax, or custom motion that makes your site feel premium and modern.</div></div></div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Video Background or Media')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">🎬 Video Background / Media</div><div class="feature-note">Full-screen cinematic video playing in the background of your hero section. Powerful first impression.</div></div></div>
+          </div>
+          <div class="form-nav"><button type="button" class="btn-prev" onclick="prevStep(4)">← Back</button><button type="button" class="btn-next" onclick="nextStep(4)">Next: Almost Done →</button></div>
+        </div>
+        <div class="form-step" id="step5">
+          <div class="form-title">Almost There! 🐝</div>
+          <p class="form-subtitle">Last few details and we're done.</p>
+          <div class="field-group"><label class="field-label">Best time to contact you?</label><div class="time-options" id="timeOptions"><div class="time-opt" onclick="selectTime(this,'Morning (9am–12pm)')">Morning</div><div class="time-opt" onclick="selectTime(this,'Afternoon (12pm–5pm)')">Afternoon</div><div class="time-opt" onclick="selectTime(this,'Evening (5pm–8pm)')">Evening</div><div class="time-opt" onclick="selectTime(this,'Anytime during business hours')">Anytime</div></div></div>
+          <div class="field-group" style="margin-top:20px;"><label class="field-label">Anything else you want to share? (optional)</label><textarea class="field-input" name="other_notes" placeholder="Describe anything specific — inspiration sites, special features, ideas, or anything else I should know..."></textarea></div>
+          <div class="consent-box" id="consentBox" onclick="toggleConsent()"><div class="consent-chk" id="consentChk"></div><div class="consent-text">By submitting this form, I agree that BeezerBuilt may contact me about my website project using the information provided. I have read and agree to the <a href="#" onclick="openModal('privacy');return false;">Privacy Policy</a> and <a href="#" onclick="openModal('terms');return false;">Terms & Conditions</a>.</div></div>
+          <div class="form-nav"><button type="button" class="btn-prev" onclick="prevStep(5)">← Back</button><button type="submit" class="btn-next" id="submitBtn">🐝 Send My Request →</button></div>
+        </div>
+      </form>
+      <div class="form-success" id="formSuccess"><div class="success-icon">🐝</div><div class="success-title">Message Sent!</div><p class="success-sub">I got your request and I'll reach out during business hours with your personalized quote. Talk soon!</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
 <footer>
   <div class="footer-top">
     <div class="footer-brand">
-      <div class="footer-logo">
-        <img src="https://i.imgur.com/gHWuxr0.png" width="64" height="64" alt="BeezerBuilt" style="object-fit:contain;"/>
-        Beezer<span>Built</span>
-      </div>
-      <p class="footer-tagline">
-        Imagine it. We'll build it & maintain it.<br/>
-        Custom websites for businesses of all sizes — you don't pay until you're satisfied.
-      </p>
+      <div class="footer-logo"><div class="footer-logo-img-wrap"><img src="https://i.imgur.com/gHWuxr0.png" width="56" height="56" alt="BeezerBuilt" style="object-fit:contain;"/></div>Beezer<span>Built</span></div>
+      <p class="footer-tagline">Imagine it. We'll build it & maintain it.<br/>Custom websites for businesses of all sizes — you don't pay until you're satisfied.</p>
     </div>
     <div class="footer-links-group">
       <h4>Navigate</h4>
-      <a href="#services">Services</a>
-      <a href="#capabilities">Capabilities</a>
-      <a href="#sandbox">Demo Builder</a>
-      <a href="#process">How It Works</a>
-      <a href="#contact">Get A Quote</a>
+      <a href="#" onclick="switchTab('services'); return false;">Services</a>
+      <a href="#" onclick="switchTab('capabilities'); return false;">Capabilities</a>
+      <a href="#" onclick="switchTab('process'); return false;">How It Works</a>
+      <a href="#" onclick="switchTab('contact'); return false;">Get A Quote</a>
       <a href="#" onclick="openModal('privacy');return false;">Privacy Policy</a>
       <a href="#" onclick="openModal('terms');return false;">Terms & Conditions</a>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 BeezerBuilt. All rights reserved.</span>
+    <span>© 2026 BeezerBuilt. All rights reserved.</span>
     <span>Built with 🐝 by BeezerBuilt</span>
-    <div>
-      <a href="#" onclick="openModal('privacy');return false;">Privacy</a> ·
-      <a href="#" onclick="openModal('terms');return false;">Terms</a>
-    </div>
+    <div><a href="#" onclick="openModal('privacy');return false;">Privacy</a> · <a href="#" onclick="openModal('terms');return false;">Terms</a></div>
   </div>
 </footer>
 
-<!-- ============================================================
-     FLOATING BEE
-============================================================ -->
-<svg id="floating-bee" viewBox="0 0 80 80" fill="none" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" title="Get a quote">
+<!-- FLOATING BEE -->
+<svg id="floating-bee" viewBox="0 0 80 80" fill="none" onclick="switchTab('contact')" title="Get a quote">
   <defs>
-    <radialGradient id="fbBodyGrad" cx="40%" cy="35%" r="60%">
-      <stop offset="0%" stop-color="#E8C547"/>
-      <stop offset="100%" stop-color="#9A7A10"/>
-    </radialGradient>
-    <radialGradient id="fbHeadGrad" cx="40%" cy="35%" r="60%">
-      <stop offset="0%" stop-color="#E8C547"/>
-      <stop offset="100%" stop-color="#C9A227"/>
-    </radialGradient>
-    <linearGradient id="fbWingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="rgba(255,255,255,0.92)"/>
-      <stop offset="100%" stop-color="rgba(200,220,255,0.55)"/>
-    </linearGradient>
+    <radialGradient id="fbBodyGrad" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#E8C547"/><stop offset="100%" stop-color="#9A7A10"/></radialGradient>
+    <radialGradient id="fbHeadGrad" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#E8C547"/><stop offset="100%" stop-color="#C9A227"/></radialGradient>
+    <linearGradient id="fbWingGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="rgba(255,255,255,0.92)"/><stop offset="100%" stop-color="rgba(200,220,255,0.55)"/></linearGradient>
   </defs>
   <ellipse cx="19" cy="26" rx="17" ry="8.5" fill="url(#fbWingGrad)" transform="rotate(-28 19 26)"/>
   <ellipse cx="61" cy="26" rx="17" ry="8.5" fill="url(#fbWingGrad)" transform="rotate(28 61 26)"/>
@@ -2338,387 +1423,46 @@
   <circle cx="52.2" cy="5.2" r="0.9" fill="rgba(255,255,255,0.7)"/>
 </svg>
 
-<!-- ============================================================
-     PRIVACY MODAL
-============================================================ -->
+<!-- PRIVACY MODAL -->
 <div class="modal-overlay" id="privacyModal">
   <div class="modal-box">
-    <div class="modal-header">
-      <div class="modal-title">Privacy Policy</div>
-      <div class="modal-close" onclick="closeModal('privacy')">✕</div>
-    </div>
+    <div class="modal-header"><div class="modal-title">Privacy Policy</div><div class="modal-close" onclick="closeModal('privacy')">✕</div></div>
     <div class="modal-content">
       <p><strong>Last Updated: 2025</strong></p>
-      <h3>1. Information We Collect</h3>
-      <p>When you fill out the contact form on this website, we collect your name, email address, phone number, and any details you voluntarily provide about your project. This information is used solely to respond to your inquiry.</p>
-      <h3>2. How We Use Your Information</h3>
-      <p>Your information is used to contact you about your website project and to provide a quote. We do not sell, share, or distribute your personal information to third parties.</p>
-      <h3>3. Data Storage</h3>
-      <p>Form submissions are processed through FormSpree, a secure third-party form service. Submissions are stored securely and only accessible to BeezerBuilt.</p>
-      <h3>4. Cookies</h3>
-      <p>This website may use essential cookies to ensure functionality. We do not use tracking cookies or advertising cookies.</p>
-      <h3>5. Your Rights</h3>
-      <p>You have the right to request deletion of your personal data at any time. Contact us at the email provided to make this request.</p>
-      <h3>6. Contact</h3>
-      <p>For any privacy-related questions, please reach out through the contact form on this page.</p>
+      <h3>1. Information We Collect</h3><p>When you fill out the contact form on this website, we collect your name, email address, phone number, and any details you voluntarily provide about your project. This information is used solely to respond to your inquiry.</p>
+      <h3>2. How We Use Your Information</h3><p>Your information is used to contact you about your website project and to provide a quote. We do not sell, share, or distribute your personal information to third parties.</p>
+      <h3>3. Data Storage</h3><p>Form submissions are processed through FormSpree, a secure third-party form service. Submissions are stored securely and only accessible to BeezerBuilt.</p>
+      <h3>4. Cookies</h3><p>This website may use essential cookies to ensure functionality. We do not use tracking cookies or advertising cookies.</p>
+      <h3>5. Your Rights</h3><p>You have the right to request deletion of your personal data at any time. Contact us at the email provided to make this request.</p>
+      <h3>6. Contact</h3><p>For any privacy-related questions, please reach out through the contact form on this page.</p>
     </div>
   </div>
 </div>
 
-<!-- ============================================================
-     TERMS MODAL
-============================================================ -->
+<!-- TERMS MODAL -->
 <div class="modal-overlay" id="termsModal">
   <div class="modal-box">
-    <div class="modal-header">
-      <div class="modal-title">Terms & Conditions</div>
-      <div class="modal-close" onclick="closeModal('terms')">✕</div>
-    </div>
+    <div class="modal-header"><div class="modal-title">Terms & Conditions</div><div class="modal-close" onclick="closeModal('terms')">✕</div></div>
     <div class="modal-content">
       <p><strong>Last Updated: 2025</strong></p>
-      <h3>1. Services</h3>
-      <p>BeezerBuilt provides custom web design, development, hosting, and maintenance services. The scope of each project is agreed upon before work begins.</p>
-      <h3>2. Payment Policy</h3>
-      <p>Payment is due only after the client is fully satisfied with the delivered website. No payment is collected upfront unless explicitly agreed upon for large projects requiring third-party costs (e.g., domain registration).</p>
-      <h3>3. Client Responsibilities</h3>
-      <p>The client agrees to provide accurate information, timely feedback, and any necessary content (text, images, branding) needed to complete the project.</p>
-      <h3>4. Intellectual Property</h3>
-      <p>Upon full payment, the client receives full ownership of the website design and source code. BeezerBuilt retains no rights to the completed work.</p>
-      <h3>5. Maintenance & Support</h3>
-      <p>Bug fixes resulting from BeezerBuilt's work are provided free of charge. New features or changes beyond the original scope may be quoted separately.</p>
-      <h3>6. Uptime</h3>
-      <p>BeezerBuilt commits to keeping hosted websites online and operational. In the event of downtime due to third-party server issues, resolution will be pursued as quickly as possible.</p>
-      <h3>7. Limitation of Liability</h3>
-      <p>BeezerBuilt is not liable for losses resulting from website downtime, third-party service outages, or client-provided content. Our liability is limited to the amount paid for services.</p>
-      <h3>8. Termination</h3>
-      <p>Either party may terminate the agreement with written notice. Any work completed up to termination may be invoiced proportionally.</p>
+      <h3>1. Services</h3><p>BeezerBuilt provides custom web design, development, hosting, and maintenance services. The scope of each project is agreed upon before work begins.</p>
+      <h3>2. Payment Policy</h3><p>Payment is due only after the client is fully satisfied with the delivered website. No payment is collected upfront unless explicitly agreed upon for large projects requiring third-party costs (e.g., domain registration).</p>
+      <h3>3. Client Responsibilities</h3><p>The client agrees to provide accurate information, timely feedback, and any necessary content (text, images, branding) needed to complete the project.</p>
+      <h3>4. Intellectual Property</h3><p>Upon full payment, the client receives full ownership of the website design and source code. BeezerBuilt retains no rights to the completed work.</p>
+      <h3>5. Maintenance & Support</h3><p>Bug fixes resulting from BeezerBuilt's work are provided free of charge. New features or changes beyond the original scope may be quoted separately.</p>
+      <h3>6. Uptime</h3><p>BeezerBuilt commits to keeping hosted websites online and operational. In the event of downtime due to third-party server issues, resolution will be pursued as quickly as possible.</p>
+      <h3>7. Limitation of Liability</h3><p>BeezerBuilt is not liable for losses resulting from website downtime, third-party service outages, or client-provided content. Our liability is limited to the amount paid for services.</p>
+      <h3>8. Termination</h3><p>Either party may terminate the agreement with written notice. Any work completed up to termination may be invoiced proportionally.</p>
     </div>
   </div>
 </div>
 
-<!-- ============================================================
-     JAVASCRIPT
-============================================================ -->
 <script>
-  // ---- LANGUAGE SYSTEM ----
-  let currentLang = localStorage.getItem('bb_lang') || null;
-
-  const T = {
-    en: {
-      // Nav
-      navServices: 'Services', navDemo: 'Demo Builder', navProcess: 'How It Works',
-      navContact: 'Contact', navCta: 'Get A Quote →', langToggle: 'ES',
-      // Hero
-      heroEyebrow: 'Web Development · Design · Maintenance',
-      heroTitle: 'Imagine It.<em>We\'ll Build It.</em>',
-      heroSub: '& Maintain It.',
-      heroDesc: 'From domain to deployment — custom websites built to your vision, with ongoing support so your site stays live, fast, and legal. You don\'t pay until you\'re satisfied.',
-      heroBtnPrimary: 'Start Your Project →', heroBtnOutline: 'Try The Demo Builder',
-      // Trust bar
-      trust0: 'SSL Secured Sites', trust1: 'Pay When Satisfied',
-      trust2: 'Domain + Hosting Included', trust3: 'Free Bug Fixes, Always',
-      trust4: 'Mobile-First Design', trust5: 'Fast & Always Online',
-      // Services
-      svcLabel: 'What We Do',
-      svcTitle: 'Full-Stack <span class="gold">Services</span>',
-      svcDesc: 'Everything your web presence needs — under one roof, handled by one person who actually cares.',
-      svcCards: [
-        ['Custom Web Development','Hand-coded websites built to your exact vision — no drag-and-drop templates. Every line written with purpose.',''],
-        ['Domain Registration','Your own custom web address (e.g. yourbusiness.com). Pricing varies based on availability — we\'ll find what fits you.',''],
-        ['Web Hosting','Your site lives on reliable servers so it\'s fast and accessible 24/7. We handle all the technical setup for you.',''],
-        ['SSL Certificate','That little padlock next to your URL. It encrypts your site so visitors know they\'re safe — Google requires it too.','Mandatory for trust'],
-        ['Custom Email','Look professional with a branded email address like you@yourbusiness.com instead of a generic Gmail.',''],
-        ['E-Commerce & Stores','Sell products, merch, or services online with a full shopping experience — carts, checkout, and payment processing.',''],
-        ['Custom Programs & Apps','Need a custom tool — batch dialers, portals, calculators? If you can imagine it, we\'ll code it from scratch.',''],
-        ['Logo Design','Professional logo design to give your brand a visual identity that stands out. Custom, original, all yours.',''],
-        ['Analytics & SEO','Track who visits your site and help more people find you on Google. Data-driven growth, set up for you.',''],
-        ['Maintenance & Support','Something breaks? I fix it free. Business hours support to keep your site running smooth — rain or shine.','Always included'],
-      ],
-      // Capabilities
-      capLabel: 'What\'s Possible',
-      capTitle: 'Modern Web <span class="gold">Capabilities</span>',
-      capDesc: 'Your website can do way more than you think. Here\'s a taste of what modern web tech makes possible.',
-      capCards: [
-        ['Smooth Animations','Elements that slide, fade, and pop as users scroll — making your site feel alive and premium.'],
-        ['Video Backgrounds','Cinematic video playing behind your content for an immersive, high-end first impression.'],
-        ['Image Galleries','Beautiful photo layouts with lightboxes, lazy loading, and smooth transitions.'],
-        ['Smart Contact Forms','Forms that actually reach you — no spam, secure, and easy to manage.'],
-        ['Dark / Light Mode','Let users pick their preference. Modern and accessible for everyone.'],
-        ['Mobile-First Design','Your site looks and works perfectly on phones, tablets, and desktops.'],
-        ['Online Stores','Full e-commerce with product pages, carts, and payment integrations like Stripe or Buy Me a Coffee.'],
-        ['Parallax Scrolling','Background layers move at different speeds as you scroll — a stunning depth effect.'],
-        ['SEO Optimized','Built so Google can find and rank your site. More visibility = more customers.'],
-        ['Blazing Fast Load','Optimized code means your site loads in seconds, keeping visitors engaged.'],
-        ['Carousels & Sliders','Auto-sliding banners, testimonial carousels, product showcases — smooth and interactive.'],
-        ['Maps & Location','Interactive Google Maps, business hours, and directions embedded right into your site.'],
-      ],
-      // Sandbox
-      sbLabel: 'Try It Yourself', sbTitle: 'Build Your Own <span class="gold">Demo</span>',
-      sbDesc: 'Customize a website preview right here. No coding needed — just click what you like. This is what we can build for you.',
-      sbDisclaimer: '⚠️ <strong>Demo Mode Only</strong> — Nothing here is real or live. This is just a preview of possibilities. Contact us to build the real thing.',
-      sbCta: 'Like what you see? Let\'s build the real version for your business.',
-      sbCtaBtn: 'Start My Project →',
-      // Process
-      procLabel: 'How It Works', procTitle: 'Simple <span class="gold">Process</span>',
-      procDesc: 'No stress, no confusion. Here\'s exactly how we work together.',
-      procSteps: [
-        ['Fill Out The Form','Tell me what you need — your name, type of website, features, and timeline. Takes about 2 minutes.'],
-        ['Get Your Custom Quote','I review your request and reach out with a personalized quote — no generic pricing, it\'s built around what you actually need.'],
-        ['Review & Approve','We go back and forth until every detail is exactly how you want it. Nothing gets built without your sign-off.'],
-        ['We Build It','Once approved, I get to work building your site — clean code, fast performance, and everything agreed upon.'],
-      ],
-      // Guarantee
-      guarLabel: 'Our Promise', guarTitle: 'Why <span class="gold">BeezerBuilt</span>',
-      guarItems: [
-        ['💰','Pay When Satisfied','You don\'t owe a single cent until your website is complete and you\'re 100% happy with it. Zero risk.'],
-        ['🔧','Free Maintenance','Bugs happen. When they do, I fix them — free, no questions asked. Your site stays clean and functional.'],
-        ['🔒','Legally Covered','Privacy Policy, Terms & Conditions, SSL — everything your site needs to be compliant and trustworthy.'],
-        ['📞','Business Hours Support','Questions or changes? Reach out during business hours and I\'ll get back to you fast. Real human, not a chatbot.'],
-      ],
-      // Contact
-      contLabel: 'Get Started', contTitle: 'Request Your <span class="gold">Quote</span>',
-      contDesc: 'Tell me what you need and I\'ll reach out with a personalized quote. Simple, fast, no obligation.',
-      // Footer
-      footerTagline: 'Imagine it. We\'ll build it & maintain it.\nCustom websites for businesses of all sizes — you don\'t pay until you\'re satisfied.',
-      footerNavTitle: 'Navigate',
-    },
-
-    es: {
-      // Nav
-      navServices: 'Servicios', navDemo: 'Demo Interactivo', navProcess: 'Cómo Funciona',
-      navContact: 'Contacto', navCta: 'Obtener Cotización →', langToggle: 'EN',
-      // Hero
-      heroEyebrow: 'Desarrollo Web · Diseño · Mantenimiento',
-      heroTitle: 'Imagínalo.<em>Lo Construimos.</em>',
-      heroSub: '& Lo Mantenemos.',
-      heroDesc: 'Desde el dominio hasta el lanzamiento — sitios web a tu medida, con soporte continuo para que tu sitio esté siempre en línea, rápido y seguro. No pagas hasta que estés satisfecho.',
-      heroBtnPrimary: 'Iniciar Mi Proyecto →', heroBtnOutline: 'Probar El Demo',
-      // Trust bar
-      trust0: 'Sitios con SSL Seguro', trust1: 'Pagas Al Quedar Satisfecho',
-      trust2: 'Dominio + Hosting Incluido', trust3: 'Correcciones Gratuitas',
-      trust4: 'Diseño Mobile-First', trust5: 'Rápido y Siempre En Línea',
-      // Services
-      svcLabel: 'Lo Que Hacemos',
-      svcTitle: 'Servicios <span class="gold">Completos</span>',
-      svcDesc: 'Todo lo que tu presencia web necesita — bajo un mismo techo, manejado por una persona que realmente se preocupa.',
-      svcCards: [
-        ['Desarrollo Web Personalizado','Sitios web codificados a mano según tu visión exacta — sin plantillas. Cada línea escrita con propósito.',''],
-        ['Registro de Dominio','Tu propia dirección web (ej. tunegocio.com). El precio varía según disponibilidad — encontramos lo que te conviene.',''],
-        ['Hosting Web','Tu sitio vive en servidores confiables para que sea rápido y accesible 24/7. Nos encargamos de toda la configuración.',''],
-        ['Certificado SSL','Ese pequeño candado junto a tu URL. Cifra tu sitio para que los visitantes sepan que están seguros — Google también lo requiere.','Esencial para la confianza'],
-        ['Correo Personalizado','Luce profesional con una dirección como tu@tunegocio.com en vez de un Gmail genérico.',''],
-        ['Tiendas en Línea','Vende productos, merch o servicios con una experiencia completa — carritos, pago y procesamiento incluidos.',''],
-        ['Programas y Apps a Medida','¿Necesitas una herramienta personalizada? Si puedes imaginarlo, lo codificamos desde cero.',''],
-        ['Diseño de Logo','Diseño de logo profesional para darle a tu marca una identidad visual que destaque. Original y tuyo.',''],
-        ['Analíticas y SEO','Rastrea quién visita tu sitio y ayuda a más personas a encontrarte en Google. Crecimiento basado en datos.',''],
-        ['Mantenimiento y Soporte','¿Algo se rompe? Lo arreglo gratis. Soporte en horario laboral para que tu sitio funcione siempre.','Siempre incluido'],
-      ],
-      // Capabilities
-      capLabel: 'Qué Es Posible',
-      capTitle: 'Capacidades Web <span class="gold">Modernas</span>',
-      capDesc: 'Tu sitio web puede hacer mucho más de lo que crees. Aquí un vistazo de lo que la tecnología web moderna hace posible.',
-      capCards: [
-        ['Animaciones Fluidas','Elementos que se deslizan, aparecen y resaltan al hacer scroll — haciendo que tu sitio se sienta vivo y premium.'],
-        ['Fondos de Video','Video cinematográfico detrás de tu contenido para una primera impresión inmersiva y de alto nivel.'],
-        ['Galerías de Imágenes','Diseños de fotos hermosos con lightboxes, carga diferida y transiciones suaves.'],
-        ['Formularios de Contacto','Formularios que realmente te llegan — sin spam, seguros y fáciles de gestionar.'],
-        ['Modo Oscuro / Claro','Permite a los usuarios elegir su preferencia. Moderno y accesible para todos.'],
-        ['Diseño Mobile-First','Tu sitio se ve y funciona perfecto en teléfonos, tabletas y computadoras.'],
-        ['Tiendas en Línea','E-commerce completo con páginas de producto, carritos e integración de pagos como Stripe.'],
-        ['Scroll Parallax','Las capas de fondo se mueven a diferentes velocidades al hacer scroll — un efecto de profundidad impresionante.'],
-        ['SEO Optimizado','Construido para que Google pueda encontrar y posicionar tu sitio. Más visibilidad = más clientes.'],
-        ['Carga Ultra Rápida','Código optimizado que hace que tu sitio cargue en segundos, manteniendo a los visitantes comprometidos.'],
-        ['Carruseles y Sliders','Banners deslizantes, carruseles de testimonios, vitrinas de productos — suaves e interactivos.'],
-        ['Mapas y Ubicación','Google Maps interactivo, horarios y direcciones integrados directamente en tu sitio.'],
-      ],
-      // Sandbox
-      sbLabel: 'Pruébalo Tú Mismo', sbTitle: 'Construye Tu Propio <span class="gold">Demo</span>',
-      sbDesc: 'Personaliza una vista previa de un sitio aquí mismo. Sin código — solo haz clic en lo que te guste. Esto es lo que podemos construir para ti.',
-      sbDisclaimer: '⚠️ <strong>Solo Modo Demo</strong> — Nada aquí es real ni está en vivo. Es solo una vista previa de posibilidades. Contáctanos para construir lo real.',
-      sbCta: '¿Te gusta lo que ves? Construyamos la versión real para tu negocio.',
-      sbCtaBtn: 'Iniciar Mi Proyecto →',
-      // Process
-      procLabel: 'Cómo Funciona', procTitle: 'Un Proceso <span class="gold">Simple</span>',
-      procDesc: 'Sin estrés ni confusión. Así es exactamente como trabajamos juntos.',
-      procSteps: [
-        ['Llena El Formulario','Dime lo que necesitas — tu nombre, tipo de sitio, funciones y plazo. Tarda unos 2 minutos.'],
-        ['Recibe Tu Cotización','Reviso tu solicitud y me comunico con una cotización personalizada — sin precios genéricos.'],
-        ['Revisa y Aprueba','Vamos y venimos hasta que cada detalle sea exactamente como lo deseas. Nada se construye sin tu aprobación.'],
-        ['Lo Construimos','Una vez aprobado, me pongo a trabajar — código limpio, rendimiento rápido y todo lo acordado.'],
-      ],
-      // Guarantee
-      guarLabel: 'Nuestra Promesa', guarTitle: '¿Por Qué <span class="gold">BeezerBuilt</span>?',
-      guarItems: [
-        ['💰','Pagas Al Quedar Satisfecho','No debes un solo centavo hasta que tu sitio esté completo y estés 100% feliz. Cero riesgo.'],
-        ['🔧','Mantenimiento Gratuito','Los errores ocurren. Cuando suceden, los arreglo gratis, sin preguntas. Tu sitio se mantiene limpio y funcional.'],
-        ['🔒','Cubierto Legalmente','Política de privacidad, términos y condiciones, SSL — todo lo que tu sitio necesita para ser confiable y cumplir la ley.'],
-        ['📞','Soporte en Horario Laboral','¿Preguntas o cambios? Contáctame en horario laboral y te respondo rápido. Una persona real, no un chatbot.'],
-      ],
-      // Contact
-      contLabel: 'Comenzar', contTitle: 'Solicita Tu <span class="gold">Cotización</span>',
-      contDesc: 'Dime lo que necesitas y me comunicaré con una cotización personalizada. Simple, rápido, sin compromiso.',
-      // Footer
-      footerTagline: 'Imagínalo. Lo construimos y mantenemos.\nSitios web personalizados para negocios de todos los tamaños — no pagas hasta quedar satisfecho.',
-      footerNavTitle: 'Navegar',
-    }
-  };
-
-  function applyLanguage(lang) {
-    currentLang = lang;
-    localStorage.setItem('bb_lang', lang);
-    const t = T[lang];
-
-    // Nav links
-    const navAs = document.querySelectorAll('.nav-links a');
-    const mobileAs = document.querySelectorAll('.nav-mobile a');
-    const navLabels = [t.navServices, t.navDemo, t.navProcess, t.navContact];
-    navAs.forEach((a, i) => { if (navLabels[i]) a.textContent = navLabels[i]; });
-    mobileAs.forEach((a, i) => { if (navLabels[i]) a.textContent = navLabels[i]; });
-    const navCta = document.querySelector('a.nav-cta');
-    if (navCta) navCta.textContent = t.navCta;
-    const toggleLabel = document.getElementById('langToggleLabel');
-    if (toggleLabel) toggleLabel.textContent = t.langToggle;
-
-    // Hero
-    const eyebrow = document.querySelector('.hero-eyebrow');
-    if (eyebrow) eyebrow.childNodes[0].textContent = t.heroEyebrow;
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-      const parts = t.heroTitle.split('<em>');
-      heroTitle.childNodes[0].textContent = parts[0];
-      const em = heroTitle.querySelector('em');
-      if (em) em.textContent = parts[1].replace('</em>','');
-    }
-    const heroSub = document.querySelector('.hero-sub');
-    if (heroSub) heroSub.textContent = t.heroSub;
-    const heroDesc = document.querySelector('.hero-desc');
-    if (heroDesc) heroDesc.textContent = t.heroDesc;
-    const heroBtns = document.querySelectorAll('.hero-btns a');
-    if (heroBtns[0]) heroBtns[0].textContent = t.heroBtnPrimary;
-    if (heroBtns[1]) heroBtns[1].textContent = t.heroBtnOutline;
-
-    // Trust bar
-    const trustItems = document.querySelectorAll('.trust-item span:last-child');
-    trustItems.forEach((el, i) => { if (t['trust'+i]) el.textContent = t['trust'+i]; });
-
-    // Services
-    const svcLbls = document.querySelectorAll('#services .section-label');
-    if (svcLbls[0]) svcLbls[0].textContent = t.svcLabel;
-    const svcTtls = document.querySelectorAll('#services .section-title');
-    if (svcTtls[0]) svcTtls[0].innerHTML = t.svcTitle;
-    const svcDescs = document.querySelectorAll('#services .section-desc');
-    if (svcDescs[0]) svcDescs[0].textContent = t.svcDesc;
-    document.querySelectorAll('.service-card').forEach((card, i) => {
-      const d = t.svcCards[i]; if (!d) return;
-      const title = card.querySelector('.service-title');
-      const desc = card.querySelector('.service-desc');
-      const badge = card.querySelector('.service-badge');
-      if (title) title.textContent = d[0];
-      if (desc) desc.textContent = d[1];
-      if (badge && d[2]) badge.textContent = d[2];
-    });
-
-    // Capabilities
-    document.querySelector('#capabilities .section-label').textContent = t.capLabel;
-    document.querySelector('#capabilities .section-title').innerHTML = t.capTitle;
-    document.querySelector('#capabilities .section-desc').textContent = t.capDesc;
-    document.querySelectorAll('.cap-card').forEach((card, i) => {
-      const d = t.capCards[i]; if (!d) return;
-      const title = card.querySelector('.cap-title');
-      const desc = card.querySelector('.cap-desc');
-      if (title) title.textContent = d[0];
-      if (desc) desc.textContent = d[1];
-    });
-
-    // Sandbox
-    document.querySelector('#sandbox .section-label').textContent = t.sbLabel;
-    document.querySelector('#sandbox .section-title').innerHTML = t.sbTitle;
-    document.querySelector('#sandbox .section-desc').textContent = t.sbDesc;
-    const sbDisc = document.querySelector('.sandbox-disclaimer');
-    if (sbDisc) sbDisc.innerHTML = t.sbDisclaimer;
-    const sbCtaP = document.querySelector('#sandbox > div:last-child p');
-    if (sbCtaP) sbCtaP.textContent = t.sbCta;
-    const sbCtaBtn = document.querySelector('#sandbox > div:last-child a');
-    if (sbCtaBtn) sbCtaBtn.textContent = t.sbCtaBtn;
-
-    // Process
-    document.querySelector('#process .section-label').textContent = t.procLabel;
-    document.querySelector('#process .section-title').innerHTML = t.procTitle;
-    document.querySelector('#process .section-desc').textContent = t.procDesc;
-    document.querySelectorAll('.process-step').forEach((step, i) => {
-      const d = t.procSteps[i]; if (!d) return;
-      const title = step.querySelector('.step-title');
-      const desc = step.querySelector('.step-desc');
-      if (title) title.textContent = d[0];
-      if (desc) desc.textContent = d[1];
-    });
-
-    // Guarantee
-    const guarSec = document.getElementById('guarantee');
-    if (guarSec) {
-      const gl = guarSec.querySelector('.section-label');
-      const gt = guarSec.querySelector('.section-title');
-      if (gl) gl.textContent = t.guarLabel;
-      if (gt) gt.innerHTML = t.guarTitle;
-      guarSec.querySelectorAll('.guarantee-item').forEach((item, i) => {
-        const d = t.guarItems[i]; if (!d) return;
-        const icon = item.querySelector('.guarantee-icon');
-        const title = item.querySelector('.guarantee-title');
-        const desc = item.querySelector('.guarantee-desc');
-        if (icon) icon.textContent = d[0];
-        if (title) title.textContent = d[1];
-        if (desc) desc.textContent = d[2];
-      });
-    }
-
-    // Contact
-    document.querySelector('#contact .section-label').textContent = t.contLabel;
-    document.querySelector('#contact .section-title').innerHTML = t.contTitle;
-    document.querySelector('#contact .section-desc').textContent = t.contDesc;
-
-    // Footer
-    const footerTagline = document.querySelector('.footer-tagline');
-    if (footerTagline) footerTagline.innerHTML = t.footerTagline.replace('\n','<br/>');
-    const footerNavH4 = document.querySelector('.footer-links-group h4');
-    if (footerNavH4) footerNavH4.textContent = t.footerNavTitle;
-  }
-
-  function pickLanguage(lang) {
-    const picker = document.getElementById('langPicker');
-    picker.style.transition = 'opacity .4s ease';
-    picker.style.opacity = '0';
-    setTimeout(() => {
-      document.getElementById('loader').classList.add('hidden');
-      applyLanguage(lang);
-    }, 450);
-  }
-
-  function switchLanguage() {
-    applyLanguage(currentLang === 'es' ? 'en' : 'es');
-  }
-
-  // ---- LOADER — waits for language pick, no auto-hide ----
-  // (If user has visited before, skip the picker and use saved lang)
-  window.addEventListener('load', () => {
-    const saved = localStorage.getItem('bb_lang');
-    if (saved) {
-      setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
-        applyLanguage(saved);
-      }, 3200);
-    }
-    // Otherwise: loader stays visible until user picks language
-  });
-
+  // ---- LOADER ----
+  window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 3600); });
   // ---- NAV ----
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
-  });
-
-  function toggleMobileNav() {
-    document.getElementById('mobileNav').classList.toggle('open');
-  }
-
+  window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60); });
+  function toggleMobileNav() { document.getElementById('mobileNav').classList.toggle('open'); }
   // ---- PARTICLES ----
   (function spawnParticles() {
     const container = document.getElementById('particles');
@@ -2734,341 +1478,39 @@
       container.appendChild(p);
     }
   })();
-
   // ---- SCROLL REVEAL ----
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 60);
-      }
-    });
-  }, { threshold: 0.15 });
+  const observer = new IntersectionObserver((entries) => { entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); } }); }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // ---- SANDBOX ----
-  const state = {
-    theme: 'dark',
-    color: '#C9A227',
-    videoBackground: false,
-    animations: true,
-    gallery: false,
-    contactForm: false,
-    store: false,
-    testimonials: false,
-    pricing: false,
-    chatWidget: false,
-    mapEmbed: false,
-    newsletter: false,
-    countdown: false,
-    navStyle: 'modern',
-    layout: 'centered',
-    btnStyle: 'square',
-    font: 'modern',
-    brandName: 'YourBrand'
-  };
-
-  // Countdown ticker
-  let cdInterval = null;
-  function startCountdown() {
-    if (cdInterval) return;
-    cdInterval = setInterval(() => {
-      if (!state.countdown) { clearInterval(cdInterval); cdInterval = null; return; }
-      let s = parseInt(document.getElementById('pvCdSec').textContent);
-      let m = parseInt(document.getElementById('pvCdMin').textContent);
-      let h = parseInt(document.getElementById('pvCdHrs').textContent);
-      let d = parseInt(document.getElementById('pvCdDays').textContent);
-      s--; if (s < 0) { s = 59; m--; }
-      if (m < 0) { m = 59; h--; }
-      if (h < 0) { h = 23; d--; }
-      if (d < 0) d = 0;
-      document.getElementById('pvCdSec').textContent = String(s).padStart(2,'0');
-      document.getElementById('pvCdMin').textContent = String(m).padStart(2,'0');
-      document.getElementById('pvCdHrs').textContent = String(h).padStart(2,'0');
-      document.getElementById('pvCdDays').textContent = String(d).padStart(2,'0');
-    }, 1000);
+  // ---- TAB SWITCHING ----
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-section').forEach(section => { section.classList.remove('active'); });
+    const activeSection = document.getElementById('tab-' + tabId);
+    if (activeSection) activeSection.classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(btn => { btn.classList.remove('active'); if (btn.dataset.tab === tabId) btn.classList.add('active'); });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  function updateFeatureCount() {
-    const featureKeys = ['videoBackground','animations','gallery','contactForm','store',
-      'testimonials','pricing','chatWidget','mapEmbed','newsletter','countdown'];
-    const count = featureKeys.filter(k => state[k]).length;
-    const el = document.getElementById('featureCount');
-    if (el) el.textContent = count + ' feature' + (count !== 1 ? 's' : '') + ' active';
-  }
-
-  function applyPreview() {
-    const site = document.getElementById('pvSite');
-
-    // Theme
-    const themes = {
-      dark:     { bg:'#0a0f1a', navBg:'rgba(8,14,26,0.85)', text:'#fff', subText:'rgba(255,255,255,0.55)' },
-      light:    { bg:'#f4f6fa', navBg:'#fff', text:'#111', subText:'rgba(0,0,0,0.45)' },
-      midnight: { bg:'#050810', navBg:'rgba(5,8,16,0.9)', text:'#e8ecf5', subText:'rgba(232,236,245,0.45)' }
-    };
-    const t = themes[state.theme] || themes.dark;
-    site.style.background = t.bg;
-    site.style.color = t.text;
-
-    // Font
-    const fonts = { modern:'Outfit,sans-serif', serif:'"Georgia",serif', mono:'"Courier New",monospace' };
-    site.style.fontFamily = fonts[state.font] || fonts.modern;
-
-    // Brand name
-    const brand = state.brandName || 'YourBrand';
-    ['pvNavBrand','pvFooterBrand'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = brand;
-    });
-    const url = document.getElementById('pvUrl');
-    if (url) url.textContent = '🔒 ' + brand.toLowerCase().replace(/\s+/g,'') + '.com';
-
-    // Color: accent everything
-    const c = state.color;
-    document.getElementById('pvAccentText').style.color = c;
-    document.getElementById('pvNavBrand').style.color = c;
-
-    // Btn style
-    const radii = { square:'3px', rounded:'8px', pill:'50px' };
-    const r = radii[state.btnStyle] || '3px';
-    const pvBtn = document.getElementById('pvBtn');
-    const pvBtn2 = document.getElementById('pvBtn2');
-    pvBtn.style.background = c; pvBtn.style.color = '#0D1B2E'; pvBtn.style.borderRadius = r;
-    pvBtn2.style.border = '1.5px solid '+c; pvBtn2.style.color = c; pvBtn2.style.background = 'transparent'; pvBtn2.style.borderRadius = r;
-    const pvNavCta = document.getElementById('pvNavCta');
-    if (pvNavCta) { pvNavCta.style.background = c; pvNavCta.style.color = '#0D1B2E'; pvNavCta.style.borderRadius = r; }
-
-    // Form btn
-    const fb = document.getElementById('pvFormBtn'); if (fb) { fb.style.background = c; fb.style.color = '#0D1B2E'; fb.style.borderRadius = r; }
-    const nb = document.getElementById('pvNewsBtn'); if (nb) { nb.style.background = c; nb.style.color = '#0D1B2E'; nb.style.borderRadius = r; }
-
-    // Buy btns
-    ['pvBuyBtn','pvBuyBtn2','pvBuyBtn3','pvBuyBtn4'].forEach(id => {
-      const el = document.getElementById(id); if (el) el.style.color = c;
-    });
-
-    // Stats color
-    ['pvStat1Color','pvStat2Color','pvStat3Color'].forEach(id => {
-      const el = document.getElementById(id); if (el) el.style.color = c;
-    });
-
-    // Gallery colors
-    ['pvGImg1','pvGImg2','pvGImg3'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.background = 'linear-gradient(135deg,' + c + '44,' + c + '11)';
-    });
-
-    // Testimonials star color
-    ['pvTstColor1','pvTstColor2'].forEach(id => {
-      const el = document.getElementById(id); if (el) el.style.color = c;
-    });
-
-    // Pricing highlight
-    const ph = document.getElementById('pvPricingHighlight');
-    if (ph) { ph.style.background = c + '22'; ph.style.border = '1.5px solid '+c; ph.style.color = t.text; }
-    ['pvPriceColor1','pvPriceColor2','pvPriceColor3'].forEach(id => {
-      const el = document.getElementById(id); if (el) el.style.color = c;
-    });
-
-    // Chat widget
-    const chatBtn = document.getElementById('pvChatBtn');
-    if (chatBtn) { chatBtn.style.background = c; chatBtn.style.color = '#0D1B2E'; }
-
-    // Video bg
-    document.getElementById('pvVideo').classList.toggle('show', state.videoBackground);
-
-    // Particles
-    const pc = document.getElementById('pvParticles');
-    pc.innerHTML = '';
-    if (state.animations) {
-      for (let i = 0; i < 14; i++) {
-        const p = document.createElement('div');
-        p.className = 'pv-anim-particle';
-        p.style.left = Math.random() * 100 + '%';
-        p.style.bottom = '0';
-        p.style.background = c;
-        p.style.animationDuration = (3 + Math.random() * 4) + 's';
-        p.style.animationDelay = (Math.random() * 4) + 's';
-        pc.appendChild(p);
-      }
-    }
-
-    // Hero layout
-    const hero = document.getElementById('pvHero');
-    if (state.layout === 'left') {
-      hero.style.textAlign = 'left'; hero.style.alignItems = 'flex-start';
-      document.getElementById('pvH1').style.fontSize = '1.6rem';
-    } else if (state.layout === 'bold') {
-      hero.style.textAlign = 'center'; hero.style.alignItems = 'center';
-      hero.style.background = c + '15'; hero.style.padding = '30px 20px';
-      document.getElementById('pvH1').style.fontSize = '2rem';
-    } else {
-      hero.style.textAlign = 'center'; hero.style.alignItems = 'center';
-      hero.style.background = ''; hero.style.padding = '40px 20px';
-      document.getElementById('pvH1').style.fontSize = '1.8rem';
-    }
-
-    // Feature sections
-    document.getElementById('pvGallery').classList.toggle('show', state.gallery);
-    document.getElementById('pvForm').classList.toggle('show', state.contactForm);
-    document.getElementById('pvStore').classList.toggle('show', state.store);
-    const showHide = (id, on) => { const el = document.getElementById(id); if (el) el.style.display = on ? '' : 'none'; };
-    showHide('pvTestimonials', state.testimonials);
-    showHide('pvPricing', state.pricing);
-    showHide('pvChat', state.chatWidget);
-    showHide('pvMap', state.mapEmbed);
-    showHide('pvNewsletter', state.newsletter);
-    showHide('pvCountdown', state.countdown);
-    if (state.countdown) startCountdown();
-
-    // Nav style
-    const nav = document.getElementById('pvNav');
-    if (state.navStyle === 'bold') {
-      nav.style.background = c; nav.style.backdropFilter = '';
-      document.getElementById('pvNavBrand').style.color = '#0D1B2E';
-      if (pvNavCta) { pvNavCta.style.background = '#0D1B2E'; pvNavCta.style.color = c; }
-    } else if (state.navStyle === 'minimal') {
-      nav.style.background = 'transparent'; nav.style.borderBottom = '1px solid '+c+'44'; nav.style.backdropFilter = '';
-      document.getElementById('pvNavBrand').style.color = c;
-    } else {
-      nav.style.background = t.navBg; nav.style.backdropFilter = 'blur(8px)';
-      document.getElementById('pvNavBrand').style.color = c;
-    }
-
-    updateFeatureCount();
-  }
-
-  function setTheme(el) {
-    document.querySelectorAll('#themeOptions .ctrl-option').forEach(o => o.classList.remove('active'));
-    el.classList.add('active');
-    state.theme = el.dataset.theme;
-    applyPreview();
-  }
-
-  function setColor(el) {
-    document.querySelectorAll('#colorOptions .ctrl-option').forEach(o => o.classList.remove('active'));
-    el.classList.add('active');
-    state.color = el.dataset.color;
-    el.style.borderColor = state.color;
-    el.style.color = state.color;
-    applyPreview();
-  }
-
-  function setLayout(el) {
-    document.querySelectorAll('#layoutOptions .ctrl-option').forEach(o => o.classList.remove('active'));
-    el.classList.add('active');
-    state.layout = el.dataset.layout;
-    applyPreview();
-  }
-
-  function setBtnStyle(el) {
-    document.querySelectorAll('#btnStyleOptions .ctrl-option').forEach(o => o.classList.remove('active'));
-    el.classList.add('active');
-    state.btnStyle = el.dataset.btn;
-    applyPreview();
-  }
-
-  function setFont(el) {
-    document.querySelectorAll('#fontOptions .ctrl-option').forEach(o => o.classList.remove('active'));
-    el.classList.add('active');
-    state.font = el.dataset.font;
-    applyPreview();
-  }
-
-  function setBrandName(val) {
-    state.brandName = val || 'YourBrand';
-    applyPreview();
-  }
-
-  function toggleFeature(key) {
-    state[key] = !state[key];
-    const sw = document.getElementById('toggle-' + key);
-    if (sw) sw.classList.toggle('on', state[key]);
-    applyPreview();
-  }
-
-  function setNavStyle(el, style) {
-    el.closest('.ctrl-options').querySelectorAll('.ctrl-option').forEach(o => o.classList.remove('active'));
-    el.classList.add('active');
-    state.navStyle = style;
-    applyPreview();
-  }
-
-  function setPvDevice(device) {
-    const frame = document.getElementById('pvFrame');
-    const site = document.getElementById('pvSite');
-    const mobileWrap = document.getElementById('pvMobileWrap');
-    const desktopBtn = document.getElementById('pvDevDesktop');
-    const mobileBtn = document.getElementById('pvDevMobile');
-    if (device === 'mobile') {
-      site.style.display = 'none';
-      mobileWrap.style.display = 'flex';
-      // Clone site into mobile viewer
-      const clone = site.cloneNode(true);
-      clone.style.display = '';
-      document.getElementById('pvMobileSite').innerHTML = '';
-      document.getElementById('pvMobileSite').appendChild(clone);
-      desktopBtn.style.borderColor = 'var(--navy-border)'; desktopBtn.style.color = 'var(--gray)';
-      mobileBtn.style.borderColor = 'var(--gold)'; mobileBtn.style.color = 'var(--gold)';
-    } else {
-      site.style.display = '';
-      mobileWrap.style.display = 'none';
-      desktopBtn.style.borderColor = 'var(--gold)'; desktopBtn.style.color = 'var(--gold)';
-      mobileBtn.style.borderColor = 'var(--navy-border)'; mobileBtn.style.color = 'var(--gray)';
-    }
-  }
-
-  applyPreview();
-
   // ---- MULTI-STEP FORM ----
-  let currentStep = 1;
-  const totalSteps = 5;
-  let consentGiven = false;
-  let selectedSiteType = '';
-  let selectedTimeline = '';
-  let selectedTime = '';
+  let currentStep = 1, consentGiven = false, selectedSiteType = '', selectedTimeline = '', selectedTime = '';
   const checkedFeatures = new Set();
-
   function updateStepIndicators(step) {
-    for (let i = 1; i <= totalSteps; i++) {
-      const ind = document.getElementById('sind-' + i);
-      if (!ind) continue;
+    for (let i = 1; i <= 5; i++) {
+      const ind = document.getElementById('sind-' + i); if (!ind) continue;
       ind.classList.remove('active','done');
-      if (i < step) ind.classList.add('done');
-      else if (i === step) ind.classList.add('active');
-      // Update circle content for done
+      if (i < step) ind.classList.add('done'); else if (i === step) ind.classList.add('active');
       const circle = ind.querySelector('.step-circle');
-      if (i < step) circle.textContent = '✓';
-      else circle.textContent = i;
+      if (i < step) circle.textContent = '✓'; else circle.textContent = i;
     }
   }
-
   function nextStep(from) {
-    // Basic validation
-    if (from === 1) {
-      const name = document.querySelector('#step1 input[name="name"]');
-      const email = document.querySelector('#step1 input[name="email"]');
-      const phone = document.querySelector('#step1 input[name="phone"]');
-      if (!name.value.trim() || !email.value.trim() || !phone.value.trim()) {
-        alert('Please fill in your name, phone, and email.');
-        return;
-      }
-    }
-    if (from === 2) {
-      const loc = document.querySelector('#step2 input[name="location"]');
-      if (!loc.value.trim()) { alert('Please enter your location.'); return; }
-      if (!selectedTimeline) { alert('Please select a timeline.'); return; }
-    }
-    if (from === 3 && !selectedSiteType) {
-      alert('Please select a website type.'); return;
-    }
-
+    if (from === 1) { if (!document.querySelector('#step1 input[name="name"]').value.trim() || !document.querySelector('#step1 input[name="email"]').value.trim() || !document.querySelector('#step1 input[name="phone"]').value.trim()) { alert('Please fill in your name, phone, and email.'); return; } }
+    if (from === 2) { if (!document.querySelector('#step2 input[name="location"]').value.trim()) { alert('Please enter your location.'); return; } if (!selectedTimeline) { alert('Please select a timeline.'); return; } }
+    if (from === 3 && !selectedSiteType) { alert('Please select a website type.'); return; }
     document.getElementById('step' + from).classList.remove('active');
     currentStep = from + 1;
     document.getElementById('step' + currentStep).classList.add('active');
     updateStepIndicators(currentStep);
     document.getElementById('contact').scrollIntoView({behavior:'smooth', block:'start'});
   }
-
   function prevStep(from) {
     document.getElementById('step' + from).classList.remove('active');
     currentStep = from - 1;
@@ -3076,100 +1518,29 @@
     updateStepIndicators(currentStep);
     document.getElementById('contact').scrollIntoView({behavior:'smooth', block:'start'});
   }
-
-  function selectSiteType(el, type) {
-    document.querySelectorAll('.site-type-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedSiteType = type;
-    document.getElementById('hiddenSiteType').value = type;
-  }
-
-  function selectTimeline(el, val) {
-    document.querySelectorAll('.timeline-opt').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedTimeline = val;
-    document.getElementById('hiddenTimeline').value = val;
-  }
-
-  function selectTime(el, val) {
-    document.querySelectorAll('.time-opt').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedTime = val;
-    document.getElementById('hiddenContactTime').value = val;
-  }
-
+  function selectSiteType(el, type) { document.querySelectorAll('.site-type-card').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); selectedSiteType = type; document.getElementById('hiddenSiteType').value = type; }
+  function selectTimeline(el, val) { document.querySelectorAll('.timeline-opt').forEach(o => o.classList.remove('selected')); el.classList.add('selected'); selectedTimeline = val; document.getElementById('hiddenTimeline').value = val; }
+  function selectTime(el, val) { document.querySelectorAll('.time-opt').forEach(o => o.classList.remove('selected')); el.classList.add('selected'); selectedTime = val; document.getElementById('hiddenContactTime').value = val; }
   function toggleFeatureCheck(el, name) {
-    el.classList.toggle('checked');
-    const chk = el.querySelector('.feature-checkbox');
-    if (el.classList.contains('checked')) {
-      chk.textContent = '✓';
-      checkedFeatures.add(name);
-    } else {
-      chk.textContent = '';
-      checkedFeatures.delete(name);
-    }
+    el.classList.toggle('checked'); const chk = el.querySelector('.feature-checkbox');
+    if (el.classList.contains('checked')) { chk.textContent = '✓'; checkedFeatures.add(name); } else { chk.textContent = ''; checkedFeatures.delete(name); }
     document.getElementById('hiddenFeatures').value = Array.from(checkedFeatures).join(', ');
   }
-
-  function toggleConsent() {
-    consentGiven = !consentGiven;
-    document.getElementById('consentBox').classList.toggle('checked', consentGiven);
-    document.getElementById('consentChk').textContent = consentGiven ? '✓' : '';
-  }
-
-  // Form submit
+  function toggleConsent() { consentGiven = !consentGiven; document.getElementById('consentBox').classList.toggle('checked', consentGiven); document.getElementById('consentChk').textContent = consentGiven ? '✓' : ''; }
   document.getElementById('quoteForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    if (!consentGiven) {
-      alert('Please check the consent box to continue.');
-      return;
-    }
-    const btn = document.getElementById('submitBtn');
-    btn.textContent = 'Sending...';
-    btn.disabled = true;
-
+    e.preventDefault(); if (!consentGiven) { alert('Please check the consent box to continue.'); return; }
+    const btn = document.getElementById('submitBtn'); btn.textContent = 'Sending...'; btn.disabled = true;
     const formData = new FormData(this);
-
     try {
-      const res = await fetch(this.action, {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      });
-      if (res.ok) {
-        this.style.display = 'none';
-        document.querySelector('.step-indicators').style.display = 'none';
-        document.getElementById('formSuccess').classList.add('show');
-      } else {
-        alert('Something went wrong. Please try again or email me directly.');
-        btn.textContent = '🐝 Send My Request →';
-        btn.disabled = false;
-      }
-    } catch(err) {
-      alert('Network error. Please check your connection and try again.');
-      btn.textContent = '🐝 Send My Request →';
-      btn.disabled = false;
-    }
+      const res = await fetch(this.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
+      if (res.ok) { this.style.display = 'none'; document.querySelector('.step-indicators').style.display = 'none'; document.getElementById('formSuccess').classList.add('show'); }
+      else { alert('Something went wrong. Please try again or email me directly.'); btn.textContent = '🐝 Send My Request →'; btn.disabled = false; }
+    } catch(err) { alert('Network error. Please check your connection and try again.'); btn.textContent = '🐝 Send My Request →'; btn.disabled = false; }
   });
-
   // ---- MODALS ----
-  function openModal(type) {
-    document.getElementById(type + 'Modal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal(type) {
-    document.getElementById(type + 'Modal').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  // Close modal on overlay click
-  document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', function(e) {
-      if (e.target === this) {
-        this.classList.remove('open');
-        document.body.style.overflow = '';
-      }
-    });
-  });
+  function openModal(type) { document.getElementById(type + 'Modal').classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeModal(type) { document.getElementById(type + 'Modal').classList.remove('open'); document.body.style.overflow = ''; }
+  document.querySelectorAll('.modal-overlay').forEach(overlay => { overlay.addEventListener('click', function(e) { if (e.target === this) { this.classList.remove('open'); document.body.style.overflow = ''; } }); });
 </script>
 </body>
 </html>

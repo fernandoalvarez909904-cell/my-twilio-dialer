@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BeezerBuilt Sandbox · Live Demo Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* =========================================================
+       VARIABLES & RESET
+    ========================================================= */
+    :root {
+      --navy:        #080E1A;
+      --navy-mid:    #0F1C30;
+      --navy-card:   #111f35;
+      --navy-border: #1e3254;
+      --gold:        #C9A227;
+      --white:       #FFFFFF;
+      --gray:        #7A8FAD;
+      --gray-light:  #B0C0D6;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      padding: 24px 20px;
+    }
+
+    /* =========================================================
+       SANDBOX SHELL
+    ========================================================= */
+    .sandbox-container { width: 100%; max-width: 1400px; margin: 0 auto; }
+
+    .sandbox-disclaimer {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      background: rgba(201,162,39,.08);
+      border: 1px solid rgba(201,162,39,.28);
+      border-radius: 4px;
+      font-size: .82rem;
+      color: var(--gold);
+      margin-bottom: 22px;
+    }
+
+    .sandbox-layout {
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* =========================================================
+       CONTROLS PANEL
+    ========================================================= */
+    .sandbox-controls {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 8px;
+      padding: 20px;
+      overflow-y: auto;
+      max-height: calc(100vh - 120px);
+      position: sticky;
+      top: 20px;
+    }
+
+    .sandbox-controls h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.25rem;
+      letter-spacing: .06em;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+
+    .ctrl-group { margin-bottom: 18px; }
+
+    .ctrl-group-title {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 9px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--navy-border);
+    }
+
+    .brand-input {
+      width: 100%;
+      background: var(--navy-mid);
+      border: 1.5px solid var(--navy-border);
+      border-radius: 5px;
+      padding: 7px 11px;
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-size: .88rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .brand-input:focus { border-color: var(--gold); }
+
+    .ctrl-options { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .ctrl-option {
+      padding: 5px 11px;
+      border: 1.5px solid var(--navy-border);
+      border-radius: 4px;
+      font-size: .76rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--gray);
+      transition: all .15s;
+      user-select: none;
+    }
+    .ctrl-option:hover { border-color: rgba(201,162,39,.45); color: var(--gray-light); }
+    .ctrl-option.active { border-color: var(--gold); color: var(--gold); background: rgba(201,162,39,.1); }
+
+    .ctrl-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 3px;
+      cursor: pointer;
+      user-select: none;
+      border-radius: 4px;
+      transition: background .15s;
+    }
+    .ctrl-toggle:hover { background: rgba(255,255,255,.03); }
+    .ctrl-toggle-label { font-size: .84rem; font-weight: 500; }
+
+    .toggle-switch {
+      width: 38px;
+      height: 21px;
+      border-radius: 11px;
+      background: var(--navy-border);
+      position: relative;
+      flex-shrink: 0;
+      transition: background .2s;
+    }
+    .toggle-switch.on { background: var(--gold); }
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 15px; height: 15px;
+      border-radius: 50%;
+      background: #fff;
+      top: 3px; left: 3px;
+      transition: transform .2s;
+    }
+    .toggle-switch.on::after { transform: translateX(17px); }
+
+    #featureCount {
+      font-size: .76rem;
+      color: var(--gold);
+      font-weight: 600;
+      padding: 10px 0 0;
+      border-top: 1px solid var(--navy-border);
+      margin-top: 6px;
+    }
+
+    /* =========================================================
+       PREVIEW SHELL (browser chrome)
+    ========================================================= */
+    .sandbox-preview {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .preview-topbar {
+      background: var(--navy-mid);
+      padding: 9px 14px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border-bottom: 1px solid var(--navy-border);
+      flex-shrink: 0;
+    }
+    .preview-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .preview-url {
+      flex: 1;
+      background: rgba(255,255,255,.05);
+      border-radius: 4px;
+      padding: 4px 12px;
+      font-size: .72rem;
+      color: var(--gray);
+      margin: 0 10px;
+      font-family: monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .dev-btn {
+      cursor: pointer;
+      font-size: .8rem;
+      padding: 3px 8px;
+      border-radius: 3px;
+      border: 1px solid var(--navy-border);
+      color: var(--gray);
+      user-select: none;
+      transition: all .15s;
+    }
+    .dev-btn.active { border-color: var(--gold); color: var(--gold); }
+
+    .preview-frame {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      min-height: 620px;
+    }
+
+    /* Mobile mode */
+    .preview-frame.mobile-mode {
+      background: #161616;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 20px 0;
+    }
+    .phone-shell {
+      display: none;
+      width: 215px;
+      border-radius: 28px;
+      border: 3px solid #383838;
+      box-shadow: 0 0 0 1px #222, 0 24px 60px rgba(0,0,0,.7);
+      background: #111;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .phone-shell-notch {
+      height: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .phone-shell-notch::after {
+      content: '';
+      width: 56px;
+      height: 5px;
+      background: #2a2a2a;
+      border-radius: 3px;
+    }
+    .phone-site-clip {
+      width: 215px;
+      height: 430px;
+      overflow: hidden;
+      position: relative;
+    }
+    #pvMobileSite {
+      transform: scale(0.558);
+      transform-origin: top left;
+      width: 385px;
+      pointer-events: none;
+    }
+
+    /* =========================================================
+       PREVIEW SITE — BASE
+    ========================================================= */
+    .pv-site {
+      width: 100%;
+      height: 100%;
+      min-height: 620px;
+      font-family: 'Outfit', sans-serif;
+      background: #0a0f1a;
+      color: #fff;
+      position: relative;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Nav */
+    .pv-nav {
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      transition: background .3s, border-color .3s;
+    }
+    .pv-nav-links { display: flex; gap: 12px; opacity: .6; font-weight: 500; }
+    .pv-nav-cta {
+      font-size: .65rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* Video background */
+    .pv-video-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: none;
+      overflow: hidden;
+    }
+    .pv-video-bg.show { display: block; }
+    .pv-video-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: .4;
+    }
+    .pv-video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,.5) 0%, rgba(0,0,0,.15) 40%, rgba(0,0,0,.65) 100%);
+    }
+
+    /* Particles */
+    .pv-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .pv-particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0;
+      animation: pvFloat linear infinite;
+    }
+    @keyframes pvFloat {
+      0%   { transform: translateY(0)     scale(0);   opacity: 0; }
+      10%  { transform: translateY(-30px) scale(1);   opacity: .75; }
+      90%  { opacity: .3; }
+      100% { transform: translateY(-380px) scale(.4); opacity: 0; }
+    }
+
+    /* Hero */
+    .pv-hero {
+      padding: 36px 20px 26px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+      position: relative;
+      z-index: 2;
+      transition: background .3s, text-align .2s;
+    }
+    .pv-h1 { font-size: 1.8rem; font-weight: 800; line-height: 1.1; }
+    .pv-tagline { font-size: .79rem; opacity: .65; line-height: 1.5; max-width: 280px; }
+    .pv-btn-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    .pv-btn {
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 4px;
+      font-size: .78rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-radius .2s;
+    }
+
+    /* Stats bar */
+    .pv-stats {
+      display: flex;
+      border-top: 1px solid rgba(255,255,255,.08);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      position: relative;
+      z-index: 2;
+    }
+    .pv-stat {
+      flex: 1;
+      padding: 8px 4px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,.08);
+    }
+    .pv-stat:last-child { border-right: none; }
+    .pv-stat-num { font-size: 1rem; font-weight: 800; }
+    .pv-stat-label { font-size: .52rem; opacity: .44; margin-top: 1px; }
+
+    /* ---- Shared section wrapper ---- */
+    .pv-section {
+      display: none;
+      padding: 10px 16px 14px;
+      position: relative;
+      z-index: 2;
+    }
+    .pv-section.show { display: block; }
+    .pv-section-title {
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      opacity: .42;
+      margin-bottom: 8px;
+    }
+
+    /* Gallery */
+    .pv-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .pv-gallery-img {
+      height: 66px;
+      border-radius: 5px;
+      object-fit: cover;
+      width: 100%;
+      display: block;
+      background: rgba(255,255,255,.07);
+    }
+
+    /* Testimonials */
+    .pv-tst-grid { display: flex; gap: 6px; }
+    .pv-tst-card {
+      flex: 1;
+      background: rgba(255,255,255,.06);
+      border-radius: 5px;
+      padding: 8px;
+      font-size: .62rem;
+      line-height: 1.4;
+    }
+    .pv-tst-stars { margin-bottom: 3px; }
+    .pv-tst-quote { opacity: .82; font-style: italic; }
+    .pv-tst-author { opacity: .38; margin-top: 4px; font-size: .58rem; }
+
+    /* Pricing */
+    .pv-pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+    }
+    .pv-price-card {
+      background: rgba(255,255,255,.05);
+      border: 1px solid transparent;
+      border-radius: 5px;
+      padding: 8px;
+      text-align: center;
+      font-size: .58rem;
+    }
+    .pv-price-name { font-weight: 800; font-size: .78rem; margin-bottom: 2px; }
+    .pv-price-amt { font-weight: 700; font-size: .82rem; margin-bottom: 2px; }
+    .pv-price-amt span { font-size: .5rem; opacity: .45; }
+    .pv-price-note { opacity: .42; }
+
+    /* Contact form */
+    .pv-form-inner { display: flex; flex-direction: column; gap: 6px; }
+    .pv-input {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: .72rem;
+      color: inherit;
+      font-family: inherit;
+      outline: none;
+      width: 100%;
+    }
+
+    /* Newsletter */
+    .pv-newsletter-inner {
+      background: rgba(255,255,255,.05);
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+    }
+    .pv-newsletter-title { font-size: .7rem; font-weight: 700; margin-bottom: 7px; }
+    .pv-newsletter-row { display: flex; gap: 4px; }
+
+    /* Store */
+    .pv-store-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .pv-product {
+      background: rgba(255,255,255,.06);
+      border-radius: 6px;
+      padding: 8px;
+    }
+    .pv-product-img {
+      height: 58px;
+      border-radius: 4px;
+      object-fit: cover;
+      width: 100%;
+      display: block;
+      margin-bottom: 6px;
+      background: rgba(255,255,255,.07);
+    }
+    .pv-product-name { font-weight: 700; font-size: .72rem; margin-bottom: 2px; }
+    .pv-product-price { opacity: .58; font-size: .67rem; }
+    .pv-product-buy { margin-top: 5px; font-size: .68rem; font-weight: 700; cursor: pointer; }
+
+    /* Map */
+    .pv-map-frame {
+      width: 100%;
+      height: 84px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: none;
+      display: block;
+    }
+    .pv-map-svg {
+      width: 100%;
+      height: 84px;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    /* Countdown */
+    .pv-cd-inner {
+      background: rgba(0,0,0,.28);
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+    }
+    .pv-cd-label { font-size: .58rem; opacity: .4; margin-bottom: 6px; letter-spacing: .14em; text-transform: uppercase; }
+    .pv-cd-grid { display: flex; gap: 6px; justify-content: center; }
+    .pv-cd-unit {
+      background: rgba(0,0,0,.4);
+      border-radius: 4px;
+      padding: 5px 8px;
+      text-align: center;
+      min-width: 36px;
+    }
+    .pv-cd-num { font-size: .95rem; font-weight: 800; }
+    .pv-cd-sub { font-size: .48rem; opacity: .38; margin-top: 1px; }
+
+    /* Chat widget */
+    #pvChat {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      z-index: 30;
+    }
+    .pv-chat-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,.5);
+      position: relative;
+    }
+    .pv-chat-popup {
+      position: absolute;
+      bottom: 52px;
+      right: 0;
+      background: #fff;
+      color: #111;
+      border-radius: 8px 8px 0 8px;
+      padding: 9px 11px;
+      font-size: .6rem;
+      width: 138px;
+      line-height: 1.45;
+      box-shadow: 0 6px 20px rgba(0,0,0,.32);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .2s, transform .2s;
+    }
+    .pv-chat-popup::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      right: 10px;
+      width: 0; height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid #fff;
+    }
+    .pv-chat-btn:hover .pv-chat-popup {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Footer */
+    .pv-footer {
+      padding: 8px 16px;
+      border-top: 1px solid rgba(255,255,255,.07);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: .58rem;
+      opacity: .36;
+      margin-top: auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* =========================================================
+       LIGHT THEME OVERRIDES
+    ========================================================= */
+    .theme-light .pv-input { background: rgba(0,0,0,.07); border-color: rgba(0,0,0,.14); color: #111; }
+    .theme-light .pv-tst-card,
+    .theme-light .pv-price-card,
+    .theme-light .pv-product { background: rgba(0,0,0,.04); }
+    .theme-light .pv-newsletter-inner { background: rgba(0,0,0,.04); }
+    .theme-light .pv-cd-inner { background: rgba(0,0,0,.06); }
+    .theme-light .pv-cd-unit { background: rgba(0,0,0,.1); }
+    .theme-light .pv-stats { border-color: rgba(0,0,0,.08); }
+    .theme-light .pv-stat { border-color: rgba(0,0,0,.08); }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+    @media (max-width: 900px) {
+      .sandbox-layout { grid-template-columns: 1fr; }
+      .sandbox-controls { max-height: none; position: static; }
+    }
+  </style>
+</head>
+<body>
+<div class="sandbox-container">
+
+  <div class="sandbox-disclaimer">
+    ⚠️ <strong>Demo Mode Only</strong> — Nothing here is real or live. This is just a preview of possibilities.
+  </div>
+
+  <div class="sandbox-layout">
+
+    <!-- =====================================================
+         CONTROLS PANEL
+    ====================================================== -->
+    <div class="sandbox-controls">
+      <h3>🎛️ Customize Your Site</h3>
+
+      <div class="ctrl-group">
+        <div class="ctrl-group-title">Business Name</div>
+        <input type="text" id="sbBrandInput" class="brand-input" placeholder="YourBrand"
+               oninput="setBrandName(this.value)">
+      </div>
+
+      <div class="ctrl-group">
+        <div class="ctrl-group-title">Theme</div>
+        <div class="ctrl-options" id="themeOptions">
+          <div class="ctrl-option active" data-theme="dark"     onclick="setTheme(this)">Dark</div>
+          <div class="ctrl-option"        data-theme="light"    onclick="setTheme(this)">Light</div>
+          <div class="ctrl-option"        data-theme="midnight" onclick="setTheme(this)">Midnight</div>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <div class="ctrl-group-title">Color Accent</div>
+        <div class="ctrl-options" id="colorOptions">
+          <div class="ctrl-option active" data-color="#C9A227" onclick="setColor(this)" style="border-color:#C9A227;color:#C9A227;">Gold</div>
+          <div class="ctrl-option" data-color="#3B82F6"  onclick="setColor(this)">Blue</div>
+          <div class="ctrl-option" data-color="#10B981"  onclick="setColor(this)">Green</div>
+          <div class="ctrl-option" data-color="#EF4444"  onclick="setColor(this)">Red</div>
+          <div class="ctrl-option" data-color="#8B5CF6"  onclick="setColor(this)">Purple</div>
+          <div class="ctrl-option" data-color="#F97316"  onclick="setColor(this)">Orange</div>
+          <div class="ctrl-option" data-color="#EC4899"  onclick="setColor(this)">Pink</div>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <div class="ctrl-group-title">Hero Layout</div>
+        <div class="ctrl-options" id="layoutOptions">
+          <div class="ctrl-option active" data-layout="centered" onclick="setLayout(this)">Centered</div>
+          <div class="ctrl-option"        data-layout="left"     onclick="setLayout(this)">Left-Split</div>
+          <div class="ctrl-option"        data-layout="bold"     onclick="setLayout(this)">Bold Full</div>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <div class="ctrl-group-title">Button Style</div>
+        <div class="ctrl-options" id="btnStyleOptions">
+          <div class="ctrl-option active" data-btn="square"  onclick="setBtnStyle(this)">Sharp</div>
+          <div class="ctrl-option"        data-btn="rounded" onclick="setBtnStyle(this)">Rounded</div>
+          <div class="ctrl-option"        data-btn="pill"    onclick="setBtnStyle(this)">Pill</div>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <div class="ctrl-group-title">Font Style</div>
+        <div class="ctrl-options" id="fontOptions">
+          <div class="ctrl-option active" data-font="modern" onclick="setFont(this)">Modern</div>
+          <div class="ctrl-option"        data-font="serif"  onclick="setFont(this)">Serif</div>
+          <div class="ctrl-option"        data-font="mono"   onclick="setFont(this)">Tech</div>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <div class="ctrl-group-title">Navigation Style</div>
+        <div class="ctrl-options" id="navStyleOptions">
+          <div class="ctrl-option active" onclick="setNavStyle(this,'modern')">Glass</div>
+          <div class="ctrl-option"        onclick="setNavStyle(this,'minimal')">Minimal</div>
+          <div class="ctrl-option"        onclick="setNavStyle(this,'bold')">Solid</div>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <div class="ctrl-group-title">Sections &amp; Features</div>
+
+        <div class="ctrl-toggle" onclick="toggleFeature('videoBackground')">
+          <span class="ctrl-toggle-label">🎬 Video Background</span>
+          <div class="toggle-switch" id="toggle-videoBackground"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('animations')">
+          <span class="ctrl-toggle-label">✨ Particle Animations</span>
+          <div class="toggle-switch on" id="toggle-animations"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('gallery')">
+          <span class="ctrl-toggle-label">🖼️ Image Gallery</span>
+          <div class="toggle-switch" id="toggle-gallery"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('contactForm')">
+          <span class="ctrl-toggle-label">📋 Contact Form</span>
+          <div class="toggle-switch" id="toggle-contactForm"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('store')">
+          <span class="ctrl-toggle-label">🛒 Online Store</span>
+          <div class="toggle-switch" id="toggle-store"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('testimonials')">
+          <span class="ctrl-toggle-label">⭐ Testimonials</span>
+          <div class="toggle-switch" id="toggle-testimonials"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('pricing')">
+          <span class="ctrl-toggle-label">💰 Pricing Table</span>
+          <div class="toggle-switch" id="toggle-pricing"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('chatWidget')">
+          <span class="ctrl-toggle-label">💬 Chat Widget</span>
+          <div class="toggle-switch" id="toggle-chatWidget"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('mapEmbed')">
+          <span class="ctrl-toggle-label">🗺️ Map / Location</span>
+          <div class="toggle-switch" id="toggle-mapEmbed"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('newsletter')">
+          <span class="ctrl-toggle-label">📧 Newsletter Signup</span>
+          <div class="toggle-switch" id="toggle-newsletter"></div>
+        </div>
+        <div class="ctrl-toggle" onclick="toggleFeature('countdown')">
+          <span class="ctrl-toggle-label">⏳ Countdown Timer</span>
+          <div class="toggle-switch" id="toggle-countdown"></div>
+        </div>
+      </div>
+
+      <div id="featureCount">1 feature active</div>
+    </div>
+
+    <!-- =====================================================
+         LIVE PREVIEW
+    ====================================================== -->
+    <div class="sandbox-preview">
+
+      <!-- Browser chrome topbar -->
+      <div class="preview-topbar">
+        <div class="preview-dot" style="background:#FF5F57;"></div>
+        <div class="preview-dot" style="background:#FEBC2E;"></div>
+        <div class="preview-dot" style="background:#28C840;"></div>
+        <div class="preview-url" id="pvUrl">🔒 yourbrand.com</div>
+        <div style="display:flex;gap:5px;margin-left:auto;">
+          <div id="pvDevDesktop" class="dev-btn active" onclick="setPvDevice('desktop')" title="Desktop">🖥</div>
+          <div id="pvDevMobile"  class="dev-btn"        onclick="setPvDevice('mobile')"  title="Mobile">📱</div>
+        </div>
+      </div>
+
+      <!-- Frame -->
+      <div class="preview-frame" id="pvFrame">
+
+        <!-- Phone shell (mobile view only) -->
+        <div class="phone-shell" id="phoneShell">
+          <div class="phone-shell-notch"></div>
+          <div class="phone-site-clip">
+            <div id="pvMobileSite"></div>
+          </div>
+        </div>
+
+        <!-- Desktop preview site -->
+        <div class="pv-site" id="pvSite">
+
+          <!-- Video background -->
+          <div class="pv-video-bg" id="pvVideo">
+            <video autoplay muted loop playsinline>
+              <source src="https://assets.mixkit.co/videos/preview/754/754-small.mp4" type="video/mp4">
+            </video>
+            <div class="pv-video-overlay"></div>
+          </div>
+
+          <!-- Particles -->
+          <div class="pv-particles" id="pvParticles"></div>
+
+          <!-- Navbar -->
+          <nav class="pv-nav" id="pvNav" style="background:rgba(8,14,26,.82);backdrop-filter:blur(10px);">
+            <strong id="pvNavBrand" style="color:#C9A227;font-size:.9rem;">YourBrand</strong>
+            <div class="pv-nav-links">
+              <span>Home</span><span>About</span><span>Services</span><span>Contact</span>
+            </div>
+            <div class="pv-nav-cta" id="pvNavCta" style="background:#C9A227;color:#0D1B2E;">Get Quote</div>
+          </nav>
+
+          <!-- Hero -->
+          <div class="pv-hero" id="pvHero">
+            <div class="pv-h1" id="pvH1">
+              Your Website<br>
+              <span id="pvAccentText" style="color:#C9A227;">Starts Here</span>
+            </div>
+            <p class="pv-tagline">Beautiful, fast, and custom-built for your business.</p>
+            <div class="pv-btn-row">
+              <div class="pv-btn" id="pvBtn"  style="background:#C9A227;color:#0D1B2E;">Get Started →</div>
+              <div class="pv-btn" id="pvBtn2" style="border:1.5px solid #C9A227;color:#C9A227;background:transparent;">Learn More</div>
+            </div>
+          </div>
+
+          <!-- Stats bar -->
+          <div class="pv-stats">
+            <div class="pv-stat">
+              <div class="pv-stat-num" id="pvStat1" style="color:#C9A227;">200+</div>
+              <div class="pv-stat-label">Projects</div>
+            </div>
+            <div class="pv-stat">
+              <div class="pv-stat-num" id="pvStat2" style="color:#C9A227;">98%</div>
+              <div class="pv-stat-label">Satisfied</div>
+            </div>
+            <div class="pv-stat">
+              <div class="pv-stat-num" id="pvStat3" style="color:#C9A227;">24hr</div>
+              <div class="pv-stat-label">Response</div>
+            </div>
+          </div>
+
+          <!-- GALLERY -->
+          <div class="pv-section" id="pvGallery">
+            <div class="pv-section-title">Our Work</div>
+            <div class="pv-gallery-grid">
+              <img class="pv-gallery-img" src="https://picsum.photos/seed/g1bz/240/80" alt="">
+              <img class="pv-gallery-img" src="https://picsum.photos/seed/g2bz/240/80" alt="">
+              <img class="pv-gallery-img" src="https://picsum.photos/seed/g3bz/240/80" alt="">
+              <img class="pv-gallery-img" src="https://picsum.photos/seed/g4bz/240/80" alt="">
+              <img class="pv-gallery-img" src="https://picsum.photos/seed/g5bz/240/80" alt="">
+              <img class="pv-gallery-img" src="https://picsum.photos/seed/g6bz/240/80" alt="">
+            </div>
+          </div>
+
+          <!-- TESTIMONIALS -->
+          <div class="pv-section" id="pvTestimonials">
+            <div class="pv-section-title">What Clients Say</div>
+            <div class="pv-tst-grid">
+              <div class="pv-tst-card">
+                <div class="pv-tst-stars" id="pvTstColor1" style="color:#C9A227;">★★★★★</div>
+                <div class="pv-tst-quote">"Transformed our online presence completely!"</div>
+                <div class="pv-tst-author">— Sarah M., CEO</div>
+              </div>
+              <div class="pv-tst-card">
+                <div class="pv-tst-stars" id="pvTstColor2" style="color:#C9A227;">★★★★★</div>
+                <div class="pv-tst-quote">"Fast, professional, worth every penny."</div>
+                <div class="pv-tst-author">— James K., Founder</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PRICING -->
+          <div class="pv-section" id="pvPricing">
+            <div class="pv-section-title">Pricing Plans</div>
+            <div class="pv-pricing-grid">
+              <div class="pv-price-card">
+                <div class="pv-price-name">Starter</div>
+                <div class="pv-price-amt" id="pvPriceColor1" style="color:#C9A227;">$29<span>/mo</span></div>
+                <div class="pv-price-note">Basic features</div>
+              </div>
+              <div class="pv-price-card" id="pvPricingHighlight" style="background:rgba(201,162,39,.14);border-color:#C9A227;">
+                <div class="pv-price-name">Pro</div>
+                <div class="pv-price-amt" id="pvPriceColor2" style="color:#C9A227;">$79<span>/mo</span></div>
+                <div class="pv-price-note">Most popular ✓</div>
+              </div>
+              <div class="pv-price-card">
+                <div class="pv-price-name">Elite</div>
+                <div class="pv-price-amt" id="pvPriceColor3" style="color:#C9A227;">$199<span>/mo</span></div>
+                <div class="pv-price-note">Full package</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CONTACT FORM -->
+          <div class="pv-section" id="pvForm">
+            <div class="pv-section-title">Contact Us</div>
+            <div class="pv-form-inner">
+              <input class="pv-input" placeholder="Your Name" readonly>
+              <input class="pv-input" placeholder="Your Email" readonly>
+              <textarea class="pv-input" placeholder="Message..." readonly
+                        style="height:42px;resize:none;"></textarea>
+              <div class="pv-btn" id="pvFormBtn"
+                   style="background:#C9A227;color:#0D1B2E;font-size:.74rem;padding:6px 16px;width:fit-content;">
+                Send Message
+              </div>
+            </div>
+          </div>
+
+          <!-- NEWSLETTER -->
+          <div class="pv-section" id="pvNewsletter">
+            <div class="pv-newsletter-inner">
+              <div class="pv-newsletter-title">📧 Stay in the Loop</div>
+              <div class="pv-newsletter-row">
+                <input class="pv-input" placeholder="your@email.com" readonly style="flex:1;">
+                <div class="pv-btn pv-news-btn" id="pvNewsBtn"
+                     style="background:#C9A227;color:#0D1B2E;font-size:.64rem;padding:6px 10px;">
+                  Subscribe
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STORE -->
+          <div class="pv-section" id="pvStore">
+            <div class="pv-section-title">Shop</div>
+            <div class="pv-store-grid">
+              <div class="pv-product">
+                <img class="pv-product-img" src="https://picsum.photos/seed/s1bz/200/100" alt="">
+                <div class="pv-product-name">Signature Tee</div>
+                <div class="pv-product-price">$29.99</div>
+                <div class="pv-product-buy" id="pvBuyBtn1" style="color:#C9A227;">Buy Now →</div>
+              </div>
+              <div class="pv-product">
+                <img class="pv-product-img" src="https://picsum.photos/seed/s2bz/200/100" alt="">
+                <div class="pv-product-name">Premium Kit</div>
+                <div class="pv-product-price">$49.99</div>
+                <div class="pv-product-buy" id="pvBuyBtn2" style="color:#C9A227;">Buy Now →</div>
+              </div>
+              <div class="pv-product">
+                <img class="pv-product-img" src="https://picsum.photos/seed/s3bz/200/100" alt="">
+                <div class="pv-product-name">Starter Pack</div>
+                <div class="pv-product-price">$19.99</div>
+                <div class="pv-product-buy" id="pvBuyBtn3" style="color:#C9A227;">Buy Now →</div>
+              </div>
+              <div class="pv-product">
+                <img class="pv-product-img" src="https://picsum.photos/seed/s4bz/200/100" alt="">
+                <div class="pv-product-name">Elite Bundle</div>
+                <div class="pv-product-price">$89.99</div>
+                <div class="pv-product-buy" id="pvBuyBtn4" style="color:#C9A227;">Buy Now →</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MAP -->
+          <div class="pv-section" id="pvMap">
+            <div class="pv-section-title">Our Location</div>
+            <!-- SVG map placeholder — looks clean, no external request needed -->
+            <svg class="pv-map-svg" viewBox="0 0 400 84" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="84" fill="#1a2a1e" rx="6"/>
+              <!-- Grid lines -->
+              <line x1="0" y1="28" x2="400" y2="28" stroke="#2a3a2e" stroke-width="1"/>
+              <line x1="0" y1="56" x2="400" y2="56" stroke="#2a3a2e" stroke-width="1"/>
+              <line x1="100" y1="0" x2="100" y2="84" stroke="#2a3a2e" stroke-width="1"/>
+              <line x1="200" y1="0" x2="200" y2="84" stroke="#2a3a2e" stroke-width="1"/>
+              <line x1="300" y1="0" x2="300" y2="84" stroke="#2a3a2e" stroke-width="1"/>
+              <!-- Roads -->
+              <path d="M0,42 Q80,38 160,44 Q260,52 400,40" stroke="#2e4a36" stroke-width="6" fill="none"/>
+              <path d="M0,60 Q120,55 200,62 Q300,70 400,58" stroke="#2e4a36" stroke-width="4" fill="none"/>
+              <path d="M150,0 Q160,30 155,84" stroke="#2e4a36" stroke-width="5" fill="none"/>
+              <path d="M280,0 Q270,40 278,84" stroke="#2e4a36" stroke-width="4" fill="none"/>
+              <!-- Blocks -->
+              <rect x="20"  y="10" width="30" height="14" rx="2" fill="#243a28" opacity=".8"/>
+              <rect x="60"  y="6"  width="24" height="18" rx="2" fill="#243a28" opacity=".8"/>
+              <rect x="115" y="10" width="20" height="12" rx="2" fill="#243a28" opacity=".7"/>
+              <rect x="210" y="8"  width="28" height="14" rx="2" fill="#243a28" opacity=".8"/>
+              <rect x="310" y="6"  width="22" height="16" rx="2" fill="#243a28" opacity=".7"/>
+              <rect x="350" y="10" width="30" height="12" rx="2" fill="#243a28" opacity=".8"/>
+              <rect x="20"  y="62" width="26" height="14" rx="2" fill="#243a28" opacity=".7"/>
+              <rect x="115" y="64" width="22" height="14" rx="2" fill="#243a28" opacity=".7"/>
+              <rect x="210" y="65" width="28" height="12" rx="2" fill="#243a28" opacity=".8"/>
+              <!-- Marker -->
+              <circle cx="200" cy="42" r="7" fill="#C9A227" opacity=".9"/>
+              <circle cx="200" cy="42" r="3" fill="#fff"/>
+              <circle cx="200" cy="42" r="14" fill="#C9A227" opacity=".15"/>
+              <text x="212" y="38" font-family="sans-serif" font-size="7" fill="#C9A227" opacity=".9">Your Location</text>
+            </svg>
+          </div>
+
+          <!-- COUNTDOWN -->
+          <div class="pv-section" id="pvCountdown">
+            <div class="pv-cd-inner">
+              <div class="pv-cd-label">Launch / Event Countdown</div>
+              <div class="pv-cd-grid">
+                <div class="pv-cd-unit"><div class="pv-cd-num" id="pvCdDays">14</div><div class="pv-cd-sub">days</div></div>
+                <div class="pv-cd-unit"><div class="pv-cd-num" id="pvCdHrs">06</div><div class="pv-cd-sub">hrs</div></div>
+                <div class="pv-cd-unit"><div class="pv-cd-num" id="pvCdMin">32</div><div class="pv-cd-sub">min</div></div>
+                <div class="pv-cd-unit"><div class="pv-cd-num" id="pvCdSec">59</div><div class="pv-cd-sub">sec</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CHAT WIDGET -->
+          <div id="pvChat" style="display:none;">
+            <div class="pv-chat-btn" id="pvChatBtn" style="background:#C9A227;color:#0D1B2E;">
+              💬
+              <div class="pv-chat-popup">
+                <strong>Hi there! 👋</strong><br>
+                Need help? We reply in minutes.
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="pv-footer">
+            <span id="pvFooterBrand">YourBrand</span>
+            <span>© 2025 · Privacy · Terms</span>
+          </div>
+
+        </div><!-- /pv-site -->
+      </div><!-- /preview-frame -->
+    </div><!-- /sandbox-preview -->
+
+  </div><!-- /sandbox-layout -->
+</div><!-- /sandbox-container -->
+
+<script>
+(function () {
+  'use strict';
+
+  /* =========================================================
+     STATE
+  ========================================================= */
+  const state = {
+    theme:           'dark',
+    color:           '#C9A227',
+    videoBackground: false,
+    animations:      true,
+    gallery:         false,
+    contactForm:     false,
+    store:           false,
+    testimonials:    false,
+    pricing:         false,
+    chatWidget:      false,
+    mapEmbed:        false,
+    newsletter:      false,
+    countdown:       false,
+    navStyle:        'modern',
+    layout:          'centered',
+    btnStyle:        'square',
+    font:            'modern',
+    brandName:       'YourBrand',
+    device:          'desktop'
+  };
+
+  // Section IDs that use .pv-section / .show class
+  const CLASS_SECTIONS = ['pvGallery','pvTestimonials','pvPricing','pvForm',
+                          'pvNewsletter','pvStore','pvMap','pvCountdown'];
+
+  /* =========================================================
+     COUNTDOWN
+  ========================================================= */
+  let cdInterval = null;
+
+  function startCountdown() {
+    if (cdInterval) return;
+    cdInterval = setInterval(() => {
+      if (!state.countdown) { clearInterval(cdInterval); cdInterval = null; return; }
+      const g = id => parseInt(document.getElementById(id).textContent, 10);
+      const s2 = (id, v) => { document.getElementById(id).textContent = String(v).padStart(2,'0'); };
+      let s = g('pvCdSec'), m = g('pvCdMin'), h = g('pvCdHrs'), d = g('pvCdDays');
+      if (--s < 0) { s = 59; if (--m < 0) { m = 59; if (--h < 0) { h = 23; if (--d < 0) d = 0; } } }
+      s2('pvCdSec',s); s2('pvCdMin',m); s2('pvCdHrs',h); s2('pvCdDays',d);
+    }, 1000);
+  }
+
+  /* =========================================================
+     FEATURE COUNT
+  ========================================================= */
+  function updateFeatureCount() {
+    const keys = ['videoBackground','animations','gallery','contactForm','store',
+                  'testimonials','pricing','chatWidget','mapEmbed','newsletter','countdown'];
+    const n = keys.filter(k => state[k]).length;
+    const el = document.getElementById('featureCount');
+    if (el) el.textContent = n + ' feature' + (n !== 1 ? 's' : '') + ' active';
+  }
+
+  /* =========================================================
+     HELPERS
+  ========================================================= */
+  function paint(ids, prop, val) {
+    ids.forEach(id => { const el = document.getElementById(id); if (el) el.style[prop] = val; });
+  }
+
+  /* =========================================================
+     APPLY PREVIEW
+  ========================================================= */
+  function applyPreview() {
+    const site = document.getElementById('pvSite');
+    const c = state.color;
+
+    /* --- Theme --- */
+    const THEMES = {
+      dark:     { bg:'#0a0f1a', nav:'rgba(8,14,26,.85)',  text:'#fff' },
+      light:    { bg:'#f4f6fa', nav:'rgba(255,255,255,.95)', text:'#111' },
+      midnight: { bg:'#050810', nav:'rgba(5,8,16,.9)',     text:'#e8ecf5' }
+    };
+    const t = THEMES[state.theme] || THEMES.dark;
+    site.style.background = t.bg;
+    site.style.color = t.text;
+    site.className = 'pv-site theme-' + state.theme;
+
+    /* --- Font --- */
+    const FONTS = {
+      modern: "'Outfit',sans-serif",
+      serif:  "'Georgia',serif",
+      mono:   "'Courier New',monospace"
+    };
+    site.style.fontFamily = FONTS[state.font] || FONTS.modern;
+
+    /* --- Brand name & URL --- */
+    const brand = state.brandName || 'YourBrand';
+    paint(['pvNavBrand','pvFooterBrand'], 'textContent', brand); // won't work this way
+    ['pvNavBrand','pvFooterBrand'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = brand;
+    });
+    const urlEl = document.getElementById('pvUrl');
+    if (urlEl) urlEl.textContent = '🔒 ' + brand.toLowerCase().replace(/\s+/g,'') + '.com';
+
+    /* --- Accent color propagation --- */
+    paint(['pvAccentText','pvNavBrand'], 'color', c);
+    paint(['pvStat1','pvStat2','pvStat3'], 'color', c);
+    paint(['pvTstColor1','pvTstColor2'], 'color', c);
+    paint(['pvPriceColor1','pvPriceColor2','pvPriceColor3'], 'color', c);
+    paint(['pvBuyBtn1','pvBuyBtn2','pvBuyBtn3','pvBuyBtn4'], 'color', c);
+
+    const ph = document.getElementById('pvPricingHighlight');
+    if (ph) { ph.style.background = c + '1c'; ph.style.borderColor = c; }
+
+    const chatBtn = document.getElementById('pvChatBtn');
+    if (chatBtn) { chatBtn.style.background = c; chatBtn.style.color = '#0D1B2E'; }
+
+    /* --- Button radius --- */
+    const RADII = { square:'3px', rounded:'8px', pill:'50px' };
+    const r = RADII[state.btnStyle] || '3px';
+
+    const pvBtn = document.getElementById('pvBtn');
+    pvBtn.style.background = c; pvBtn.style.color = '#0D1B2E'; pvBtn.style.borderRadius = r;
+
+    const pvBtn2 = document.getElementById('pvBtn2');
+    pvBtn2.style.border = '1.5px solid ' + c;
+    pvBtn2.style.color = c;
+    pvBtn2.style.background = 'transparent';
+    pvBtn2.style.borderRadius = r;
+
+    ['pvNavCta','pvFormBtn','pvNewsBtn'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.background = c;
+      el.style.color = '#0D1B2E';
+      el.style.borderRadius = r;
+    });
+
+    /* --- Video background --- */
+    document.getElementById('pvVideo').classList.toggle('show', state.videoBackground);
+
+    /* --- Particles --- */
+    const pc = document.getElementById('pvParticles');
+    pc.innerHTML = '';
+    if (state.animations) {
+      for (let i = 0; i < 18; i++) {
+        const p = document.createElement('div');
+        p.className = 'pv-particle';
+        const sz = (2 + Math.random() * 3).toFixed(1) + 'px';
+        p.style.cssText = [
+          'left:'              + (Math.random() * 95) + '%',
+          'bottom:0',
+          'width:'             + sz,
+          'height:'            + sz,
+          'background:'        + c,
+          'animation-duration:' + (3 + Math.random() * 5).toFixed(1) + 's',
+          'animation-delay:'   + (Math.random() * 6).toFixed(1) + 's'
+        ].join(';');
+        pc.appendChild(p);
+      }
+    }
+
+    /* --- Hero layout --- */
+    const hero = document.getElementById('pvHero');
+    const h1   = document.getElementById('pvH1');
+    const btnRow = hero.querySelector('.pv-btn-row');
+    if (state.layout === 'left') {
+      hero.style.textAlign = 'left';
+      hero.style.alignItems = 'flex-start';
+      hero.style.background = '';
+      h1.style.fontSize = '1.55rem';
+      if (btnRow) btnRow.style.justifyContent = 'flex-start';
+    } else if (state.layout === 'bold') {
+      hero.style.textAlign = 'center';
+      hero.style.alignItems = 'center';
+      hero.style.background = c + '14';
+      h1.style.fontSize = '2rem';
+      if (btnRow) btnRow.style.justifyContent = 'center';
+    } else {
+      hero.style.textAlign = 'center';
+      hero.style.alignItems = 'center';
+      hero.style.background = '';
+      h1.style.fontSize = '1.8rem';
+      if (btnRow) btnRow.style.justifyContent = 'center';
+    }
+
+    /* --- Nav style --- */
+    const nav      = document.getElementById('pvNav');
+    const navBrand = document.getElementById('pvNavBrand');
+    const navCta   = document.getElementById('pvNavCta');
+    if (state.navStyle === 'bold') {
+      nav.style.background     = c;
+      nav.style.backdropFilter = 'none';
+      nav.style.borderBottom   = 'none';
+      navBrand.style.color = '#0D1B2E';
+      if (navCta) { navCta.style.background = '#0D1B2E'; navCta.style.color = c; }
+    } else if (state.navStyle === 'minimal') {
+      nav.style.background     = 'transparent';
+      nav.style.backdropFilter = 'none';
+      nav.style.borderBottom   = '1px solid ' + c + '44';
+      navBrand.style.color = c;
+      if (navCta) { navCta.style.background = c; navCta.style.color = '#0D1B2E'; }
+    } else { /* glass */
+      nav.style.background     = t.nav;
+      nav.style.backdropFilter = 'blur(10px)';
+      nav.style.borderBottom   = '1px solid rgba(255,255,255,.08)';
+      navBrand.style.color = c;
+      if (navCta) { navCta.style.background = c; navCta.style.color = '#0D1B2E'; }
+    }
+
+    /* --- Section visibility (all use .pv-section + .show) --- */
+    const sectionMap = {
+      pvGallery:      state.gallery,
+      pvTestimonials: state.testimonials,
+      pvPricing:      state.pricing,
+      pvForm:         state.contactForm,
+      pvNewsletter:   state.newsletter,
+      pvStore:        state.store,
+      pvMap:          state.mapEmbed,
+      pvCountdown:    state.countdown
+    };
+    for (const [id, on] of Object.entries(sectionMap)) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('show', on);
+    }
+
+    /* Chat widget uses absolute positioning, keep display toggle */
+    const chatEl = document.getElementById('pvChat');
+    if (chatEl) chatEl.style.display = state.chatWidget ? 'block' : 'none';
+
+    if (state.countdown) startCountdown();
+
+    updateFeatureCount();
+
+    /* Re-sync mobile view */
+    if (state.device === 'mobile') refreshMobile();
+  }
+
+  /* =========================================================
+     MOBILE PREVIEW
+  ========================================================= */
+  function refreshMobile() {
+    const pvSite    = document.getElementById('pvSite');
+    const mSite     = document.getElementById('pvMobileSite');
+    if (!mSite) return;
+    const clone = pvSite.cloneNode(true);
+    // strip id from clone to avoid duplicate IDs in DOM
+    clone.removeAttribute('id');
+    clone.style.transform = '';
+    clone.style.width = '385px';
+    mSite.innerHTML = '';
+    mSite.appendChild(clone);
+  }
+
+  /* =========================================================
+     DEVICE SWITCHER
+  ========================================================= */
+  window.setPvDevice = function (device) {
+    state.device = device;
+    const pvSite    = document.getElementById('pvSite');
+    const phoneShell = document.getElementById('phoneShell');
+    const deskBtn   = document.getElementById('pvDevDesktop');
+    const mobBtn    = document.getElementById('pvDevMobile');
+
+    if (device === 'mobile') {
+      pvSite.style.display    = 'none';
+      phoneShell.style.display = 'block';
+      refreshMobile();
+      deskBtn.classList.remove('active'); mobBtn.classList.add('active');
+    } else {
+      pvSite.style.display    = '';
+      phoneShell.style.display = 'none';
+      deskBtn.classList.add('active'); mobBtn.classList.remove('active');
+    }
+  };
+
+  /* =========================================================
+     CONTROL SETTERS
+  ========================================================= */
+  function selectOnly(groupId, el) {
+    document.querySelectorAll('#' + groupId + ' .ctrl-option')
+      .forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  window.setTheme = function (el) {
+    selectOnly('themeOptions', el);
+    state.theme = el.dataset.theme;
+    applyPreview();
+  };
+
+  window.setColor = function (el) {
+    selectOnly('colorOptions', el);
+    state.color = el.dataset.color;
+    applyPreview();
+  };
+
+  window.setLayout = function (el) {
+    selectOnly('layoutOptions', el);
+    state.layout = el.dataset.layout;
+    applyPreview();
+  };
+
+  window.setBtnStyle = function (el) {
+    selectOnly('btnStyleOptions', el);
+    state.btnStyle = el.dataset.btn;
+    applyPreview();
+  };
+
+  window.setFont = function (el) {
+    selectOnly('fontOptions', el);
+    state.font = el.dataset.font;
+    applyPreview();
+  };
+
+  window.setBrandName = function (val) {
+    state.brandName = val || 'YourBrand';
+    applyPreview();
+  };
+
+  window.toggleFeature = function (key) {
+    state[key] = !state[key];
+    const sw = document.getElementById('toggle-' + key);
+    if (sw) sw.classList.toggle('on', state[key]);
+    applyPreview();
+  };
+
+  window.setNavStyle = function (el, style) {
+    selectOnly('navStyleOptions', el);
+    state.navStyle = style;
+    applyPreview();
+  };
+
+  /* =========================================================
+     INIT
+  ========================================================= */
+  applyPreview();
+
+})();
+</script>
+</body>
+</html>
