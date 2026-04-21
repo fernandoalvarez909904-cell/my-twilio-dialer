@@ -22,996 +22,1733 @@
       --white:       #FFFFFF;
       --gray:        #7A8FAD;
       --gray-light:  #B0C0D6;
+      --nav-height:  110px;
     }
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       font-family: 'Outfit', sans-serif;
       background: var(--navy);
       color: var(--white);
       overflow-x: hidden;
     }
-    a { text-decoration:none; color:inherit; }
-    ul { list-style:none; }
-    img { max-width:100%; display:block; }
-    button { cursor:pointer; border:none; background:none; font-family:inherit; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
 
     /* =========================================================
        SCROLLBAR
     ========================================================= */
-    ::-webkit-scrollbar { width:6px; }
-    ::-webkit-scrollbar-track { background:var(--navy-mid); }
-    ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:3px; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy-mid); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
 
     /* =========================================================
        LOADER
     ========================================================= */
     #loader {
-      position:fixed; inset:0; z-index:9999;
-      background:var(--navy);
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      overflow:hidden;
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--navy);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow: hidden;
       transition: opacity .7s ease .3s, visibility .7s ease .3s;
     }
-    #loader.hidden { opacity:0; visibility:hidden; }
+    #loader.hidden { opacity: 0; visibility: hidden; }
+
     .loader-stage {
-      position:relative;
-      display:flex; flex-direction:column; align-items:center; gap:16px;
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
     }
     .loader-bee-wrap {
-      position:relative; width:100vw; height:90px;
-      overflow:hidden;
+      position: relative; width: 100vw; height: 90px;
+      overflow: hidden;
     }
     .loader-bee {
-      position:absolute; top:0; left:-80px;
-      width:70px; height:70px;
-      animation: beeTag 2.2s cubic-bezier(.4,0,.2,1) forwards;
-      animation-delay: .4s;
+      position: absolute; top: 0; left: -80px;
+      width: 70px; height: 70px;
+      animation: beeTag 2.2s cubic-bezier(.4,0,.2,1) forwards .4s;
     }
     @keyframes beeTag {
-      0%   { left:-80px; transform:rotate(-10deg); }
-      50%  { transform:rotate(5deg); }
-      100% { left:calc(100% + 80px); transform:rotate(-10deg); }
+      0%   { left: -80px; transform: rotate(-10deg); }
+      50%  { transform: rotate(5deg); }
+      100% { left: calc(100% + 80px); transform: rotate(-10deg); }
     }
-    .loader-tagline-wrap { position:relative; text-align:center; padding:0 20px; }
+    .loader-tagline-wrap { text-align: center; padding: 0 20px; }
     .loader-tagline {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:clamp(2rem, 6vw, 5rem);
-      color:var(--gold);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 6vw, 5rem);
+      color: var(--gold);
       clip-path: inset(0 100% 0 0);
-      animation: revealText 2.2s cubic-bezier(.4,0,.2,1) forwards;
-      animation-delay: .4s;
-      white-space:nowrap;
-      letter-spacing:.05em;
+      animation: revealText 2.2s cubic-bezier(.4,0,.2,1) forwards .4s;
+      white-space: nowrap;
+      letter-spacing: .05em;
     }
     @keyframes revealText {
       0%   { clip-path: inset(0 100% 0 0); }
       100% { clip-path: inset(0 0% 0 0); }
     }
     .loader-sub {
-      font-size:clamp(.9rem, 2vw, 1.2rem);
-      color:var(--gray-light);
-      letter-spacing:.2em;
-      text-transform:uppercase;
-      opacity:0;
-      animation: fadeUp .8s ease forwards;
-      animation-delay: 2.8s;
+      font-size: clamp(.9rem, 2vw, 1.2rem);
+      color: var(--gray-light);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp .8s ease forwards 2.8s;
     }
     .loader-dots {
-      display:flex; gap:8px; margin-top:32px;
-      opacity:0;
-      animation: fadeUp .5s ease forwards;
-      animation-delay: 3s;
+      display: flex; gap: 8px; margin-top: 32px;
+      opacity: 0;
+      animation: fadeUp .5s ease forwards 3s;
     }
     .loader-dot {
-      width:8px; height:8px; border-radius:50%;
-      background:var(--gold);
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--gold);
       animation: dotPulse 1s ease infinite;
     }
-    .loader-dot:nth-child(2){ animation-delay:.15s; }
-    .loader-dot:nth-child(3){ animation-delay:.3s; }
+    .loader-dot:nth-child(2) { animation-delay: .15s; }
+    .loader-dot:nth-child(3) { animation-delay: .3s; }
     @keyframes dotPulse {
-      0%,100%{ opacity:.3; transform:scale(.8); }
-      50%     { opacity:1;  transform:scale(1.2); }
+      0%, 100% { opacity: .3; transform: scale(.8); }
+      50%       { opacity: 1;  transform: scale(1.2); }
     }
     @keyframes fadeUp {
-      from{ opacity:0; transform:translateY(10px); }
-      to  { opacity:1; transform:translateY(0); }
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     /* =========================================================
-       NAV — dark, matches the page
+       NAV
     ========================================================= */
     nav {
-      position:fixed; top:0; left:0; right:0; z-index:1000;
-      padding:14px 5%;
-      display:flex; align-items:center; justify-content:space-between;
-      background: var(--navy-mid);
-      backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--navy-border);
-      transition: padding .3s ease, background .3s ease;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 18px 5%;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(8,14,26,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,162,39,.2);
+      transition: padding .3s ease;
     }
-    nav.scrolled {
-      padding:10px 5%;
-      background: rgba(15,28,48,.97);
-    }
+    nav.scrolled { padding: 12px 5%; }
 
-    /* Logo — circle wrap */
     .nav-logo {
-      display:flex; align-items:center; gap:12px;
-      font-family:'Bebas Neue', sans-serif;
-      font-size:1.7rem;
-      letter-spacing:.06em;
-      color:var(--white);
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      letter-spacing: .06em;
+      color: var(--white);
     }
-    .nav-logo span { color:var(--gold); }
+    .nav-logo span { color: var(--gold); }
+    .nav-logo-img-wrap {
+      background: #fff;
+      border-radius: 50%;
+      padding: 4px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .nav-logo-bee { width: 72px; height: 72px; }
 
-    .nav-logo-circle {
-      width:56px; height:56px;
-      border-radius:50%;
-      border:2px solid var(--gold);
-      background: rgba(201,162,39,.08);
-      display:flex; align-items:center; justify-content:center;
-      overflow:hidden;
-      flex-shrink:0;
-      box-shadow: 0 0 0 4px rgba(201,162,39,.1);
-      transition: box-shadow .3s ease, border-color .3s ease;
-    }
-    .nav-logo-circle:hover {
-      box-shadow: 0 0 0 6px rgba(201,162,39,.18), 0 0 20px rgba(201,162,39,.2);
-      border-color: var(--gold-light);
-    }
-    .nav-logo-circle img {
-      width:48px; height:48px;
-      object-fit:contain;
-    }
-
-    .nav-links {
-      display:flex; align-items:center; gap:32px;
-    }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
     .nav-links a {
-      font-size:.9rem; font-weight:500;
-      color:var(--gray-light);
-      letter-spacing:.05em;
-      transition:color .2s;
+      font-size: .9rem; font-weight: 500;
+      color: var(--gray-light);
+      letter-spacing: .05em;
+      transition: color .2s;
     }
-    .nav-links a:hover { color:var(--gold); }
+    .nav-links a:hover { color: var(--gold); }
 
     .nav-cta {
-      padding:10px 24px;
-      background:var(--gold);
-      color:var(--navy);
-      font-weight:700; font-size:.9rem;
-      letter-spacing:.05em;
-      border-radius:4px;
-      transition:background .2s, transform .15s;
+      padding: 10px 24px;
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 700; font-size: .9rem;
+      letter-spacing: .05em;
+      border-radius: 4px;
+      transition: background .2s, transform .15s;
     }
-    .nav-cta:hover { background:var(--gold-light); transform:translateY(-1px); }
+    .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
 
-    .nav-hamburger {
-      display:none; flex-direction:column; gap:5px;
-      cursor:pointer;
-    }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
     .nav-hamburger span {
-      display:block; width:24px; height:2px;
-      background:var(--gray-light); border-radius:2px;
-      transition:all .3s ease;
+      display: block; width: 24px; height: 2px;
+      background: var(--white); border-radius: 2px;
+      transition: all .3s ease;
     }
 
-    /* Mobile nav */
     .nav-mobile {
-      display:none; flex-direction:column;
-      position:fixed; top:76px; left:0; right:0;
-      background: rgba(15,28,48,.98);
-      backdrop-filter:blur(12px);
-      padding:20px 5%;
-      border-bottom:1px solid var(--navy-border);
-      gap:16px;
-      z-index:999;
+      display: none; flex-direction: column;
+      position: fixed; top: var(--nav-height); left: 0; right: 0;
+      background: var(--navy-mid);
+      padding: 20px 5%;
+      border-bottom: 1px solid rgba(201,162,39,.2);
+      gap: 16px; z-index: 999;
     }
-    .nav-mobile.open { display:flex; }
-    .nav-mobile a { font-size:1.1rem; font-weight:500; color:var(--gray-light); }
-    .nav-mobile a:hover { color:var(--gold); }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a { font-size: 1.1rem; font-weight: 500; color: var(--white); }
+    .nav-mobile a:hover { color: var(--gold); }
 
-    @media(max-width:768px){
-      .nav-links { display:none; }
-      .nav-cta { display:none; }
-      .nav-hamburger { display:flex; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
     }
+
+    /* =========================================================
+       TAB BAR
+    ========================================================= */
+    .tab-bar {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 4px;
+      padding: 16px 5% 12px;
+      background: var(--navy-mid);
+      border-bottom: 1px solid var(--navy-border);
+      position: sticky;
+      top: var(--nav-height);
+      z-index: 900;
+    }
+    .tab-btn {
+      padding: 10px 18px;
+      background: transparent;
+      border: 1.5px solid transparent;
+      border-radius: 4px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600; font-size: .85rem;
+      letter-spacing: .03em;
+      color: var(--gray);
+      cursor: pointer;
+      transition: all .2s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--gold); border-color: rgba(201,162,39,.3); }
+    .tab-btn.active {
+      color: var(--gold);
+      border-color: var(--gold);
+      background: rgba(201,162,39,.08);
+    }
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
 
     /* =========================================================
        HERO
     ========================================================= */
     #hero {
-      min-height:100vh;
-      display:flex; align-items:center; justify-content:center;
-      position:relative; overflow:hidden;
-      padding:120px 5% 80px;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      padding: 120px 5% 80px;
     }
     .hero-bg {
-      position:absolute; inset:0; z-index:0;
+      position: absolute; inset: 0; z-index: 0;
       background:
         radial-gradient(ellipse 80% 60% at 60% 40%, rgba(201,162,39,.07) 0%, transparent 70%),
         radial-gradient(ellipse 50% 80% at 10% 80%, rgba(15,28,48,.8) 0%, transparent 60%);
     }
     .hex-grid {
-      position:absolute; inset:0; z-index:0;
-      opacity:.06;
+      position: absolute; inset: 0; z-index: 0;
+      opacity: .06;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50V16L28 0l28 16v34L28 66zm0-6l22-12.7V22.7L28 10 6 22.7v24.6L28 60z' fill='%23C9A227'/%3E%3C/svg%3E");
-      background-size:56px 100px;
+      background-size: 56px 100px;
     }
-    .particles { position:absolute; inset:0; z-index:0; pointer-events:none; }
+    .particles { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
     .particle {
-      position:absolute;
-      width:2px; height:2px;
-      background:var(--gold);
-      border-radius:50%;
-      opacity:0;
-      animation:particleFloat linear infinite;
+      position: absolute; width: 2px; height: 2px;
+      background: var(--gold); border-radius: 50%;
+      opacity: 0; animation: particleFloat linear infinite;
     }
     @keyframes particleFloat {
-      0%   { opacity:0; transform:translateY(0) scale(1); }
-      10%  { opacity:.8; }
-      90%  { opacity:.3; }
-      100% { opacity:0; transform:translateY(-120vh) scale(0); }
+      0%   { opacity: 0; transform: translateY(0) scale(1); }
+      10%  { opacity: .8; }
+      90%  { opacity: .3; }
+      100% { opacity: 0; transform: translateY(-120vh) scale(0); }
     }
-    .hero-content {
-      position:relative; z-index:1;
-      max-width:800px; text-align:center;
-    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 800px; text-align: center; }
     .hero-eyebrow {
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:.85rem; font-weight:600;
-      letter-spacing:.25em; text-transform:uppercase;
-      color:var(--gold);
-      margin-bottom:24px;
-      opacity:0; animation:fadeUp .7s ease forwards .3s;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .85rem; font-weight: 600;
+      letter-spacing: .25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 24px;
+      opacity: 0; animation: fadeUp .7s ease forwards .3s;
     }
     .hero-eyebrow::before, .hero-eyebrow::after {
-      content:''; width:30px; height:1px; background:var(--gold); opacity:.5;
+      content: ''; width: 30px; height: 1px; background: var(--gold); opacity: .5;
     }
     .hero-title {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:clamp(3.5rem, 10vw, 8rem);
-      line-height:.95;
-      letter-spacing:.02em;
-      margin-bottom:8px;
-      opacity:0; animation:fadeUp .7s ease forwards .5s;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      line-height: .95; letter-spacing: .02em;
+      margin-bottom: 8px;
+      opacity: 0; animation: fadeUp .7s ease forwards .5s;
     }
-    .hero-title em { font-style:normal; color:var(--gold); display:block; }
+    .hero-title em { font-style: normal; color: var(--gold); display: block; }
     .hero-sub {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:clamp(1.5rem, 4vw, 3rem);
-      color:var(--gray-light);
-      letter-spacing:.05em;
-      margin-bottom:24px;
-      opacity:0; animation:fadeUp .7s ease forwards .7s;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 3rem);
+      color: var(--gray-light); letter-spacing: .05em;
+      margin-bottom: 24px;
+      opacity: 0; animation: fadeUp .7s ease forwards .7s;
     }
     .hero-desc {
-      font-size:clamp(1rem, 2vw, 1.2rem);
-      color:var(--gray);
-      max-width:560px;
-      margin:0 auto 40px;
-      line-height:1.7;
-      opacity:0; animation:fadeUp .7s ease forwards .9s;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--gray); max-width: 560px;
+      margin: 0 auto 40px; line-height: 1.7;
+      opacity: 0; animation: fadeUp .7s ease forwards .9s;
     }
     .hero-btns {
-      display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:16px;
-      opacity:0; animation:fadeUp .7s ease forwards 1.1s;
+      display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 16px;
+      opacity: 0; animation: fadeUp .7s ease forwards 1.1s;
     }
     .btn-primary {
-      padding:16px 36px;
-      background:var(--gold);
-      color:var(--navy);
-      font-weight:700; font-size:1rem;
-      border-radius:4px;
-      letter-spacing:.05em;
-      transition:all .2s ease;
-      display:inline-flex; align-items:center; gap:8px;
+      padding: 16px 36px;
+      background: var(--gold); color: var(--navy);
+      font-weight: 700; font-size: 1rem;
+      border-radius: 4px; letter-spacing: .05em;
+      transition: all .2s ease;
+      display: inline-flex; align-items: center; gap: 8px;
     }
-    .btn-primary:hover { background:var(--gold-light); transform:translateY(-2px); box-shadow:0 8px 30px rgba(201,162,39,.3); }
-    .btn-outline {
-      padding:15px 36px;
-      border:1.5px solid var(--gold);
-      color:var(--gold);
-      font-weight:600; font-size:1rem;
-      border-radius:4px;
-      letter-spacing:.05em;
-      transition:all .2s ease;
-      cursor:pointer;
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(201,162,39,.3);
     }
-    .btn-outline:hover { background:rgba(201,162,39,.1); transform:translateY(-2px); }
     .hero-bee {
-      position:absolute; right:8%; bottom:15%;
-      width:90px; height:90px;
-      filter:drop-shadow(0 0 20px rgba(201,162,39,.3));
-      opacity:0;
-      animation:beeBob 3s ease-in-out infinite, fadeUp .8s ease forwards 1.5s;
-      cursor:pointer;
+      position: absolute; right: 8%; bottom: 15%;
+      width: 90px; height: 90px;
+      filter: drop-shadow(0 0 20px rgba(201,162,39,.3));
+      opacity: 0;
+      animation: beeBob 3s ease-in-out infinite, fadeUp .8s ease forwards 1.5s;
+      cursor: pointer;
     }
     @keyframes beeBob {
-      0%,100% { transform:translateY(0) rotate(-5deg); }
-      50%      { transform:translateY(-20px) rotate(5deg); }
+      0%, 100% { transform: translateY(0) rotate(-5deg); }
+      50%       { transform: translateY(-20px) rotate(5deg); }
     }
     .scroll-hint {
-      position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
-      display:flex; flex-direction:column; align-items:center; gap:8px;
-      opacity:.5;
-      animation:fadeUp .7s ease forwards 1.8s;
-      color:var(--gray);
-      font-size:.75rem; letter-spacing:.15em; text-transform:uppercase;
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: .5; animation: fadeUp .7s ease forwards 1.8s;
+      color: var(--gray); font-size: .75rem; letter-spacing: .15em; text-transform: uppercase;
     }
     .scroll-arrow {
-      width:20px; height:20px;
-      border-right:2px solid var(--gold);
-      border-bottom:2px solid var(--gold);
-      transform:rotate(45deg);
-      animation:scrollBounce 1.5s ease-in-out infinite;
+      width: 20px; height: 20px;
+      border-right: 2px solid var(--gold);
+      border-bottom: 2px solid var(--gold);
+      transform: rotate(45deg);
+      animation: scrollBounce 1.5s ease-in-out infinite;
     }
     @keyframes scrollBounce {
-      0%,100%{ transform:rotate(45deg) translate(0,0); }
-      50%    { transform:rotate(45deg) translate(4px,4px); }
+      0%, 100% { transform: rotate(45deg) translate(0,0); }
+      50%       { transform: rotate(45deg) translate(4px,4px); }
     }
 
     /* =========================================================
        SECTION SHARED
     ========================================================= */
-    section { padding:100px 5%; }
+    section { padding: 100px 5%; }
     .section-label {
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:.8rem; font-weight:700; letter-spacing:.3em; text-transform:uppercase;
-      color:var(--gold); margin-bottom:12px;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .8rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 12px;
     }
-    .section-label::before { content:''; width:24px; height:2px; background:var(--gold); }
+    .section-label::before { content: ''; width: 24px; height: 2px; background: var(--gold); }
     .section-title {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:clamp(2.5rem, 5vw, 4.5rem);
-      line-height:1; letter-spacing:.02em;
-      margin-bottom:16px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      line-height: 1; letter-spacing: .02em;
+      margin-bottom: 16px;
     }
     .section-desc {
-      font-size:1.05rem; color:var(--gray);
-      line-height:1.7; max-width:560px;
-      margin-bottom:60px;
+      font-size: 1.05rem; color: var(--gray);
+      line-height: 1.7; max-width: 560px;
+      margin-bottom: 60px;
     }
-    .gold { color:var(--gold); }
+    .gold { color: var(--gold); }
     .reveal {
-      opacity:0; transform:translateY(40px);
-      transition:opacity .7s ease, transform .7s ease;
+      opacity: 0; transform: translateY(40px);
+      transition: opacity .7s ease, transform .7s ease;
     }
-    .reveal.visible { opacity:1; transform:translateY(0); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* =========================================================
        TRUST BAR
     ========================================================= */
     #trust {
-      padding:32px 5%;
-      background:var(--navy-mid);
-      border-top:1px solid var(--navy-border);
-      border-bottom:1px solid var(--navy-border);
+      padding: 32px 5%;
+      background: var(--navy-mid);
+      border-top: 1px solid var(--navy-border);
+      border-bottom: 1px solid var(--navy-border);
     }
     .trust-grid {
-      display:flex; flex-wrap:wrap; gap:40px;
-      align-items:center; justify-content:center;
+      display: flex; flex-wrap: wrap; gap: 40px;
+      align-items: center; justify-content: center;
     }
     .trust-item {
-      display:flex; align-items:center; gap:12px;
-      font-size:.95rem; color:var(--gray-light);
-      font-weight:500;
+      display: flex; align-items: center; gap: 12px;
+      font-size: .95rem; color: var(--gray-light); font-weight: 500;
     }
-    .trust-icon { font-size:1.5rem; }
+    .trust-icon { font-size: 1.5rem; }
 
     /* =========================================================
        SERVICES
     ========================================================= */
-    #services { background:var(--navy); }
+    #services { background: var(--navy); }
     .services-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
-      gap:24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
     }
     .service-card {
-      background:var(--navy-card);
-      border:1px solid var(--navy-border);
-      border-radius:8px;
-      padding:32px 28px;
-      position:relative; overflow:hidden;
-      transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
-      cursor:default;
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 8px; padding: 32px 28px;
+      position: relative; overflow: hidden;
+      transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
     }
     .service-card::before {
-      content:''; position:absolute;
-      top:0; left:0; right:0; height:2px;
-      background:linear-gradient(90deg, var(--gold), var(--gold-dark));
-      transform:scaleX(0); transform-origin:left;
-      transition:transform .3s ease;
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .3s ease;
     }
-    .service-card:hover::before { transform:scaleX(1); }
+    .service-card:hover::before { transform: scaleX(1); }
     .service-card:hover {
-      transform:translateY(-4px);
-      border-color:rgba(201,162,39,.3);
-      box-shadow:0 16px 40px rgba(0,0,0,.4);
+      transform: translateY(-4px);
+      border-color: rgba(201,162,39,.3);
+      box-shadow: 0 16px 40px rgba(0,0,0,.4);
     }
-    .service-icon { font-size:2.2rem; margin-bottom:16px; display:block; }
+    .service-icon { font-size: 2.2rem; margin-bottom: 16px; display: block; }
     .service-title {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:1.4rem; letter-spacing:.05em;
-      color:var(--white); margin-bottom:8px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem; letter-spacing: .05em;
+      color: var(--white); margin-bottom: 8px;
     }
-    .service-desc { font-size:.9rem; color:var(--gray); line-height:1.6; }
+    .service-desc { font-size: .9rem; color: var(--gray); line-height: 1.6; }
     .service-badge {
-      display:inline-block; margin-top:12px;
-      padding:4px 10px;
-      background:rgba(201,162,39,.1);
-      border:1px solid rgba(201,162,39,.3);
-      border-radius:3px;
-      font-size:.75rem; font-weight:600; color:var(--gold);
-      letter-spacing:.1em; text-transform:uppercase;
+      display: inline-block; margin-top: 12px;
+      padding: 4px 10px;
+      background: rgba(201,162,39,.1);
+      border: 1px solid rgba(201,162,39,.3);
+      border-radius: 3px;
+      font-size: .75rem; font-weight: 600; color: var(--gold);
+      letter-spacing: .1em; text-transform: uppercase;
     }
 
     /* =========================================================
        CAPABILITIES
     ========================================================= */
     #capabilities {
-      background:var(--navy-mid);
-      border-top:1px solid var(--navy-border);
-      border-bottom:1px solid var(--navy-border);
+      background: var(--navy-mid);
+      border-top: 1px solid var(--navy-border);
+      border-bottom: 1px solid var(--navy-border);
     }
     .cap-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
-      gap:20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
     }
     .cap-card {
-      background:var(--navy-card);
-      border:1px solid var(--navy-border);
-      border-radius:8px;
-      padding:28px 24px;
-      display:flex; flex-direction:column; gap:10px;
-      transition:all .3s ease;
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 8px; padding: 28px 24px;
+      display: flex; flex-direction: column; gap: 10px;
+      transition: all .3s ease;
     }
     .cap-card:hover {
-      border-color:rgba(201,162,39,.4);
-      transform:scale(1.02);
-      box-shadow:0 8px 30px rgba(201,162,39,.08);
+      border-color: rgba(201,162,39,.4);
+      transform: scale(1.02);
+      box-shadow: 0 8px 30px rgba(201,162,39,.08);
     }
-    .cap-icon { font-size:2rem; }
-    .cap-title { font-weight:700; font-size:1rem; }
-    .cap-desc { font-size:.85rem; color:var(--gray); line-height:1.5; }
-
-    /* =========================================================
-       SANDBOX — lazy loader
-    ========================================================= */
-    #sandbox { background:var(--navy); }
-
-    .sandbox-teaser {
-      border:1px solid var(--navy-border);
-      border-radius:12px;
-      background: var(--navy-card);
-      overflow:hidden;
-      transition:opacity .3s ease, transform .3s ease;
-    }
-
-    .sandbox-teaser-top {
-      background:linear-gradient(135deg, var(--navy-mid) 0%, rgba(201,162,39,.05) 100%);
-      padding:60px 40px;
-      display:flex; align-items:center; justify-content:space-between;
-      gap:40px;
-      border-bottom:1px solid var(--navy-border);
-    }
-    @media(max-width:700px){
-      .sandbox-teaser-top { flex-direction:column; padding:40px 24px; text-align:center; }
-    }
-
-    .teaser-left { max-width:500px; }
-    .teaser-left h3 {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:clamp(1.8rem, 4vw, 2.8rem);
-      letter-spacing:.04em;
-      margin-bottom:12px;
-      color:var(--white);
-    }
-    .teaser-left h3 span { color:var(--gold); }
-    .teaser-left p {
-      font-size:1rem; color:var(--gray);
-      line-height:1.7; margin-bottom:28px;
-    }
-    .teaser-chips {
-      display:flex; flex-wrap:wrap; gap:8px;
-      margin-bottom:32px;
-    }
-    .teaser-chip {
-      padding:5px 14px;
-      background:rgba(201,162,39,.1);
-      border:1px solid rgba(201,162,39,.25);
-      border-radius:50px;
-      font-size:.78rem; font-weight:600; color:var(--gold);
-    }
-
-    .btn-launch {
-      display:inline-flex; align-items:center; gap:10px;
-      padding:18px 40px;
-      background:var(--gold);
-      color:var(--navy);
-      font-weight:700; font-size:1.05rem;
-      border-radius:6px;
-      letter-spacing:.04em;
-      border:none; cursor:pointer;
-      transition:all .2s ease;
-      box-shadow:0 4px 24px rgba(201,162,39,.3);
-    }
-    .btn-launch:hover {
-      background:var(--gold-light);
-      transform:translateY(-2px);
-      box-shadow:0 8px 36px rgba(201,162,39,.45);
-    }
-    .btn-launch-icon { font-size:1.3rem; }
-
-    /* Fake browser chrome preview on the right */
-    .teaser-browser {
-      flex-shrink:0;
-      width:320px;
-      background: #0a0f1a;
-      border-radius:10px;
-      border:1px solid var(--navy-border);
-      overflow:hidden;
-      box-shadow:0 20px 60px rgba(0,0,0,.5);
-    }
-    @media(max-width:700px){ .teaser-browser { width:100%; max-width:340px; } }
-    .teaser-browser-bar {
-      background: #0d1726;
-      padding:8px 12px;
-      display:flex; align-items:center; gap:6px;
-      border-bottom:1px solid var(--navy-border);
-    }
-    .tb-dot { width:9px; height:9px; border-radius:50%; }
-    .teaser-browser-url {
-      flex:1; margin:0 8px;
-      background:rgba(255,255,255,.05);
-      border-radius:3px;
-      padding:3px 10px;
-      font-size:.66rem; font-family:monospace;
-      color:var(--gray);
-    }
-    .teaser-browser-body {
-      padding:16px;
-      display:flex; flex-direction:column; gap:8px;
-    }
-    .tb-nav-mock {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:6px 10px;
-      background:rgba(201,162,39,.06);
-      border-radius:4px;
-      font-size:.58rem; font-weight:700;
-      border:1px solid rgba(201,162,39,.15);
-    }
-    .tb-nav-brand { color:var(--gold); }
-    .tb-nav-links { display:flex; gap:8px; opacity:.5; font-size:.54rem; }
-    .tb-hero {
-      padding:14px 10px;
-      text-align:center;
-      background:rgba(255,255,255,.02);
-      border-radius:4px;
-    }
-    .tb-h1 { font-size:.95rem; font-weight:800; margin-bottom:4px; }
-    .tb-accent { color:var(--gold); }
-    .tb-tagline { font-size:.58rem; opacity:.5; margin-bottom:8px; }
-    .tb-btns { display:flex; gap:5px; justify-content:center; }
-    .tb-btn {
-      padding:4px 10px; border-radius:3px;
-      font-size:.58rem; font-weight:700;
-    }
-    .tb-btn-primary { background:var(--gold); color:#0D1B2E; }
-    .tb-btn-outline { border:1px solid var(--gold); color:var(--gold); }
-    .tb-sections {
-      display:flex; flex-direction:column; gap:5px;
-    }
-    .tb-section-bar {
-      height:28px; border-radius:3px;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.07);
-      display:flex; align-items:center;
-      padding:0 8px;
-      gap:6px;
-    }
-    .tb-section-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
-    .tb-section-line {
-      height:3px; border-radius:2px;
-      background:rgba(255,255,255,.1);
-      flex:1;
-    }
-    .teaser-bottom {
-      padding:20px 40px;
-      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
-    }
-    @media(max-width:700px){ .teaser-bottom { padding:20px 24px; } }
-    .teaser-bottom-note { font-size:.82rem; color:var(--gray); }
-    .teaser-bottom-note strong { color:var(--gold); }
-
-    /* Iframe wrapper — hidden until loaded */
-    #sandboxIframeWrap {
-      display:none;
-      border-radius:12px;
-      overflow:hidden;
-      border:1px solid var(--navy-border);
-    }
-    #sandboxIframeWrap iframe {
-      width:100%;
-      height:760px;
-      border:none;
-      display:block;
-    }
+    .cap-icon { font-size: 2rem; }
+    .cap-title { font-weight: 700; font-size: 1rem; }
+    .cap-desc { font-size: .85rem; color: var(--gray); line-height: 1.5; }
 
     /* =========================================================
        PROCESS
     ========================================================= */
     #process {
-      background:var(--navy-mid);
-      border-top:1px solid var(--navy-border);
+      background: var(--navy);
+      border-top: 1px solid var(--navy-border);
     }
     .process-steps {
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
-      gap:32px; position:relative;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 32px;
     }
-    .process-step { display:flex; flex-direction:column; gap:12px; }
+    .process-step { display: flex; flex-direction: column; gap: 12px; }
     .step-num {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:4rem; color:rgba(201,162,39,.15);
-      line-height:1;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem; color: rgba(201,162,39,.15);
+      line-height: 1;
     }
-    .step-title { font-weight:700; font-size:1.05rem; }
-    .step-desc { font-size:.875rem; color:var(--gray); line-height:1.6; }
+    .step-title { font-weight: 700; font-size: 1.05rem; }
+    .step-desc { font-size: .875rem; color: var(--gray); line-height: 1.6; }
 
     /* =========================================================
-       CONTACT / QUESTIONNAIRE
+       CONTACT
     ========================================================= */
-    #contact { background:var(--navy); }
-    .form-wrapper { max-width:700px; margin:0 auto; }
-    .step-indicators {
-      display:flex; align-items:center; gap:0;
-      margin-bottom:40px;
-    }
+    #contact { background: var(--navy); }
+    .form-wrapper { max-width: 700px; margin: 0 auto; }
+
+    .step-indicators { display: flex; align-items: center; margin-bottom: 40px; }
     .step-ind {
-      display:flex; flex-direction:column; align-items:center; gap:6px;
-      flex:1; position:relative;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      flex: 1; position: relative;
     }
     .step-ind:not(:last-child)::after {
-      content:''; position:absolute;
-      top:16px; left:50%; right:-50%;
-      height:2px; background:var(--navy-border);
-      z-index:0; transition:background .3s;
+      content: ''; position: absolute;
+      top: 16px; left: 50%; right: -50%;
+      height: 2px; background: var(--navy-border);
+      z-index: 0; transition: background .3s;
     }
-    .step-ind.done:not(:last-child)::after { background:var(--gold); }
+    .step-ind.done:not(:last-child)::after { background: var(--gold); }
     .step-circle {
-      width:32px; height:32px; border-radius:50%;
-      border:2px solid var(--navy-border);
-      display:flex; align-items:center; justify-content:center;
-      font-size:.8rem; font-weight:700; color:var(--gray);
-      position:relative; z-index:1;
-      background:var(--navy);
-      transition:all .3s ease;
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 2px solid var(--navy-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; font-weight: 700; color: var(--gray);
+      position: relative; z-index: 1;
+      background: var(--navy);
+      transition: all .3s ease;
     }
-    .step-ind.active .step-circle { border-color:var(--gold); color:var(--gold); box-shadow:0 0 0 4px rgba(201,162,39,.15); }
-    .step-ind.done .step-circle   { border-color:var(--gold); background:var(--gold); color:var(--navy); }
+    .step-ind.active .step-circle {
+      border-color: var(--gold); color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(201,162,39,.15);
+    }
+    .step-ind.done .step-circle {
+      border-color: var(--gold); background: var(--gold); color: var(--navy);
+    }
     .step-ind-label {
-      font-size:.7rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
-      color:var(--gray); white-space:nowrap;
+      font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--gray); white-space: nowrap;
     }
-    .step-ind.active .step-ind-label { color:var(--gold); }
+    .step-ind.active .step-ind-label { color: var(--gold); }
 
-    .form-step { display:none; }
-    .form-step.active { display:block; animation:fadeUp .4s ease; }
+    .form-step { display: none; }
+    .form-step.active { display: block; animation: fadeUp .4s ease; }
     .form-title {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:2rem; letter-spacing:.05em;
-      margin-bottom:8px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; letter-spacing: .05em; margin-bottom: 8px;
     }
-    .form-subtitle { font-size:.95rem; color:var(--gray); margin-bottom:32px; line-height:1.6; }
-    .field-group { margin-bottom:20px; }
+    .form-subtitle { font-size: .95rem; color: var(--gray); margin-bottom: 32px; line-height: 1.6; }
+
+    .field-group { margin-bottom: 20px; }
     .field-label {
-      display:block; font-size:.85rem; font-weight:600;
-      letter-spacing:.05em; color:var(--gray-light);
-      margin-bottom:8px;
+      display: block; font-size: .85rem; font-weight: 600;
+      letter-spacing: .05em; color: var(--gray-light); margin-bottom: 8px;
     }
     .field-input {
-      width:100%;
-      background:var(--navy-card);
-      border:1.5px solid var(--navy-border);
-      border-radius:6px;
-      padding:14px 16px;
-      font-size:.95rem; color:var(--white);
-      font-family:'Outfit', sans-serif;
-      transition:border-color .2s, box-shadow .2s;
-      outline:none;
+      width: 100%;
+      background: var(--navy-card);
+      border: 1.5px solid var(--navy-border);
+      border-radius: 6px; padding: 14px 16px;
+      font-size: .95rem; color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
     }
-    .field-input:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(201,162,39,.1); }
-    .field-input::placeholder { color:var(--gray); }
-    textarea.field-input { resize:vertical; min-height:100px; }
-    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-    @media(max-width:550px){ .field-row{ grid-template-columns:1fr; } }
+    .field-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,162,39,.1);
+    }
+    .field-input::placeholder { color: var(--gray); }
+    textarea.field-input { resize: vertical; min-height: 100px; }
+
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 550px) { .field-row { grid-template-columns: 1fr; } }
 
     .site-types {
-      display:grid; grid-template-columns:repeat(auto-fill, minmax(170px, 1fr));
-      gap:12px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 12px;
     }
     .site-type-card {
-      background:var(--navy-card);
-      border:1.5px solid var(--navy-border);
-      border-radius:6px; padding:16px;
-      cursor:pointer; transition:all .2s;
-      text-align:left;
+      background: var(--navy-card);
+      border: 1.5px solid var(--navy-border);
+      border-radius: 6px; padding: 16px;
+      cursor: pointer; transition: all .2s; text-align: left;
     }
-    .site-type-card:hover { border-color:rgba(201,162,39,.4); }
-    .site-type-card.selected { border-color:var(--gold); background:rgba(201,162,39,.08); }
-    .site-type-icon { font-size:1.5rem; margin-bottom:8px; display:block; }
-    .site-type-name { font-weight:700; font-size:.9rem; margin-bottom:4px; }
-    .site-type-desc { font-size:.78rem; color:var(--gray); line-height:1.4; }
+    .site-type-card:hover { border-color: rgba(201,162,39,.4); }
+    .site-type-card.selected { border-color: var(--gold); background: rgba(201,162,39,.08); }
+    .site-type-icon { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .site-type-name { font-weight: 700; font-size: .9rem; margin-bottom: 4px; }
+    .site-type-desc { font-size: .78rem; color: var(--gray); line-height: 1.4; }
 
-    .features-list { display:flex; flex-direction:column; gap:12px; }
+    .features-list { display: flex; flex-direction: column; gap: 12px; }
     .feature-item {
-      background:var(--navy-card);
-      border:1.5px solid var(--navy-border);
-      border-radius:6px;
-      padding:14px 16px;
-      display:flex; align-items:flex-start; gap:14px;
-      cursor:pointer; transition:all .2s;
+      background: var(--navy-card);
+      border: 1.5px solid var(--navy-border);
+      border-radius: 6px; padding: 14px 16px;
+      display: flex; align-items: flex-start; gap: 14px;
+      cursor: pointer; transition: all .2s;
     }
-    .feature-item:hover { border-color:rgba(201,162,39,.3); }
-    .feature-item.checked { border-color:var(--gold); background:rgba(201,162,39,.06); }
+    .feature-item:hover { border-color: rgba(201,162,39,.3); }
+    .feature-item.checked { border-color: var(--gold); background: rgba(201,162,39,.06); }
     .feature-checkbox {
-      width:20px; height:20px; flex-shrink:0;
-      border:2px solid var(--navy-border);
-      border-radius:4px; margin-top:2px;
-      display:flex; align-items:center; justify-content:center;
-      transition:all .2s;
+      width: 20px; height: 20px; flex-shrink: 0;
+      border: 2px solid var(--navy-border);
+      border-radius: 4px; margin-top: 2px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
     }
     .feature-item.checked .feature-checkbox {
-      background:var(--gold); border-color:var(--gold); color:var(--navy);
-      font-size:.75rem; font-weight:900;
+      background: var(--gold); border-color: var(--gold); color: var(--navy);
+      font-size: .75rem; font-weight: 900;
     }
-    .feature-info { flex:1; }
-    .feature-name { font-weight:700; font-size:.95rem; margin-bottom:3px; }
-    .feature-note { font-size:.8rem; color:var(--gray); line-height:1.5; }
-    .feature-price { font-size:.75rem; color:var(--gold); font-weight:600; margin-top:4px; }
+    .feature-info { flex: 1; }
+    .feature-name { font-weight: 700; font-size: .95rem; margin-bottom: 3px; }
+    .feature-note { font-size: .8rem; color: var(--gray); line-height: 1.5; }
+    .feature-price { font-size: .75rem; color: var(--gold); font-weight: 600; margin-top: 4px; }
 
     .timeline-options {
-      display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));
-      gap:10px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px;
     }
     .timeline-opt {
-      background:var(--navy-card);
-      border:1.5px solid var(--navy-border);
-      border-radius:6px; padding:14px;
-      text-align:center; cursor:pointer; transition:all .2s;
-      font-size:.85rem; font-weight:600;
+      background: var(--navy-card);
+      border: 1.5px solid var(--navy-border);
+      border-radius: 6px; padding: 14px;
+      text-align: center; cursor: pointer; transition: all .2s;
+      font-size: .85rem; font-weight: 600;
     }
-    .timeline-opt:hover { border-color:rgba(201,162,39,.4); }
-    .timeline-opt.selected { border-color:var(--gold); color:var(--gold); background:rgba(201,162,39,.08); }
+    .timeline-opt:hover { border-color: rgba(201,162,39,.4); }
+    .timeline-opt.selected { border-color: var(--gold); color: var(--gold); background: rgba(201,162,39,.08); }
 
-    .time-options { display:flex; flex-wrap:wrap; gap:10px; }
+    .time-options { display: flex; flex-wrap: wrap; gap: 10px; }
     .time-opt {
-      padding:8px 18px;
-      background:var(--navy-card);
-      border:1.5px solid var(--navy-border);
-      border-radius:4px;
-      font-size:.85rem; font-weight:600;
-      cursor:pointer; transition:all .2s;
+      padding: 8px 18px;
+      background: var(--navy-card);
+      border: 1.5px solid var(--navy-border);
+      border-radius: 4px;
+      font-size: .85rem; font-weight: 600;
+      cursor: pointer; transition: all .2s;
     }
-    .time-opt.selected { border-color:var(--gold); color:var(--gold); background:rgba(201,162,39,.08); }
+    .time-opt.selected { border-color: var(--gold); color: var(--gold); background: rgba(201,162,39,.08); }
 
     .consent-box {
-      display:flex; align-items:flex-start; gap:12px;
-      background:var(--navy-card);
-      border:1px solid var(--navy-border);
-      border-radius:6px; padding:16px;
-      cursor:pointer; margin-bottom:24px;
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 6px; padding: 16px;
+      cursor: pointer; margin-bottom: 24px;
     }
-    .consent-box.checked { border-color:var(--gold); }
+    .consent-box.checked { border-color: var(--gold); }
     .consent-chk {
-      width:20px; height:20px; flex-shrink:0;
-      border:2px solid var(--navy-border);
-      border-radius:4px; margin-top:1px;
-      display:flex; align-items:center; justify-content:center;
-      transition:all .2s;
+      width: 20px; height: 20px; flex-shrink: 0;
+      border: 2px solid var(--navy-border);
+      border-radius: 4px; margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
     }
     .consent-box.checked .consent-chk {
-      background:var(--gold); border-color:var(--gold); color:var(--navy);
-      font-size:.75rem; font-weight:900;
+      background: var(--gold); border-color: var(--gold); color: var(--navy);
+      font-size: .75rem; font-weight: 900;
     }
-    .consent-text { font-size:.85rem; color:var(--gray); line-height:1.6; }
-    .consent-text a { color:var(--gold); text-decoration:underline; }
+    .consent-text { font-size: .85rem; color: var(--gray); line-height: 1.6; }
+    .consent-text a { color: var(--gold); text-decoration: underline; }
 
     .form-nav {
-      display:flex; justify-content:space-between; align-items:center;
-      margin-top:32px; gap:12px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 32px; gap: 12px;
     }
     .btn-prev {
-      padding:13px 28px;
-      border:1.5px solid var(--navy-border);
-      border-radius:4px;
-      font-weight:600; font-size:.95rem; color:var(--gray);
-      transition:all .2s;
+      padding: 13px 28px;
+      border: 1.5px solid var(--navy-border);
+      border-radius: 4px;
+      font-weight: 600; font-size: .95rem; color: var(--gray);
+      transition: all .2s;
     }
-    .btn-prev:hover { border-color:var(--gray); color:var(--white); }
+    .btn-prev:hover { border-color: var(--gray); color: var(--white); }
     .btn-next {
-      padding:14px 32px;
-      background:var(--gold); color:var(--navy);
-      border-radius:4px;
-      font-weight:700; font-size:.95rem;
-      transition:all .2s;
-      margin-left:auto;
+      padding: 14px 32px;
+      background: var(--gold); color: var(--navy);
+      border-radius: 4px;
+      font-weight: 700; font-size: .95rem;
+      transition: all .2s; margin-left: auto;
     }
-    .btn-next:hover { background:var(--gold-light); }
+    .btn-next:hover { background: var(--gold-light); }
 
     .form-success {
-      display:none; text-align:center; padding:60px 20px;
-      flex-direction:column; align-items:center; gap:16px;
+      display: none; text-align: center; padding: 60px 20px;
+      flex-direction: column; align-items: center; gap: 16px;
     }
-    .form-success.show { display:flex; animation:fadeUp .6s ease; }
-    .success-icon { font-size:4rem; }
-    .success-title { font-family:'Bebas Neue', sans-serif; font-size:2.5rem; color:var(--gold); }
-    .success-sub { font-size:1rem; color:var(--gray); max-width:400px; line-height:1.6; }
+    .form-success.show { display: flex; animation: fadeUp .6s ease; }
+    .success-icon { font-size: 4rem; }
+    .success-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--gold); }
+    .success-sub { font-size: 1rem; color: var(--gray); max-width: 400px; line-height: 1.6; }
 
     /* =========================================================
        GUARANTEE
     ========================================================= */
     #guarantee {
-      padding:80px 5%;
-      background:linear-gradient(135deg, var(--navy-mid) 0%, rgba(201,162,39,.07) 100%);
-      border-top:1px solid var(--navy-border);
-      text-align:center;
+      padding: 100px 5%;
+      background: linear-gradient(135deg, var(--navy-mid) 0%, rgba(201,162,39,.05) 100%);
+      border-top: 1px solid var(--navy-border);
+      text-align: center;
     }
     .guarantee-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
-      gap:32px; margin-top:48px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 32px; margin-top: 48px;
     }
-    .guarantee-item { display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center; }
+    .guarantee-item {
+      display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;
+    }
     .guarantee-icon {
-      width:64px; height:64px; border-radius:50%;
-      background:rgba(201,162,39,.1); border:1px solid rgba(201,162,39,.3);
-      display:flex; align-items:center; justify-content:center;
-      font-size:1.8rem;
+      width: 64px; height: 64px; border-radius: 50%;
+      background: rgba(201,162,39,.1); border: 1px solid rgba(201,162,39,.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
     }
-    .guarantee-title { font-weight:700; font-size:1rem; }
-    .guarantee-desc { font-size:.85rem; color:var(--gray); line-height:1.6; }
+    .guarantee-title { font-weight: 700; font-size: 1rem; }
+    .guarantee-desc { font-size: .85rem; color: var(--gray); line-height: 1.6; }
+
+    /* =========================================================
+       RESTAURANT FEATURES
+    ========================================================= */
+    #restaurant-features { background: var(--navy); }
+    .resto-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px; margin-top: 32px;
+    }
+    .resto-card {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 8px; padding: 28px 24px;
+      transition: all .2s;
+    }
+    .resto-card:hover { border-color: rgba(201,162,39,.4); transform: translateY(-3px); }
+    .resto-icon { font-size: 2.2rem; margin-bottom: 16px; }
+    .resto-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem; letter-spacing: .03em;
+      color: var(--gold); margin-bottom: 8px;
+    }
+    .resto-desc { font-size: .9rem; color: var(--gray); line-height: 1.6; }
+    .resto-note {
+      margin-top: 12px; font-size: .75rem;
+      color: var(--gold-light); font-weight: 600;
+      letter-spacing: .03em; text-transform: uppercase;
+    }
 
     /* =========================================================
        FOOTER
     ========================================================= */
     footer {
-      background:var(--navy-mid);
-      border-top:1px solid var(--navy-border);
-      padding:60px 5% 32px;
+      background: var(--navy-mid);
+      border-top: 1px solid var(--navy-border);
+      padding: 60px 5% 32px;
     }
     .footer-top {
-      display:grid; grid-template-columns:1fr auto;
-      gap:60px; margin-bottom:48px;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 60px; margin-bottom: 48px;
     }
-    @media(max-width:600px){ .footer-top{ grid-template-columns:1fr; } }
-    .footer-brand { max-width:380px; }
+    .footer-brand { max-width: 380px; }
     .footer-logo {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:2rem; letter-spacing:.05em;
-      display:flex; align-items:center; gap:10px;
-      margin-bottom:16px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; letter-spacing: .05em;
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 16px;
     }
-    .footer-logo span { color:var(--gold); }
-    .footer-tagline { font-size:.95rem; color:var(--gray); line-height:1.7; }
+    .footer-logo span { color: var(--gold); }
+    .footer-logo-img-wrap {
+      background: #fff; border-radius: 50%;
+      padding: 3px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .footer-logo-img-wrap img { width: 40px; height: 40px; object-fit: contain; }
+    .footer-tagline { font-size: .95rem; color: var(--gray); line-height: 1.7; }
     .footer-links-group h4 {
-      font-size:.8rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
-      color:var(--gold); margin-bottom:16px;
+      font-size: .8rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 16px;
     }
     .footer-links-group a {
-      display:block; font-size:.9rem; color:var(--gray);
-      margin-bottom:10px; transition:color .2s;
+      display: block; font-size: .9rem; color: var(--gray);
+      margin-bottom: 10px; transition: color .2s;
     }
-    .footer-links-group a:hover { color:var(--white); }
+    .footer-links-group a:hover { color: var(--white); }
     .footer-bottom {
-      border-top:1px solid var(--navy-border);
-      padding-top:24px;
-      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
-      font-size:.8rem; color:var(--gray);
+      border-top: 1px solid var(--navy-border);
+      padding-top: 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+      font-size: .8rem; color: var(--gray);
     }
-    .footer-bottom a { color:var(--gray); transition:color .2s; }
-    .footer-bottom a:hover { color:var(--gold); }
+    .footer-bottom a { color: var(--gray); transition: color .2s; }
+    .footer-bottom a:hover { color: var(--gold); }
+
+    @media (max-width: 600px) {
+      .footer-top { grid-template-columns: 1fr; }
+    }
 
     /* =========================================================
        FLOATING BEE
     ========================================================= */
-    #floating-bee {
-      position:fixed; bottom:32px; right:32px; z-index:800;
-      width:60px; height:60px;
-      cursor:pointer;
-      filter:drop-shadow(0 4px 16px rgba(201,162,39,.4));
-      animation:floatBee 3.5s ease-in-out infinite;
-      transition:transform .2s;
+    .floating-bee-wrap {
+      position: fixed; bottom: 32px; right: 32px; z-index: 800;
+      width: 60px; height: 60px;
+      cursor: pointer;
+      animation: floatBee 3.5s ease-in-out infinite;
     }
-    #floating-bee:hover { transform:scale(1.15) rotate(-10deg); }
     @keyframes floatBee {
-      0%,100%{ transform:translateY(0); }
-      50%    { transform:translateY(-10px); }
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
     }
+    #floating-bee {
+      width: 60px; height: 60px;
+      filter: drop-shadow(0 4px 16px rgba(201,162,39,.4));
+      transition: transform .2s;
+      display: block;
+    }
+    #floating-bee:hover { transform: scale(1.15) rotate(-10deg); }
+    .floating-bee-tooltip {
+      position: absolute; right: 70px; top: 50%; transform: translateY(-50%);
+      background: var(--gold); color: var(--navy);
+      font-family: 'Outfit', sans-serif; font-size: .75rem; font-weight: 700;
+      padding: 6px 12px; border-radius: 4px; white-space: nowrap;
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .floating-bee-wrap:hover .floating-bee-tooltip { opacity: 1; }
 
     /* =========================================================
        MODALS
     ========================================================= */
     .modal-overlay {
-      position:fixed; inset:0; z-index:2000;
-      background:rgba(0,0,0,.8);
-      display:none; align-items:center; justify-content:center;
-      padding:20px;
+      position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,.8);
+      display: none; align-items: center; justify-content: center;
+      padding: 20px;
     }
-    .modal-overlay.open { display:flex; animation:fadeUp .3s ease; }
+    .modal-overlay.open { display: flex; animation: fadeUp .3s ease; }
     .modal-box {
-      background:var(--navy-mid);
-      border:1px solid var(--navy-border);
-      border-radius:10px;
-      max-width:680px; width:100%;
-      max-height:80vh; overflow-y:auto;
-      padding:40px;
+      background: var(--navy-mid);
+      border: 1px solid var(--navy-border);
+      border-radius: 10px;
+      max-width: 680px; width: 100%;
+      max-height: 80vh; overflow-y: auto;
+      padding: 40px;
     }
-    .modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
-    .modal-title { font-family:'Bebas Neue', sans-serif; font-size:2rem; color:var(--gold); }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--gold); }
     .modal-close {
-      width:32px; height:32px; border-radius:50%;
-      border:1px solid var(--navy-border);
-      display:flex; align-items:center; justify-content:center;
-      cursor:pointer; color:var(--gray); transition:all .2s;
-      font-size:1.1rem;
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid var(--navy-border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--gray); transition: all .2s;
+      font-size: 1.1rem; flex-shrink: 0;
     }
-    .modal-close:hover { border-color:var(--gold); color:var(--gold); }
-    .modal-content { font-size:.9rem; color:var(--gray); line-height:1.8; }
-    .modal-content h3 { color:var(--white); font-size:1.1rem; margin:20px 0 8px; }
+    .modal-close:hover { border-color: var(--gold); color: var(--gold); }
+    .modal-content { font-size: .9rem; color: var(--gray); line-height: 1.8; }
+    .modal-content h3 { color: var(--white); font-size: 1.1rem; margin: 20px 0 8px; }
 
     /* =========================================================
        RESPONSIVE
     ========================================================= */
-    @media(max-width:600px){
-      section { padding:70px 5%; }
-      .hero-bee { display:none; }
+    @media (max-width: 600px) {
+      section { padding: 70px 5%; }
+      #guarantee { padding: 70px 5%; }
+      .hero-bee { display: none; }
+      .modal-box { padding: 24px 20px; }
     }
   </style>
 </head>
 <body>
 
-<!-- ============================================================
+<!-- =========================================================
      LOADER
-============================================================ -->
+========================================================= -->
 <div id="loader">
   <div class="loader-stage">
     <div class="loader-bee-wrap">
-      <svg class="loader-bee" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="loader-bee" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
-          <radialGradient id="bodyGrad" cx="40%" cy="35%" r="60%">
+          <radialGradient id="lBodyGrad" cx="40%" cy="35%" r="60%">
             <stop offset="0%" stop-color="#E8C547"/>
             <stop offset="100%" stop-color="#9A7A10"/>
           </radialGradient>
-          <radialGradient id="headGrad" cx="40%" cy="35%" r="60%">
+          <radialGradient id="lHeadGrad" cx="40%" cy="35%" r="60%">
             <stop offset="0%" stop-color="#E8C547"/>
             <stop offset="100%" stop-color="#C9A227"/>
           </radialGradient>
-          <filter id="wingBlur"><feGaussianBlur stdDeviation="0.4"/></filter>
-          <linearGradient id="wingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <filter id="lWingBlur"><feGaussianBlur stdDeviation="0.4"/></filter>
+          <linearGradient id="lWingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="rgba(255,255,255,0.92)"/>
             <stop offset="100%" stop-color="rgba(200,220,255,0.55)"/>
           </linearGradient>
         </defs>
-        <ellipse cx="19" cy="26" rx="17" ry="8.5" fill="url(#wingGrad)" transform="rotate(-28 19 26)" filter="url(#wingBlur)"/>
-        <ellipse cx="61" cy="26" rx="17" ry="8.5" fill="url(#wingGrad)" transform="rotate(28 61 26)" filter="url(#wingBlur)"/>
-        <line x1="19" y1="26" x2="6" y2="19" stroke="rgba(100,160,255,0.35)" stroke-width="0.7"/>
+        <ellipse cx="19" cy="26" rx="17" ry="8.5" fill="url(#lWingGrad)" transform="rotate(-28 19 26)" filter="url(#lWingBlur)"/>
+        <ellipse cx="61" cy="26" rx="17" ry="8.5" fill="url(#lWingGrad)" transform="rotate(28 61 26)" filter="url(#lWingBlur)"/>
+        <line x1="19" y1="26" x2="6"  y2="19" stroke="rgba(100,160,255,0.35)" stroke-width="0.7"/>
         <line x1="19" y1="26" x2="10" y2="22" stroke="rgba(100,160,255,0.25)" stroke-width="0.5"/>
         <line x1="61" y1="26" x2="74" y2="19" stroke="rgba(100,160,255,0.35)" stroke-width="0.7"/>
         <line x1="61" y1="26" x2="70" y2="22" stroke="rgba(100,160,255,0.25)" stroke-width="0.5"/>
         <ellipse cx="23" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.55)" transform="rotate(-15 23 36)"/>
         <ellipse cx="57" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.55)" transform="rotate(15 57 36)"/>
-        <ellipse cx="40" cy="54" rx="13" ry="16" fill="url(#bodyGrad)"/>
+        <ellipse cx="40" cy="54" rx="13" ry="16" fill="url(#lBodyGrad)"/>
         <rect x="27.5" y="47" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
         <rect x="27.5" y="54" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
-        <rect x="29" y="61" width="22" height="3" rx="1.5" fill="#0D1B2E" opacity="0.5"/>
+        <rect x="29"   y="61" width="22" height="3"   rx="1.5" fill="#0D1B2E" opacity="0.5"/>
         <ellipse cx="35" cy="47" rx="5" ry="2.5" fill="rgba(255,255,255,0.18)" transform="rotate(-10 35 47)"/>
-        <ellipse cx="40" cy="26" rx="13" ry="14" fill="url(#headGrad)"/>
+        <ellipse cx="40" cy="26" rx="13" ry="14" fill="url(#lHeadGrad)"/>
+        <ellipse cx="36" cy="20" rx="5" ry="3" fill="rgba(255,255,255,0.22)" transform="rotate(-15 36 20)"/>
+        <ellipse cx="34" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
+        <ellipse cx="46" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
+        <circle cx="35.2" cy="22.8" r="1.1" fill="white"/>
+        <circle cx="47.2" cy="22.8" r="1.1" fill="white"/>
+        <path d="M36 31 Q40 34 44 31" stroke="#0D1B2E" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.8"/>
+        <text x="29.5" y="56" font-size="9.5" fill="#0D1B2E" font-family="monospace" font-weight="bold" opacity="0.9">&lt;/&gt;</text>
+        <polygon points="40,70 37,76 43,76" fill="#7A5F0A"/>
+        <polygon points="40,72 38.5,75.5 41.5,75.5" fill="#9A7A10"/>
+        <path d="M36 13 Q32 8 27 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        <path d="M44 13 Q48 8 53 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        <circle cx="27" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
+        <circle cx="53" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
+        <circle cx="26.2" cy="5.2" r="0.9" fill="rgba(255,255,255,0.7)"/>
+        <circle cx="52.2" cy="5.2" r="0.9" fill="rgba(255,255,255,0.7)"/>
+      </svg>
+    </div>
+    <div class="loader-tagline-wrap">
+      <div class="loader-tagline">BEEZERBUILT</div>
+    </div>
+    <p class="loader-sub">Web Development &amp; Design</p>
+    <div class="loader-dots">
+      <div class="loader-dot"></div>
+      <div class="loader-dot"></div>
+      <div class="loader-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     NAVIGATION
+========================================================= -->
+<nav id="navbar">
+  <a href="#" class="nav-logo" onclick="switchTab('services'); return false;">
+    <div class="nav-logo-img-wrap">
+      <img src="https://i.imgur.com/gHWuxr0.png" class="nav-logo-bee" alt="BeezerBuilt Logo">
+    </div>
+    Beezer<span>Built</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="switchTab('services');    return false;">Services</a></li>
+    <li><a href="#" onclick="switchTab('capabilities'); return false;">Capabilities</a></li>
+    <li><a href="#" onclick="switchTab('process');     return false;">How It Works</a></li>
+    <li><a href="#" onclick="switchTab('contact');     return false;">Contact</a></li>
+  </ul>
+  <a href="#" class="nav-cta" onclick="switchTab('contact'); return false;">Get A Quote →</a>
+  <div class="nav-hamburger" id="hamburger" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="nav-mobile" id="mobileNav">
+  <a href="#" onclick="switchTab('services');    toggleMobileNav(); return false;">Services</a>
+  <a href="#" onclick="switchTab('capabilities'); toggleMobileNav(); return false;">Capabilities</a>
+  <a href="#" onclick="switchTab('process');     toggleMobileNav(); return false;">How It Works</a>
+  <a href="#" onclick="switchTab('contact');     toggleMobileNav(); return false;">Get A Quote</a>
+</div>
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hex-grid"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Web Development · Design · Maintenance</div>
+    <h1 class="hero-title">
+      Imagine It.
+      <em>We'll Build It.</em>
+    </h1>
+    <p class="hero-sub">&amp; Maintain It.</p>
+    <p class="hero-desc">
+      From domain to deployment — custom websites built to your vision,
+      with ongoing support so your site stays live, fast, and legal.
+      You don't pay until you're satisfied.
+    </p>
+    <div class="hero-btns">
+      <a href="#" class="btn-primary" onclick="switchTab('contact'); return false;">Start Your Project →</a>
+    </div>
+  </div>
+
+  <svg class="hero-bee" viewBox="0 0 80 80" fill="none" onclick="switchTab('contact')" title="Start your project" aria-hidden="true">
+    <defs>
+      <radialGradient id="hBodyGrad" cx="40%" cy="35%" r="60%">
+        <stop offset="0%" stop-color="#E8C547"/>
+        <stop offset="100%" stop-color="#9A7A10"/>
+      </radialGradient>
+      <radialGradient id="hHeadGrad" cx="40%" cy="35%" r="60%">
+        <stop offset="0%" stop-color="#E8C547"/>
+        <stop offset="100%" stop-color="#C9A227"/>
+      </radialGradient>
+      <linearGradient id="hWingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="rgba(255,255,255,0.92)"/>
+        <stop offset="100%" stop-color="rgba(200,220,255,0.55)"/>
+      </linearGradient>
+    </defs>
+    <ellipse cx="19" cy="26" rx="17" ry="8.5" fill="url(#hWingGrad)" transform="rotate(-28 19 26)"/>
+    <ellipse cx="61" cy="26" rx="17" ry="8.5" fill="url(#hWingGrad)" transform="rotate(28 61 26)"/>
+    <line x1="19" y1="26" x2="6"  y2="19" stroke="rgba(100,160,255,0.3)" stroke-width="0.7"/>
+    <line x1="61" y1="26" x2="74" y2="19" stroke="rgba(100,160,255,0.3)" stroke-width="0.7"/>
+    <ellipse cx="23" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.5)" transform="rotate(-15 23 36)"/>
+    <ellipse cx="57" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.5)" transform="rotate(15 57 36)"/>
+    <ellipse cx="40" cy="54" rx="13" ry="16" fill="url(#hBodyGrad)"/>
+    <rect x="27.5" y="47" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
+    <rect x="27.5" y="54" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
+    <rect x="29"   y="61" width="22" height="3"   rx="1.5" fill="#0D1B2E" opacity="0.5"/>
+    <ellipse cx="35" cy="47" rx="5" ry="2.5" fill="rgba(255,255,255,0.18)" transform="rotate(-10 35 47)"/>
+    <ellipse cx="40" cy="26" rx="13" ry="14" fill="url(#hHeadGrad)"/>
+    <ellipse cx="36" cy="20" rx="5" ry="3" fill="rgba(255,255,255,0.22)" transform="rotate(-15 36 20)"/>
+    <ellipse cx="34" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
+    <ellipse cx="46" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
+    <circle cx="35.2" cy="22.8" r="1.1" fill="white"/>
+    <circle cx="47.2" cy="22.8" r="1.1" fill="white"/>
+    <path d="M36 31 Q40 34 44 31" stroke="#0D1B2E" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.8"/>
+    <text x="29.5" y="56" font-size="9.5" fill="#0D1B2E" font-family="monospace" font-weight="bold" opacity="0.9">&lt;/&gt;</text>
+    <polygon points="40,70 37,76 43,76" fill="#7A5F0A"/>
+    <path d="M36 13 Q32 8 27 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    <path d="M44 13 Q48 8 53 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    <circle cx="27" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
+    <circle cx="53" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
+    <circle cx="26.2" cy="5.2" r="0.9" fill="rgba(255,255,255,0.7)"/>
+    <circle cx="52.2" cy="5.2" r="0.9" fill="rgba(255,255,255,0.7)"/>
+  </svg>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- =========================================================
+     TRUST BAR
+========================================================= -->
+<div id="trust">
+  <div class="trust-grid">
+    <div class="trust-item reveal"><span class="trust-icon">🔒</span><span>SSL Secured Sites</span></div>
+    <div class="trust-item reveal"><span class="trust-icon">💳</span><span>Pay When Satisfied</span></div>
+    <div class="trust-item reveal"><span class="trust-icon">🌐</span><span>Domain + Hosting Included</span></div>
+    <div class="trust-item reveal"><span class="trust-icon">🛠️</span><span>Free Bug Fixes, Always</span></div>
+    <div class="trust-item reveal"><span class="trust-icon">📱</span><span>Mobile-First Design</span></div>
+    <div class="trust-item reveal"><span class="trust-icon">⚡</span><span>Fast &amp; Always Online</span></div>
+  </div>
+</div>
+
+<!-- =========================================================
+     TAB BAR
+========================================================= -->
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="services"     onclick="switchTab('services')">Services</button>
+  <button class="tab-btn"        data-tab="capabilities" onclick="switchTab('capabilities')">Capabilities</button>
+  <button class="tab-btn"        data-tab="process"      onclick="switchTab('process')">How It Works</button>
+  <button class="tab-btn"        data-tab="guarantee"    onclick="switchTab('guarantee')">Our Promise</button>
+  <button class="tab-btn"        data-tab="restaurant"   onclick="switchTab('restaurant')">🍽️ Restaurant Features</button>
+  <button class="tab-btn"        data-tab="contact"      onclick="switchTab('contact')">Get a Quote</button>
+</div>
+
+<!-- =========================================================
+     TAB: SERVICES
+========================================================= -->
+<div id="tab-services" class="tab-section active">
+  <section id="services">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Full-Stack <span class="gold">Services</span></h2>
+    <p class="section-desc">Everything your web presence needs — under one roof, handled by one person who actually cares.</p>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <span class="service-icon">💻</span>
+        <div class="service-title">Custom Web Development</div>
+        <div class="service-desc">Hand-coded websites built to your exact vision — no drag-and-drop templates. Every line written with purpose.</div>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🌐</span>
+        <div class="service-title">Domain Registration</div>
+        <div class="service-desc">Your own custom web address (e.g. yourbusiness.com). Pricing varies based on availability — we'll find what fits you.</div>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🖥️</span>
+        <div class="service-title">Web Hosting</div>
+        <div class="service-desc">Your site lives on reliable servers so it's fast and accessible 24/7. We handle all the technical setup for you.</div>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🔒</span>
+        <div class="service-title">SSL Certificate</div>
+        <div class="service-desc">That little padlock next to your URL. It encrypts your site so visitors know they're safe — Google requires it too.</div>
+        <span class="service-badge">Mandatory for trust</span>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">📧</span>
+        <div class="service-title">Custom Email</div>
+        <div class="service-desc">Look professional with a branded email address like you@yourbusiness.com instead of a generic Gmail.</div>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🛍️</span>
+        <div class="service-title">E-Commerce &amp; Stores</div>
+        <div class="service-desc">Sell products, merch, or services online with a full shopping experience — carts, checkout, and payment processing.</div>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">⚙️</span>
+        <div class="service-title">Custom Programs &amp; Apps</div>
+        <div class="service-desc">Need a custom tool — batch dialers, portals, calculators? If you can imagine it, we'll code it from scratch.</div>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🎨</span>
+        <div class="service-title">Logo Design</div>
+        <div class="service-desc">Professional logo design to give your brand a visual identity that stands out. Custom, original, all yours.</div>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">📊</span>
+        <div class="service-title">Analytics &amp; SEO</div>
+        <div class="service-desc">Track who visits your site and help more people find you on Google. Data-driven growth, set up for you.</div>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🛡️</span>
+        <div class="service-title">Maintenance &amp; Support</div>
+        <div class="service-desc">Something breaks? I fix it free. Business hours support to keep your site running smooth — rain or shine.</div>
+        <span class="service-badge">Always included</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- =========================================================
+     TAB: CAPABILITIES
+========================================================= -->
+<div id="tab-capabilities" class="tab-section">
+  <section id="capabilities">
+    <div class="section-label">What's Possible</div>
+    <h2 class="section-title">Modern Web <span class="gold">Capabilities</span></h2>
+    <p class="section-desc">Your website can do way more than you think. Here's a taste of what modern web tech makes possible.</p>
+    <div class="cap-grid">
+      <div class="cap-card reveal">
+        <div class="cap-icon">✨</div>
+        <div class="cap-title">Smooth Animations</div>
+        <div class="cap-desc">Elements that slide, fade, and pop as users scroll — making your site feel alive and premium.</div>
+      </div>
+      <div class="cap-card reveal">
+        <div class="cap-icon">🎬</div>
+        <div class="cap-title">Video Backgrounds</div>
+        <div class="cap-desc">Cinematic video playing behind your content for an immersive, high-end first impression.</div>
+      </div>
+      <div class="cap-card reveal">
+        <div class="cap-icon">🖼️</div>
+        <div class="cap-title">Image Galleries</div>
+        <div class="cap-desc">Beautiful photo layouts with lightboxes, lazy loading, and smooth transitions.</div>
+      </div>
+      <div class="cap-card reveal">
+        <div class="cap-icon">📋</div>
+        <div class="cap-title">Smart Contact Forms</div>
+        <div class="cap-desc">Forms that actually reach you — no spam, secure, and easy to manage.</div>
+      </div>
+      <div class="cap-card reveal">
+        <div class="cap-icon">🌙</div>
+        <div class="cap-title">Dark / Light Mode</div>
+        <div class="cap-desc">Let users pick their preference. Modern and accessible for everyone.</div>
+      </div>
+      <div class="cap-card reveal">
+        <div class="cap-icon">📱</div>
+        <div class="cap-title">Mobile-First Design</div>
+        <div class="cap-desc">Your site looks and works perfectly on phones, tablets, and desktops.</div>
+      </div>
+      <div class="cap-card reveal">
+        <div class="cap-icon">🛒</div>
+        <div class="cap-title">Online Stores</div>
+        <div class="cap-desc">Full e-commerce with product pages, carts, and payment integrations like Stripe or Buy Me a Coffee.</div>
+      </div>
+      <div class="cap-card reveal">
+        <div class="cap-icon">🔄</div>
+        <div class="cap-title">Parallax Scrolling</div>
+        <div class="cap-desc">Background layers move at different speeds as you scroll — a stunning depth effect.</div>
+      </div>
+      <div class="cap-card reveal">
+        <div class="cap-icon">🔍</div>
+        <div class="cap-title">SEO Optimized</div>
+        <div class="cap-desc">Built so Google can find and rank your site. More visibility = more customers.</div>
+      </div>
+      <div class="cap-card reveal">
+        <div class="cap-icon">⚡</div>
+        <div class="cap-title">Blazing Fast Load</div>
+        <div class="cap-desc">Optimized code means your site loads in seconds, keeping visitors engaged.</div>
+      </div>
+      <div class="cap-card reveal">
+        <div class="cap-icon">🎠</div>
+        <div class="cap-title">Carousels &amp; Sliders</div>
+        <div class="cap-desc">Auto-sliding banners, testimonial carousels, product showcases — smooth and interactive.</div>
+      </div>
+      <div class="cap-card reveal">
+        <div class="cap-icon">🗺️</div>
+        <div class="cap-title">Maps &amp; Location</div>
+        <div class="cap-desc">Interactive Google Maps, business hours, and directions embedded right into your site.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- =========================================================
+     TAB: PROCESS
+========================================================= -->
+<div id="tab-process" class="tab-section">
+  <section id="process">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Simple <span class="gold">Process</span></h2>
+    <p class="section-desc">No stress, no confusion. Here's exactly how we work together.</p>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="step-num">01</div>
+        <div class="step-title">Fill Out The Form</div>
+        <div class="step-desc">Tell me what you need — your name, type of website, features, and timeline. Takes about 2 minutes.</div>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">02</div>
+        <div class="step-title">Get Your Custom Quote</div>
+        <div class="step-desc">I review your request and reach out with a personalized quote — no generic pricing, it's built around what you actually need.</div>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">03</div>
+        <div class="step-title">We Build It Together</div>
+        <div class="step-desc">I build your site and show you progress. You give feedback, I refine it until it's exactly right.</div>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">04</div>
+        <div class="step-title">You Approve &amp; Pay</div>
+        <div class="step-desc">Happy with it? That's when you pay. Not a second before. We go live and your site starts working for you.</div>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">05</div>
+        <div class="step-title">Ongoing Support</div>
+        <div class="step-desc">I'm on it if anything breaks. Business-hours support to keep your site fast, live, and looking great — always.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- =========================================================
+     TAB: GUARANTEE
+========================================================= -->
+<div id="tab-guarantee" class="tab-section">
+  <div id="guarantee">
+    <div class="section-label">Our Promise</div>
+    <h2 class="section-title">We've Got Your Back — <span class="gold">Guaranteed</span></h2>
+    <p style="font-size:1.05rem; color:var(--gray); line-height:1.7; max-width:560px; margin:0 auto;">
+      No fine print. No gotchas. These are the real commitments I make to every client — and I stand behind every one of them.
+    </p>
+    <div class="guarantee-grid">
+      <div class="guarantee-item reveal">
+        <div class="guarantee-icon">💳</div>
+        <div class="guarantee-title">Pay When Satisfied</div>
+        <div class="guarantee-desc">You don't pay a single dollar until you're 100% happy with the result. Zero risk to you.</div>
+      </div>
+      <div class="guarantee-item reveal">
+        <div class="guarantee-icon">🔧</div>
+        <div class="guarantee-title">Free Bug Fixes</div>
+        <div class="guarantee-desc">If anything breaks or stops working, I fix it at no extra charge. Your investment is protected.</div>
+      </div>
+      <div class="guarantee-item reveal">
+        <div class="guarantee-icon">⚡</div>
+        <div class="guarantee-title">Always Online</div>
+        <div class="guarantee-desc">Rain or shine — your website stays up. I monitor and maintain it so you never lose business due to downtime.</div>
+      </div>
+      <div class="guarantee-item reveal">
+        <div class="guarantee-icon">🔒</div>
+        <div class="guarantee-title">Legally Covered</div>
+        <div class="guarantee-desc">Privacy Policy, Terms &amp; Conditions, SSL — everything your site needs to be compliant and trustworthy.</div>
+      </div>
+      <div class="guarantee-item reveal">
+        <div class="guarantee-icon">📞</div>
+        <div class="guarantee-title">Business Hours Support</div>
+        <div class="guarantee-desc">Questions or changes? Reach out during business hours and I'll get back to you fast. Real human, not a chatbot.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     TAB: RESTAURANT FEATURES
+========================================================= -->
+<div id="tab-restaurant" class="tab-section">
+  <section id="restaurant-features">
+    <div class="section-label">🍽️ For Restaurants</div>
+    <h2 class="section-title">Powerful <span class="gold">Restaurant Tools</span></h2>
+    <p class="section-desc">Custom features that make your restaurant website work as hard as you do. Each one is built by hand — no monthly fees, just pure functionality.</p>
+    <div class="resto-grid">
+      <div class="resto-card reveal">
+        <div class="resto-icon">📧</div>
+        <div class="resto-title">Order-to-Email Form</div>
+        <div class="resto-desc">Customers fill out their order and it lands directly in your inbox. No third-party commissions — you own the relationship.</div>
+        <div class="resto-note">Works with any email provider</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">📞</div>
+        <div class="resto-title">Phone Confirmation &amp; Payment</div>
+        <div class="resto-desc">After an order is placed, the customer sees your phone number to call and confirm details or pay by card over the phone. Perfect for custom requests.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">➕</div>
+        <div class="resto-title">Smart Modifiers</div>
+        <div class="resto-desc">Extra options like "extra cheese" or "no onions" appear only when a customer selects an item that can be customized. Keeps menus clean and intuitive.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">💰</div>
+        <div class="resto-title">Live Price Updates</div>
+        <div class="resto-desc">As customers add toppings or choose sizes, the total updates instantly. No surprises at checkout.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">🛒</div>
+        <div class="resto-title">Cart That Saves</div>
+        <div class="resto-desc">Orders are saved in the browser, so if a customer accidentally closes the tab, their cart is still there when they come back.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">🌙</div>
+        <div class="resto-title">Dark Mode</div>
+        <div class="resto-desc">Automatically switches to a darker color scheme at night, making the menu easy on the eyes for late-night browsers.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">📅</div>
+        <div class="resto-title">Daily Specials (Auto-Rotating)</div>
+        <div class="resto-desc">Specials change by day of the week without you lifting a finger. Monday shows taco specials, Tuesday pasta — all set once.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">📆</div>
+        <div class="resto-title">Reservation Calendar</div>
+        <div class="resto-desc">Customers see available dates and times. When a spot is booked, that slot is automatically blocked so you never double-book.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">⭐</div>
+        <div class="resto-title">Loyalty Points Tracker</div>
+        <div class="resto-desc">Returning customers earn points per order. They can view their balance and redeem rewards right on your site.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">🖼️</div>
+        <div class="resto-title">Lightning-Fast Gallery</div>
+        <div class="resto-desc">High-quality photos of your dishes load in a snap, even on slow connections. Optimized for mobile so hungry customers stay engaged.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">⏳</div>
+        <div class="resto-title">Live Closing Countdown</div>
+        <div class="resto-desc">A countdown timer shows exactly how long until you close, encouraging last-minute orders.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">📊</div>
+        <div class="resto-title">"How Busy?" Toggle</div>
+        <div class="resto-desc">A simple switch you can flip to show "Not too busy — order now!" or "We're slammed — expect a short wait."</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">🍳</div>
+        <div class="resto-title">Time-Based Menus</div>
+        <div class="resto-desc">Breakfast items appear in the morning, lunch at noon, dinner in the evening — automatically, based on the hour.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">💬</div>
+        <div class="resto-title">Rotating Reviews Slideshow</div>
+        <div class="resto-desc">Happy customer quotes scroll automatically, building trust without taking up space.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">📝</div>
+        <div class="resto-title">Order-Ahead with Combo Suggestions</div>
+        <div class="resto-desc">As customers build an order, the system suggests popular combos (e.g., "Add fries and a drink for $3") and auto-calculates the total.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">⏱️</div>
+        <div class="resto-title">Wait Time Estimator</div>
+        <div class="resto-desc">Based on the number of pending orders, an estimated wait time updates in real time — managing expectations before they arrive.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">🖨️</div>
+        <div class="resto-title">Printable Daily Specials</div>
+        <div class="resto-desc">One click generates a clean, printer-friendly sheet of today's specials — perfect for takeout counters or delivery bags.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">🚫</div>
+        <div class="resto-title">"Out of Stock" Toggle</div>
+        <div class="resto-desc">Run out of something? Flip a switch and the item disappears from the menu instantly — no angry customers ordering what's gone.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">📍</div>
+        <div class="resto-title">Location-Aware Hours</div>
+        <div class="resto-desc">The site detects the visitor's time zone and displays your hours in their local time. Never a "but it says you're open!" call again.</div>
+      </div>
+      <div class="resto-card reveal">
+        <div class="resto-icon">📅</div>
+        <div class="resto-title">One-Click "Add to Calendar"</div>
+        <div class="resto-desc">After making a reservation, customers can instantly save it to Google Calendar, Apple Calendar, or Outlook.</div>
+      </div>
+    </div>
+    <p style="margin-top: 48px; color: var(--gold); font-weight: 600; text-align: center; font-size: .95rem;">
+      ⚡ All features are custom-coded — you pay once, no monthly subscriptions.
+    </p>
+  </section>
+</div>
+
+<!-- =========================================================
+     TAB: CONTACT
+========================================================= -->
+<div id="tab-contact" class="tab-section">
+  <section id="contact">
+    <div class="section-label">Get Started</div>
+    <h2 class="section-title">Request Your <span class="gold">Quote</span></h2>
+    <p class="section-desc">Tell me what you need and I'll reach out with a personalized quote. Simple, fast, no obligation.</p>
+
+    <div class="form-wrapper">
+      <div class="step-indicators">
+        <div class="step-ind active" id="sind-1"><div class="step-circle">1</div><div class="step-ind-label">You</div></div>
+        <div class="step-ind"        id="sind-2"><div class="step-circle">2</div><div class="step-ind-label">Location</div></div>
+        <div class="step-ind"        id="sind-3"><div class="step-circle">3</div><div class="step-ind-label">Site Type</div></div>
+        <div class="step-ind"        id="sind-4"><div class="step-circle">4</div><div class="step-ind-label">Features</div></div>
+        <div class="step-ind"        id="sind-5"><div class="step-circle">5</div><div class="step-ind-label">Finish</div></div>
+      </div>
+
+      <form id="quoteForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
+        <input type="hidden" name="website_type" id="hiddenSiteType" />
+        <input type="hidden" name="timeline"     id="hiddenTimeline" />
+        <input type="hidden" name="features"     id="hiddenFeatures" />
+        <input type="hidden" name="contact_time" id="hiddenContactTime" />
+
+        <!-- Step 1 -->
+        <div class="form-step active" id="step1">
+          <div class="form-title">Let's Start With You 👋</div>
+          <p class="form-subtitle">Just the basics so I know who I'm talking to.</p>
+          <div class="field-row">
+            <div class="field-group">
+              <label class="field-label">First &amp; Last Name *</label>
+              <input class="field-input" type="text" name="name" placeholder="John Smith" required />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Phone Number *</label>
+              <input class="field-input" type="tel" name="phone" placeholder="(555) 000-0000" required />
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Email Address *</label>
+            <input class="field-input" type="email" name="email" placeholder="you@example.com" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Business / Project Name (if any)</label>
+            <input class="field-input" type="text" name="business" placeholder="My Awesome Business" />
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn-next" onclick="nextStep(1)">Next: Location &amp; Timing →</button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="form-step" id="step2">
+          <div class="form-title">Where Are You &amp; When Do You Need It? 📍</div>
+          <p class="form-subtitle">This helps me understand your market and plan the timeline.</p>
+          <div class="field-row">
+            <div class="field-group">
+              <label class="field-label">City &amp; State / Country *</label>
+              <input class="field-input" type="text" name="location" placeholder="Miami, FL" required />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Industry / Niche</label>
+              <input class="field-input" type="text" name="industry" placeholder="Restaurant, Music, Retail..." />
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">When do you need your website ready? *</label>
+            <div class="timeline-options">
+              <div class="timeline-opt" onclick="selectTimeline(this,'ASAP — within 1 week')">ASAP<br/><small style="font-weight:400;opacity:.6;">Within 1 week</small></div>
+              <div class="timeline-opt" onclick="selectTimeline(this,'2–4 weeks')">2–4 Weeks</div>
+              <div class="timeline-opt" onclick="selectTimeline(this,'1–2 months')">1–2 Months</div>
+              <div class="timeline-opt" onclick="selectTimeline(this,'3+ months — no rush')">No Rush<br/><small style="font-weight:400;opacity:.6;">3+ months</small></div>
+              <div class="timeline-opt" onclick="selectTimeline(this,'Not sure')">Not Sure</div>
+            </div>
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn-prev" onclick="prevStep(2)">← Back</button>
+            <button type="button" class="btn-next" onclick="nextStep(2)">Next: Site Type →</button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="form-step" id="step3">
+          <div class="form-title">What Kind of Website? 🌐</div>
+          <p class="form-subtitle">Pick the one that best describes your project. Don't worry, we'll customize everything.</p>
+          <div class="site-types">
+            <div class="site-type-card" onclick="selectSiteType(this,'Business / Landing Page')">
+              <span class="site-type-icon">🏢</span>
+              <div class="site-type-name">Business / Landing Page</div>
+              <div class="site-type-desc">Present your services, hours, and contact info.</div>
+            </div>
+            <div class="site-type-card" onclick="selectSiteType(this,'E-Commerce / Online Store')">
+              <span class="site-type-icon">🛍️</span>
+              <div class="site-type-name">E-Commerce / Store</div>
+              <div class="site-type-desc">Sell products or services online.</div>
+            </div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Portfolio / Showcase')">
+              <span class="site-type-icon">🎨</span>
+              <div class="site-type-name">Portfolio / Showcase</div>
+              <div class="site-type-desc">Show off your work, art, or photography.</div>
+            </div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Restaurant / Menu')">
+              <span class="site-type-icon">🍽️</span>
+              <div class="site-type-name">Restaurant / Menu</div>
+              <div class="site-type-desc">Digital menu, reservations, and location.</div>
+            </div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Band / Music / Artist')">
+              <span class="site-type-icon">🎵</span>
+              <div class="site-type-name">Band / Artist</div>
+              <div class="site-type-desc">Promote your music, merch, and shows.</div>
+            </div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Blog / Content Site')">
+              <span class="site-type-icon">📝</span>
+              <div class="site-type-name">Blog / Content</div>
+              <div class="site-type-desc">Articles, news, or personal stories.</div>
+            </div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Event / Venue')">
+              <span class="site-type-icon">🎉</span>
+              <div class="site-type-name">Event / Venue</div>
+              <div class="site-type-desc">Promote events, sell tickets, share schedules.</div>
+            </div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Real Estate')">
+              <span class="site-type-icon">🏠</span>
+              <div class="site-type-name">Real Estate</div>
+              <div class="site-type-desc">Property listings, agent profiles, contact forms.</div>
+            </div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Non-Profit / Church / Community')">
+              <span class="site-type-icon">🤝</span>
+              <div class="site-type-name">Non-Profit / Community</div>
+              <div class="site-type-desc">Share your mission and accept donations.</div>
+            </div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Custom App / Program')">
+              <span class="site-type-icon">⚙️</span>
+              <div class="site-type-name">Custom App / Program</div>
+              <div class="site-type-desc">Something unique — dialers, portals, tools, you name it.</div>
+            </div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Membership / Subscription')">
+              <span class="site-type-icon">🔑</span>
+              <div class="site-type-name">Membership Site</div>
+              <div class="site-type-desc">Gated content, login areas, subscriber access.</div>
+            </div>
+            <div class="site-type-card" onclick="selectSiteType(this,'Other / Not Sure')">
+              <span class="site-type-icon">💡</span>
+              <div class="site-type-name">Other / Not Sure</div>
+              <div class="site-type-desc">Describe it in the next step — if you can imagine it, we'll build it.</div>
+            </div>
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn-prev" onclick="prevStep(3)">← Back</button>
+            <button type="button" class="btn-next" onclick="nextStep(3)">Next: Features →</button>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="form-step" id="step4">
+          <div class="form-title">What Do You Need? ✅</div>
+          <p class="form-subtitle">Select everything you want included. Not sure? Check it anyway — I'll explain everything when we talk.</p>
+          <div class="features-list">
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Source Code Only (no hosting)')">
+              <div class="feature-checkbox"></div>
+              <div class="feature-info">
+                <div class="feature-name">💻 Source Code Only</div>
+                <div class="feature-note">I build your site and hand you the code. You host it yourself. Great if you already have hosting.</div>
+              </div>
+            </div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Web Hosting')">
+              <div class="feature-checkbox"></div>
+              <div class="feature-info">
+                <div class="feature-name">🖥️ Web Hosting</div>
+                <div class="feature-note">Your website lives on a server so it's accessible online. Required for your site to be live on the internet.</div>
+              </div>
+            </div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Custom Domain')">
+              <div class="feature-checkbox"></div>
+              <div class="feature-info">
+                <div class="feature-name">🌐 Custom Domain Name</div>
+                <div class="feature-note">Your own web address like yourbusiness.com — pricing varies based on availability. We'll check it together.</div>
+                <div class="feature-price">⚠️ Price quoted separately based on availability</div>
+              </div>
+            </div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'SSL Certificate')">
+              <div class="feature-checkbox"></div>
+              <div class="feature-info">
+                <div class="feature-name">🔒 SSL Certificate</div>
+                <div class="feature-note">Adds the padlock 🔒 next to your URL. Encrypts your site so visitors know it's safe. Google also requires this to rank your site.</div>
+              </div>
+            </div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Custom Email Address')">
+              <div class="feature-checkbox"></div>
+              <div class="feature-info">
+                <div class="feature-name">📧 Custom Email Address</div>
+                <div class="feature-note">Get a professional email like you@yourbusiness.com instead of a Gmail or Yahoo address. Builds instant trust with clients.</div>
+              </div>
+            </div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'E-Commerce / Online Store')">
+              <div class="feature-checkbox"></div>
+              <div class="feature-info">
+                <div class="feature-name">🛒 E-Commerce / Online Store</div>
+                <div class="feature-note">Sell products or services online with a full cart, checkout, and payment processing (Stripe, Buy Me a Coffee, PayPal, etc.).</div>
+              </div>
+            </div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Contact Form')">
+              <div class="feature-checkbox"></div>
+              <div class="feature-info">
+                <div class="feature-name">📋 Contact / Quote Form</div>
+                <div class="feature-note">Let visitors send you messages directly from your site. Submissions go straight to your email — no spam, secure.</div>
+              </div>
+            </div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Logo Design')">
+              <div class="feature-checkbox"></div>
+              <div class="feature-info">
+                <div class="feature-name">🎨 Logo Design</div>
+                <div class="feature-note">Need a professional logo? I'll design one from scratch that represents your brand. All rights go to you.</div>
+              </div>
+            </div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'SEO & Analytics')">
+              <div class="feature-checkbox"></div>
+              <div class="feature-info">
+                <div class="feature-name">📊 SEO &amp; Analytics</div>
+                <div class="feature-note">Help Google find and rank your site. Plus Google Analytics so you can see who's visiting and where they're coming from.</div>
+              </div>
+            </div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Ongoing Maintenance & Support')">
+              <div class="feature-checkbox"></div>
+              <div class="feature-info">
+                <div class="feature-name">🛡️ Ongoing Maintenance &amp; Support</div>
+                <div class="feature-note">Monthly or quarterly plan to keep your site updated, secure, and running smoothly. Includes bug fixes at no extra charge.</div>
+              </div>
+            </div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Privacy Policy & Terms of Service')">
+              <div class="feature-checkbox"></div>
+              <div class="feature-info">
+                <div class="feature-name">📄 Privacy Policy &amp; Terms of Service</div>
+                <div class="feature-note">Legal pages that protect your business and build trust. Required by law if you collect any visitor data (even contact forms).</div>
+              </div>
+            </div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Animations & Visual Effects')">
+              <div class="feature-checkbox"></div>
+              <div class="feature-info">
+                <div class="feature-name">✨ Animations &amp; Visual Effects</div>
+                <div class="feature-note">Smooth scroll animations, hover effects, parallax, or custom motion that makes your site feel premium and modern.</div>
+              </div>
+            </div>
+            <div class="feature-item" onclick="toggleFeatureCheck(this,'Video Background or Media')">
+              <div class="feature-checkbox"></div>
+              <div class="feature-info">
+                <div class="feature-name">🎬 Video Background / Media</div>
+                <div class="feature-note">Full-screen cinematic video playing in the background of your hero section. Powerful first impression.</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn-prev" onclick="prevStep(4)">← Back</button>
+            <button type="button" class="btn-next" onclick="nextStep(4)">Next: Almost Done →</button>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="form-step" id="step5">
+          <div class="form-title">Almost There! 🐝</div>
+          <p class="form-subtitle">Last few details and we're done.</p>
+          <div class="field-group">
+            <label class="field-label">Best time to contact you?</label>
+            <div class="time-options">
+              <div class="time-opt" onclick="selectTime(this,'Morning (9am–12pm)')">Morning</div>
+              <div class="time-opt" onclick="selectTime(this,'Afternoon (12pm–5pm)')">Afternoon</div>
+              <div class="time-opt" onclick="selectTime(this,'Evening (5pm–8pm)')">Evening</div>
+              <div class="time-opt" onclick="selectTime(this,'Anytime during business hours')">Anytime</div>
+            </div>
+          </div>
+          <div class="field-group" style="margin-top: 20px;">
+            <label class="field-label">Anything else you want to share? (optional)</label>
+            <textarea class="field-input" name="other_notes" placeholder="Describe anything specific — inspiration sites, special features, ideas, or anything else I should know..."></textarea>
+          </div>
+          <div class="consent-box" id="consentBox" onclick="toggleConsent()">
+            <div class="consent-chk" id="consentChk"></div>
+            <div class="consent-text">
+              By submitting this form, I agree that BeezerBuilt may contact me about my website project using the information provided. I have read and agree to the
+              <a href="#" onclick="openModal('privacy'); return false;">Privacy Policy</a> and
+              <a href="#" onclick="openModal('terms'); return false;">Terms &amp; Conditions</a>.
+            </div>
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn-prev" onclick="prevStep(5)">← Back</button>
+            <button type="submit" class="btn-next" id="submitBtn">🐝 Send My Request →</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <div class="success-icon">🐝</div>
+        <div class="success-title">Message Sent!</div>
+        <p class="success-sub">I got your request and I'll reach out during business hours with your personalized quote. Talk soon!</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="footer-logo-img-wrap">
+          <img src="https://i.imgur.com/gHWuxr0.png" alt="BeezerBuilt Logo">
+        </div>
+        Beezer<span>Built</span>
+      </div>
+      <p class="footer-tagline">
+        Imagine it. We'll build it &amp; maintain it.<br>
+        Custom websites for businesses of all sizes — you don't pay until you're satisfied.
+      </p>
+    </div>
+    <div class="footer-links-group">
+      <h4>Navigate</h4>
+      <a href="#" onclick="switchTab('services');     return false;">Services</a>
+      <a href="#" onclick="switchTab('capabilities'); return false;">Capabilities</a>
+      <a href="#" onclick="switchTab('process');      return false;">How It Works</a>
+      <a href="#" onclick="switchTab('contact');      return false;">Get A Quote</a>
+      <a href="#" onclick="openModal('privacy');      return false;">Privacy Policy</a>
+      <a href="#" onclick="openModal('terms');        return false;">Terms &amp; Conditions</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 BeezerBuilt. All rights reserved.</span>
+    <span>Built with 🐝 by BeezerBuilt</span>
+    <div>
+      <a href="#" onclick="openModal('privacy'); return false;">Privacy</a> ·
+      <a href="#" onclick="openModal('terms');   return false;">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<!-- =========================================================
+     FLOATING BEE
+========================================================= -->
+<div class="floating-bee-wrap" onclick="switchTab('contact')">
+  <span class="floating-bee-tooltip">Need help?</span>
+  <svg id="floating-bee" viewBox="0 0 80 80" fill="none" title="Get a quote" aria-label="Get a quote" role="button">
+    <defs>
+      <radialGradient id="fbBodyGrad" cx="40%" cy="35%" r="60%">
+        <stop offset="0%" stop-color="#E8C547"/>
+        <stop offset="100%" stop-color="#9A7A10"/>
+      </radialGradient>
+      <radialGradient id="fbHeadGrad" cx="40%" cy="35%" r="60%">
+        <stop offset="0%" stop-color="#E8C547"/>
+        <stop offset="100%" stop-color="#C9A227"/>
+      </radialGradient>
+      <linearGradient id="fbWingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="rgba(255,255,255,0.92)"/>
+        <stop offset="100%" stop-color="rgba(200,220,255,0.55)"/>
+      </linearGradient>
+    </defs>
+    <ellipse cx="19" cy="26" rx="17" ry="8.5" fill="url(#fbWingGrad)" transform="rotate(-28 19 26)"/>
+    <ellipse cx="61" cy="26" rx="17" ry="8.5" fill="url(#fbWingGrad)" transform="rotate(28 61 26)"/>
+    <line x1="19" y1="26" x2="6"  y2="19" stroke="rgba(100,160,255,0.3)" stroke-width="0.7"/>
+    <line x1="61" y1="26" x2="74" y2="19" stroke="rgba(100,160,255,0.3)" stroke-width="0.7"/>
+    <ellipse cx="23" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.5)" transform="rotate(-15 23 36)"/>
+    <ellipse cx="57" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.5)" transform="rotate(15 57 36)"/>
+    <ellipse cx="40" cy="54" rx="13" ry="16" fill="url(#fbBodyGrad)"/>
+    <rect x="27.5" y="47" width="25" height="4.5" rx="1.5" fill="#0D1B2E"<rect x="27.5" y="47" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
+        <rect x="27.5" y="54" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
+        <rect x="29"   y="61" width="22" height="3"   rx="1.5" fill="#0D1B2E" opacity="0.5"/>
+        <ellipse cx="35" cy="47" rx="5" ry="2.5" fill="rgba(255,255,255,0.18)" transform="rotate(-10 35 47)"/>
+        <ellipse cx="40" cy="26" rx="13" ry="14" fill="url(#fbHeadGrad)"/>
         <ellipse cx="36" cy="20" rx="5" ry="3" fill="rgba(255,255,255,0.22)" transform="rotate(-15 36 20)"/>
         <ellipse cx="34" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
         <ellipse cx="46" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
@@ -1028,890 +1765,222 @@
         <circle cx="52.2" cy="5.2" r="0.9" fill="rgba(255,255,255,0.7)"/>
       </svg>
     </div>
-    <div class="loader-tagline-wrap">
-      <div class="loader-tagline">BEEZERBUILT</div>
-    </div>
-    <p class="loader-sub">Web Development & Design</p>
-    <div class="loader-dots">
-      <div class="loader-dot"></div>
-      <div class="loader-dot"></div>
-      <div class="loader-dot"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ============================================================
-     NAVIGATION — dark, circle logo
-============================================================ -->
-<nav id="navbar">
-  <a href="#hero" class="nav-logo">
-    <div class="nav-logo-circle">
-      <img src="https://i.imgur.com/gHWuxr0.png" alt="BeezerBuilt Logo" />
-    </div>
-    Beezer<span>Built</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#sandbox">Demo Builder</a></li>
-    <li><a href="#process">How It Works</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <a href="#contact" class="nav-cta">Get A Quote →</a>
-  <div class="nav-hamburger" id="hamburger" onclick="toggleMobileNav()">
-    <span></span><span></span><span></span>
-  </div>
-</nav>
-<div class="nav-mobile" id="mobileNav">
-  <a href="#services"    onclick="toggleMobileNav()">Services</a>
-  <a href="#sandbox"     onclick="toggleMobileNav()">Demo Builder</a>
-  <a href="#process"     onclick="toggleMobileNav()">How It Works</a>
-  <a href="#contact"     onclick="toggleMobileNav()">Get A Quote</a>
-</div>
-
-<!-- ============================================================
-     HERO
-============================================================ -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hex-grid"></div>
-  <div class="particles" id="particles"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">Web Development · Design · Maintenance</div>
-    <h1 class="hero-title">
-      Imagine It.
-      <em>We'll Build It.</em>
-    </h1>
-    <p class="hero-sub">& Maintain It.</p>
-    <p class="hero-desc">
-      From domain to deployment — custom websites built to your vision,
-      with ongoing support so your site stays live, fast, and legal.
-      You don't pay until you're satisfied.
-    </p>
-    <div class="hero-btns">
-      <a href="#contact" class="btn-primary">Start Your Project →</a>
-      <button class="btn-outline" onclick="launchSandbox()">Try The Demo Builder</button>
-    </div>
   </div>
 
-  <svg class="hero-bee" viewBox="0 0 80 80" fill="none">
-    <defs>
-      <radialGradient id="hBodyGrad" cx="40%" cy="35%" r="60%">
-        <stop offset="0%" stop-color="#E8C547"/><stop offset="100%" stop-color="#9A7A10"/>
-      </radialGradient>
-      <radialGradient id="hHeadGrad" cx="40%" cy="35%" r="60%">
-        <stop offset="0%" stop-color="#E8C547"/><stop offset="100%" stop-color="#C9A227"/>
-      </radialGradient>
-      <linearGradient id="hWingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="rgba(255,255,255,0.92)"/>
-        <stop offset="100%" stop-color="rgba(200,220,255,0.55)"/>
-      </linearGradient>
-    </defs>
-    <ellipse cx="19" cy="26" rx="17" ry="8.5" fill="url(#hWingGrad)" transform="rotate(-28 19 26)"/>
-    <ellipse cx="61" cy="26" rx="17" ry="8.5" fill="url(#hWingGrad)" transform="rotate(28 61 26)"/>
-    <line x1="19" y1="26" x2="6" y2="19" stroke="rgba(100,160,255,0.3)" stroke-width="0.7"/>
-    <line x1="61" y1="26" x2="74" y2="19" stroke="rgba(100,160,255,0.3)" stroke-width="0.7"/>
-    <ellipse cx="23" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.5)" transform="rotate(-15 23 36)"/>
-    <ellipse cx="57" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.5)" transform="rotate(15 57 36)"/>
-    <ellipse cx="40" cy="54" rx="13" ry="16" fill="url(#hBodyGrad)"/>
-    <rect x="27.5" y="47" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
-    <rect x="27.5" y="54" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
-    <ellipse cx="40" cy="26" rx="13" ry="14" fill="url(#hHeadGrad)"/>
-    <ellipse cx="34" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
-    <ellipse cx="46" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
-    <circle cx="35.2" cy="22.8" r="1.1" fill="white"/>
-    <circle cx="47.2" cy="22.8" r="1.1" fill="white"/>
-    <path d="M36 31 Q40 34 44 31" stroke="#0D1B2E" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.8"/>
-    <text x="29.5" y="56" font-size="9.5" fill="#0D1B2E" font-family="monospace" font-weight="bold" opacity="0.9">&lt;/&gt;</text>
-    <polygon points="40,70 37,76 43,76" fill="#7A5F0A"/>
-    <path d="M36 13 Q32 8 27 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-    <path d="M44 13 Q48 8 53 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-    <circle cx="27" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
-    <circle cx="53" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
-  </svg>
-
-  <div class="scroll-hint">
-    <span>Scroll</span>
-    <div class="scroll-arrow"></div>
-  </div>
-</section>
-
-<!-- ============================================================
-     TRUST BAR
-============================================================ -->
-<div id="trust">
-  <div class="trust-grid">
-    <div class="trust-item reveal"><span class="trust-icon">🔒</span><span>SSL Secured Sites</span></div>
-    <div class="trust-item reveal"><span class="trust-icon">💳</span><span>Pay When Satisfied</span></div>
-    <div class="trust-item reveal"><span class="trust-icon">🌐</span><span>Domain + Hosting Included</span></div>
-    <div class="trust-item reveal"><span class="trust-icon">🛠️</span><span>Free Bug Fixes, Always</span></div>
-    <div class="trust-item reveal"><span class="trust-icon">📱</span><span>Mobile-First Design</span></div>
-    <div class="trust-item reveal"><span class="trust-icon">⚡</span><span>Fast & Always Online</span></div>
-  </div>
-</div>
-
-<!-- ============================================================
-     SERVICES
-============================================================ -->
-<section id="services">
-  <div class="section-label">What We Do</div>
-  <h2 class="section-title">Full-Stack <span class="gold">Services</span></h2>
-  <p class="section-desc">
-    Everything your web presence needs — under one roof, handled by one person who actually cares.
-  </p>
-  <div class="services-grid">
-    <div class="service-card reveal">
-      <span class="service-icon">💻</span>
-      <div class="service-title">Custom Web Development</div>
-      <div class="service-desc">Hand-coded websites built to your exact vision — no drag-and-drop templates. Every line written with purpose.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">🌐</span>
-      <div class="service-title">Domain Registration</div>
-      <div class="service-desc">Your own custom web address (e.g. yourbusiness.com). Pricing varies based on availability — we'll find what fits you.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">🖥️</span>
-      <div class="service-title">Web Hosting</div>
-      <div class="service-desc">Your site lives on reliable servers so it's fast and accessible 24/7. We handle all the technical setup for you.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">🔒</span>
-      <div class="service-title">SSL Certificate</div>
-      <div class="service-desc">That little padlock next to your URL. It encrypts your site so visitors know they're safe — Google requires it too.</div>
-      <span class="service-badge">Mandatory for trust</span>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">📧</span>
-      <div class="service-title">Custom Email</div>
-      <div class="service-desc">Look professional with a branded email address like you@yourbusiness.com instead of a generic Gmail.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">🛍️</span>
-      <div class="service-title">E-Commerce & Stores</div>
-      <div class="service-desc">Sell products, merch, or services online with a full shopping experience — carts, checkout, and payment processing.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">⚙️</span>
-      <div class="service-title">Custom Programs & Apps</div>
-      <div class="service-desc">Need a custom tool — batch dialers, portals, calculators? If you can imagine it, we'll code it from scratch.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">🎨</span>
-      <div class="service-title">Logo Design</div>
-      <div class="service-desc">Professional logo design to give your brand a visual identity that stands out. Custom, original, all yours.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">📊</span>
-      <div class="service-title">Analytics & SEO</div>
-      <div class="service-desc">Track who visits your site and help more people find you on Google. Data-driven growth, set up for you.</div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">🛡️</span>
-      <div class="service-title">Maintenance & Support</div>
-      <div class="service-desc">Something breaks? I fix it free. Business hours support to keep your site running smooth — rain or shine.</div>
-      <span class="service-badge">Always included</span>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     CAPABILITIES
-============================================================ -->
-<section id="capabilities">
-  <div class="section-label">What's Possible</div>
-  <h2 class="section-title">Modern Web <span class="gold">Capabilities</span></h2>
-  <p class="section-desc">
-    Your website can do way more than you think. Here's a taste of what modern web tech makes possible.
-  </p>
-  <div class="cap-grid">
-    <div class="cap-card reveal"><div class="cap-icon">✨</div><div class="cap-title">Smooth Animations</div><div class="cap-desc">Elements that slide, fade, and pop as users scroll — making your site feel alive and premium.</div></div>
-    <div class="cap-card reveal"><div class="cap-icon">🎬</div><div class="cap-title">Video Backgrounds</div><div class="cap-desc">Cinematic video playing behind your content for an immersive, high-end first impression.</div></div>
-    <div class="cap-card reveal"><div class="cap-icon">🖼️</div><div class="cap-title">Image Galleries</div><div class="cap-desc">Beautiful photo layouts with lightboxes, lazy loading, and smooth transitions.</div></div>
-    <div class="cap-card reveal"><div class="cap-icon">📋</div><div class="cap-title">Smart Contact Forms</div><div class="cap-desc">Forms that actually reach you — no spam, secure, and easy to manage.</div></div>
-    <div class="cap-card reveal"><div class="cap-icon">🌙</div><div class="cap-title">Dark / Light Mode</div><div class="cap-desc">Let users pick their preference. Modern and accessible for everyone.</div></div>
-    <div class="cap-card reveal"><div class="cap-icon">📱</div><div class="cap-title">Mobile-First Design</div><div class="cap-desc">Your site looks and works perfectly on phones, tablets, and desktops.</div></div>
-    <div class="cap-card reveal"><div class="cap-icon">🛒</div><div class="cap-title">Online Stores</div><div class="cap-desc">Full e-commerce with product pages, carts, and payment integrations like Stripe or Buy Me a Coffee.</div></div>
-    <div class="cap-card reveal"><div class="cap-icon">🔄</div><div class="cap-title">Parallax Scrolling</div><div class="cap-desc">Background layers move at different speeds as you scroll — a stunning depth effect.</div></div>
-    <div class="cap-card reveal"><div class="cap-icon">🔍</div><div class="cap-title">SEO Optimized</div><div class="cap-desc">Built so Google can find and rank your site. More visibility = more customers.</div></div>
-    <div class="cap-card reveal"><div class="cap-icon">⚡</div><div class="cap-title">Blazing Fast Load</div><div class="cap-desc">Optimized code means your site loads in seconds, keeping visitors engaged.</div></div>
-    <div class="cap-card reveal"><div class="cap-icon">🎠</div><div class="cap-title">Carousels & Sliders</div><div class="cap-desc">Auto-sliding banners, testimonial carousels, product showcases — smooth and interactive.</div></div>
-    <div class="cap-card reveal"><div class="cap-icon">🗺️</div><div class="cap-title">Maps & Location</div><div class="cap-desc">Interactive Google Maps, business hours, and directions embedded right into your site.</div></div>
-  </div>
-</section>
-
-<!-- ============================================================
-     SANDBOX — loads sandbox.html in iframe only on click
-============================================================ -->
-<section id="sandbox">
-  <div class="section-label">Try It Yourself</div>
-  <h2 class="section-title">Build Your Own <span class="gold">Demo</span></h2>
-  <p class="section-desc">
-    Customize a website preview right here. No coding needed — just click what you like. This is what we can build for you.
-  </p>
-
-  <!-- Teaser shown before the builder is launched -->
-  <div class="sandbox-teaser" id="sandboxPlaceholder">
-    <div class="sandbox-teaser-top">
-      <div class="teaser-left">
-        <h3>See Your Site <span>Come Alive</span></h3>
-        <p>
-          Toggle themes, colors, fonts, sections, and layouts in real time.
-          It's a live preview of exactly what we can build for your business — no sign-up, no commitment.
-        </p>
-        <div class="teaser-chips">
-          <span class="teaser-chip">🎨 7 Color Accents</span>
-          <span class="teaser-chip">🌙 3 Themes</span>
-          <span class="teaser-chip">✨ Animations</span>
-          <span class="teaser-chip">🛒 Online Store</span>
-          <span class="teaser-chip">📋 Contact Form</span>
-          <span class="teaser-chip">⭐ Testimonials</span>
-          <span class="teaser-chip">💰 Pricing Table</span>
-          <span class="teaser-chip">💬 Chat Widget</span>
-          <span class="teaser-chip">📱 Mobile Preview</span>
-        </div>
-        <button class="btn-launch" onclick="loadSandbox()">
-          <span class="btn-launch-icon">🎛️</span>
-          Launch Demo Builder
-        </button>
-      </div>
-
-      <!-- Fake browser mockup -->
-      <div class="teaser-browser">
-        <div class="teaser-browser-bar">
-          <div class="tb-dot" style="background:#FF5F57;"></div>
-          <div class="tb-dot" style="background:#FEBC2E;"></div>
-          <div class="tb-dot" style="background:#28C840;"></div>
-          <div class="teaser-browser-url">🔒 yoursite.com</div>
-        </div>
-        <div class="teaser-browser-body">
-          <div class="tb-nav-mock">
-            <span class="tb-nav-brand">YourBrand</span>
-            <div class="tb-nav-links"><span>Home</span><span>About</span><span>Contact</span></div>
-            <span style="background:#C9A227;color:#0D1B2E;padding:2px 7px;border-radius:2px;font-size:.54rem;font-weight:700;">Quote</span>
-          </div>
-          <div class="tb-hero">
-            <div class="tb-h1">Your Website<br><span class="tb-accent">Starts Here</span></div>
-            <div class="tb-tagline">Custom-built for your business</div>
-            <div class="tb-btns">
-              <div class="tb-btn tb-btn-primary">Get Started →</div>
-              <div class="tb-btn tb-btn-outline">Learn More</div>
-            </div>
-          </div>
-          <div class="tb-sections">
-            <div class="tb-section-bar">
-              <div class="tb-section-dot" style="background:#C9A227;"></div>
-              <div class="tb-section-line"></div>
-              <span style="font-size:.5rem;opacity:.4;">Gallery</span>
-            </div>
-            <div class="tb-section-bar">
-              <div class="tb-section-dot" style="background:#3B82F6;"></div>
-              <div class="tb-section-line"></div>
-              <span style="font-size:.5rem;opacity:.4;">Testimonials</span>
-            </div>
-            <div class="tb-section-bar">
-              <div class="tb-section-dot" style="background:#10B981;"></div>
-              <div class="tb-section-line"></div>
-              <span style="font-size:.5rem;opacity:.4;">Pricing</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="teaser-bottom">
-      <span class="teaser-bottom-note">⚠️ <strong>Demo Mode Only</strong> — Nothing is real or live. Contact us to build the real thing.</span>
-      <a href="#contact" class="btn-primary" style="padding:10px 22px;font-size:.88rem;">Start My Real Project →</a>
-    </div>
-  </div>
-
-  <!-- Iframe injected here on click — sandbox.html handles all its own CSS/JS -->
-  <div id="sandboxIframeWrap">
-    <iframe id="sandboxIframe" src="" title="BeezerBuilt Demo Builder" allowfullscreen></iframe>
-  </div>
-
-  <div style="text-align:center;margin-top:40px;">
-    <p style="color:var(--gray);margin-bottom:16px;">Like what you see? Let's build the real version for your business.</p>
-    <a href="#contact" class="btn-primary">Start My Project →</a>
-  </div>
-</section>
-
-<!-- ============================================================
-     PROCESS
-============================================================ -->
-<section id="process">
-  <div class="section-label">How It Works</div>
-  <h2 class="section-title">Simple <span class="gold">Process</span></h2>
-  <p class="section-desc">No stress, no confusion. Here's exactly how we work together.</p>
-  <div class="process-steps">
-    <div class="process-step reveal">
-      <div class="step-num">01</div>
-      <div class="step-title">Fill Out The Form</div>
-      <div class="step-desc">Tell me what you need — your name, type of website, features, and timeline. Takes about 2 minutes.</div>
-    </div>
-    <div class="process-step reveal">
-      <div class="step-num">02</div>
-      <div class="step-title">Get Your Custom Quote</div>
-      <div class="step-desc">I review your request and reach out with a personalized quote — no generic pricing, it's built around what you actually need.</div>
-    </div>
-    <div class="process-step reveal">
-      <div class="step-num">03</div>
-      <div class="step-title">We Build It Together</div>
-      <div class="step-desc">I build your site and show you progress. You give feedback, I refine it until it's exactly right.</div>
-    </div>
-    <div class="process-step reveal">
-      <div class="step-num">04</div>
-      <div class="step-title">You Approve & Pay</div>
-      <div class="step-desc">Happy with it? That's when you pay. Not a second before. We go live and your site starts working for you.</div>
-    </div>
-    <div class="process-step reveal">
-      <div class="step-num">05</div>
-      <div class="step-title">Ongoing Support</div>
-      <div class="step-desc">I'm on it if anything breaks. Business-hours support to keep your site fast, live, and looking great — always.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     GUARANTEE
-============================================================ -->
-<div id="guarantee">
-  <div class="section-label">Our Promise</div>
-  <h2 class="section-title" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);">
-    We've Got Your Back — <span class="gold">Guaranteed</span>
-  </h2>
-  <div class="guarantee-grid">
-    <div class="guarantee-item reveal">
-      <div class="guarantee-icon">💳</div>
-      <div class="guarantee-title">Pay When Satisfied</div>
-      <div class="guarantee-desc">You don't pay a single dollar until you're 100% happy with the result. Zero risk to you.</div>
-    </div>
-    <div class="guarantee-item reveal">
-      <div class="guarantee-icon">🔧</div>
-      <div class="guarantee-title">Free Bug Fixes</div>
-      <div class="guarantee-desc">If anything breaks or stops working, I fix it at no extra charge. Your investment is protected.</div>
-    </div>
-    <div class="guarantee-item reveal">
-      <div class="guarantee-icon">⚡</div>
-      <div class="guarantee-title">Always Online</div>
-      <div class="guarantee-desc">Rain or shine — your website stays up. I monitor and maintain it so you never lose business due to downtime.</div>
-    </div>
-    <div class="guarantee-item reveal">
-      <div class="guarantee-icon">🔒</div>
-      <div class="guarantee-title">Legally Covered</div>
-      <div class="guarantee-desc">Privacy Policy, Terms & Conditions, SSL — everything your site needs to be compliant and trustworthy.</div>
-    </div>
-    <div class="guarantee-item reveal">
-      <div class="guarantee-icon">📞</div>
-      <div class="guarantee-title">Business Hours Support</div>
-      <div class="guarantee-desc">Questions or changes? Reach out during business hours and I'll get back to you fast. Real human, not a chatbot.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ============================================================
-     CONTACT / QUESTIONNAIRE
-============================================================ -->
-<section id="contact">
-  <div class="section-label">Get Started</div>
-  <h2 class="section-title">Request Your <span class="gold">Quote</span></h2>
-  <p class="section-desc">
-    Tell me what you need and I'll reach out with a personalized quote. Simple, fast, no obligation.
-  </p>
-  <div class="form-wrapper">
-    <div class="step-indicators">
-      <div class="step-ind active" id="sind-1"><div class="step-circle">1</div><div class="step-ind-label">You</div></div>
-      <div class="step-ind"        id="sind-2"><div class="step-circle">2</div><div class="step-ind-label">Location</div></div>
-      <div class="step-ind"        id="sind-3"><div class="step-circle">3</div><div class="step-ind-label">Site Type</div></div>
-      <div class="step-ind"        id="sind-4"><div class="step-circle">4</div><div class="step-ind-label">Features</div></div>
-      <div class="step-ind"        id="sind-5"><div class="step-circle">5</div><div class="step-ind-label">Finish</div></div>
-    </div>
-
-    <form id="quoteForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
-      <input type="hidden" name="website_type"  id="hiddenSiteType" />
-      <input type="hidden" name="timeline"       id="hiddenTimeline" />
-      <input type="hidden" name="features"       id="hiddenFeatures" />
-      <input type="hidden" name="contact_time"   id="hiddenContactTime" />
-
-      <!-- STEP 1 -->
-      <div class="form-step active" id="step1">
-        <div class="form-title">Let's Start With You 👋</div>
-        <p class="form-subtitle">Just the basics so I know who I'm talking to.</p>
-        <div class="field-row">
-          <div class="field-group">
-            <label class="field-label">First & Last Name *</label>
-            <input class="field-input" type="text" name="name" placeholder="John Smith" required />
-          </div>
-          <div class="field-group">
-            <label class="field-label">Phone Number *</label>
-            <input class="field-input" type="tel" name="phone" placeholder="(555) 000-0000" required />
-          </div>
-        </div>
-        <div class="field-group">
-          <label class="field-label">Email Address *</label>
-          <input class="field-input" type="email" name="email" placeholder="you@example.com" required />
-        </div>
-        <div class="field-group">
-          <label class="field-label">Business / Project Name (if any)</label>
-          <input class="field-input" type="text" name="business" placeholder="My Awesome Business" />
-        </div>
-        <div class="form-nav">
-          <button type="button" class="btn-next" onclick="nextStep(1)">Next: Location & Timing →</button>
-        </div>
-      </div>
-
-      <!-- STEP 2 -->
-      <div class="form-step" id="step2">
-        <div class="form-title">Where Are You & When Do You Need It? 📍</div>
-        <p class="form-subtitle">This helps me understand your market and plan the timeline.</p>
-        <div class="field-row">
-          <div class="field-group">
-            <label class="field-label">City & State / Country *</label>
-            <input class="field-input" type="text" name="location" placeholder="Miami, FL" required />
-          </div>
-          <div class="field-group">
-            <label class="field-label">Industry / Niche</label>
-            <input class="field-input" type="text" name="industry" placeholder="Restaurant, Music, Retail..." />
-          </div>
-        </div>
-        <div class="field-group">
-          <label class="field-label">When do you need your website ready? *</label>
-          <div class="timeline-options" id="timelineOptions">
-            <div class="timeline-opt" onclick="selectTimeline(this,'ASAP — within 1 week')">ASAP<br/><small style="font-weight:400;opacity:.6;">Within 1 week</small></div>
-            <div class="timeline-opt" onclick="selectTimeline(this,'2–4 weeks')">2–4 Weeks</div>
-            <div class="timeline-opt" onclick="selectTimeline(this,'1–2 months')">1–2 Months</div>
-            <div class="timeline-opt" onclick="selectTimeline(this,'3+ months — no rush')">No Rush<br/><small style="font-weight:400;opacity:.6;">3+ months</small></div>
-            <div class="timeline-opt" onclick="selectTimeline(this,'Not sure')">Not Sure</div>
-          </div>
-        </div>
-        <div class="form-nav">
-          <button type="button" class="btn-prev" onclick="prevStep(2)">← Back</button>
-          <button type="button" class="btn-next" onclick="nextStep(2)">Next: Site Type →</button>
-        </div>
-      </div>
-
-      <!-- STEP 3 -->
-      <div class="form-step" id="step3">
-        <div class="form-title">What Kind of Website? 🌐</div>
-        <p class="form-subtitle">Pick the one that best describes your project.</p>
-        <div class="site-types" id="siteTypeGrid">
-          <div class="site-type-card" onclick="selectSiteType(this,'Business / Landing Page')"><span class="site-type-icon">🏢</span><div class="site-type-name">Business / Landing Page</div><div class="site-type-desc">Present your services, hours, and contact info.</div></div>
-          <div class="site-type-card" onclick="selectSiteType(this,'E-Commerce / Online Store')"><span class="site-type-icon">🛍️</span><div class="site-type-name">E-Commerce / Store</div><div class="site-type-desc">Sell products or services online.</div></div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Portfolio / Showcase')"><span class="site-type-icon">🎨</span><div class="site-type-name">Portfolio / Showcase</div><div class="site-type-desc">Show off your work, art, or photography.</div></div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Restaurant / Menu')"><span class="site-type-icon">🍽️</span><div class="site-type-name">Restaurant / Menu</div><div class="site-type-desc">Digital menu, reservations, and location.</div></div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Band / Music / Artist')"><span class="site-type-icon">🎵</span><div class="site-type-name">Band / Artist</div><div class="site-type-desc">Promote your music, merch, and shows.</div></div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Blog / Content Site')"><span class="site-type-icon">📝</span><div class="site-type-name">Blog / Content</div><div class="site-type-desc">Articles, news, or personal stories.</div></div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Event / Venue')"><span class="site-type-icon">🎉</span><div class="site-type-name">Event / Venue</div><div class="site-type-desc">Promote events, sell tickets, share schedules.</div></div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Real Estate')"><span class="site-type-icon">🏠</span><div class="site-type-name">Real Estate</div><div class="site-type-desc">Property listings, agent profiles, contact forms.</div></div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Non-Profit / Church / Community')"><span class="site-type-icon">🤝</span><div class="site-type-name">Non-Profit / Community</div><div class="site-type-desc">Share your mission and accept donations.</div></div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Custom App / Program')"><span class="site-type-icon">⚙️</span><div class="site-type-name">Custom App / Program</div><div class="site-type-desc">Something unique — dialers, portals, tools.</div></div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Membership / Subscription')"><span class="site-type-icon">🔑</span><div class="site-type-name">Membership Site</div><div class="site-type-desc">Gated content, login areas, subscriber access.</div></div>
-          <div class="site-type-card" onclick="selectSiteType(this,'Other / Not Sure')"><span class="site-type-icon">💡</span><div class="site-type-name">Other / Not Sure</div><div class="site-type-desc">If you can imagine it, we'll build it.</div></div>
-        </div>
-        <div class="form-nav">
-          <button type="button" class="btn-prev" onclick="prevStep(3)">← Back</button>
-          <button type="button" class="btn-next" onclick="nextStep(3)">Next: Features →</button>
-        </div>
-      </div>
-
-      <!-- STEP 4 -->
-      <div class="form-step" id="step4">
-        <div class="form-title">What Do You Need? ✅</div>
-        <p class="form-subtitle">Select everything you want included. Not sure? Check it anyway — I'll explain when we talk.</p>
-        <div class="features-list">
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Source Code Only (no hosting)')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">💻 Source Code Only</div><div class="feature-note">I build your site and hand you the code. You host it yourself.</div></div></div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Web Hosting')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">🖥️ Web Hosting</div><div class="feature-note">Your website lives on a server so it's accessible online.</div></div></div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Custom Domain')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">🌐 Custom Domain Name</div><div class="feature-note">Your own web address like yourbusiness.com.</div><div class="feature-price">⚠️ Price quoted separately based on availability</div></div></div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'SSL Certificate')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">🔒 SSL Certificate</div><div class="feature-note">Adds the padlock next to your URL. Google requires this to rank your site.</div></div></div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Custom Email Address')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">📧 Custom Email Address</div><div class="feature-note">Get a professional email like you@yourbusiness.com.</div></div></div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'E-Commerce / Online Store')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">🛒 E-Commerce / Online Store</div><div class="feature-note">Sell products with a full cart, checkout, and payment processing.</div></div></div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Contact Form')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">📋 Contact / Quote Form</div><div class="feature-note">Let visitors send you messages directly from your site.</div></div></div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Logo Design')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">🎨 Logo Design</div><div class="feature-note">Professional logo designed from scratch. All rights go to you.</div></div></div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'SEO & Analytics')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">📊 SEO & Analytics</div><div class="feature-note">Help Google find and rank your site. Includes Google Analytics setup.</div></div></div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Ongoing Maintenance & Support')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">🛡️ Ongoing Maintenance & Support</div><div class="feature-note">Monthly plan to keep your site updated, secure, and running smoothly.</div></div></div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Privacy Policy & Terms of Service')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">📄 Privacy Policy & Terms of Service</div><div class="feature-note">Legal pages that protect your business. Required if you collect any visitor data.</div></div></div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Animations & Visual Effects')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">✨ Animations & Visual Effects</div><div class="feature-note">Smooth scroll animations, hover effects, parallax, and custom motion.</div></div></div>
-          <div class="feature-item" onclick="toggleFeatureCheck(this,'Video Background or Media')"><div class="feature-checkbox"></div><div class="feature-info"><div class="feature-name">🎬 Video Background / Media</div><div class="feature-note">Full-screen cinematic video playing in the background of your hero section.</div></div></div>
-        </div>
-        <div class="form-nav">
-          <button type="button" class="btn-prev" onclick="prevStep(4)">← Back</button>
-          <button type="button" class="btn-next" onclick="nextStep(4)">Next: Almost Done →</button>
-        </div>
-      </div>
-
-      <!-- STEP 5 -->
-      <div class="form-step" id="step5">
-        <div class="form-title">Almost There! 🐝</div>
-        <p class="form-subtitle">Last few details and we're done.</p>
-        <div class="field-group">
-          <label class="field-label">Best time to contact you?</label>
-          <div class="time-options">
-            <div class="time-opt" onclick="selectTime(this,'Morning (9am–12pm)')">Morning</div>
-            <div class="time-opt" onclick="selectTime(this,'Afternoon (12pm–5pm)')">Afternoon</div>
-            <div class="time-opt" onclick="selectTime(this,'Evening (5pm–8pm)')">Evening</div>
-            <div class="time-opt" onclick="selectTime(this,'Anytime during business hours')">Anytime</div>
-          </div>
-        </div>
-        <div class="field-group" style="margin-top:20px;">
-          <label class="field-label">Anything else you want to share? (optional)</label>
-          <textarea class="field-input" name="other_notes" placeholder="Describe anything specific — inspiration sites, special features, ideas, or anything else I should know..."></textarea>
-        </div>
-        <div class="consent-box" id="consentBox" onclick="toggleConsent()">
-          <div class="consent-chk" id="consentChk"></div>
-          <div class="consent-text">
-            By submitting this form, I agree that BeezerBuilt may contact me about my website project using the information provided. I have read and agree to the
-            <a href="#" onclick="openModal('privacy');return false;">Privacy Policy</a> and
-            <a href="#" onclick="openModal('terms');return false;">Terms & Conditions</a>.
-          </div>
-        </div>
-        <div class="form-nav">
-          <button type="button" class="btn-prev" onclick="prevStep(5)">← Back</button>
-          <button type="submit" class="btn-next" id="submitBtn">🐝 Send My Request →</button>
-        </div>
-      </div>
-    </form>
-
-    <div class="form-success" id="formSuccess">
-      <div class="success-icon">🐝</div>
-      <div class="success-title">Message Sent!</div>
-      <p class="success-sub">I got your request and I'll reach out during business hours with your personalized quote. Talk soon!</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     FOOTER
-============================================================ -->
-<footer>
-  <div class="footer-top">
-    <div class="footer-brand">
-      <div class="footer-logo">
-        <img src="https://i.imgur.com/gHWuxr0.png" width="48" height="48" alt="BeezerBuilt" style="object-fit:contain;border-radius:50%;border:1.5px solid var(--gold);"/>
-        Beezer<span>Built</span>
-      </div>
-      <p class="footer-tagline">
-        Imagine it. We'll build it & maintain it.<br/>
-        Custom websites for businesses of all sizes — you don't pay until you're satisfied.
-      </p>
-    </div>
-    <div class="footer-links-group">
-      <h4>Navigate</h4>
-      <a href="#services">Services</a>
-      <a href="#capabilities">Capabilities</a>
-      <a href="#sandbox" onclick="launchSandbox();return false;">Demo Builder</a>
-      <a href="#process">How It Works</a>
-      <a href="#contact">Get A Quote</a>
-      <a href="#" onclick="openModal('privacy');return false;">Privacy Policy</a>
-      <a href="#" onclick="openModal('terms');return false;">Terms & Conditions</a>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2025 BeezerBuilt. All rights reserved.</span>
-    <span>Built with 🐝 by BeezerBuilt</span>
-    <div>
-      <a href="#" onclick="openModal('privacy');return false;">Privacy</a> ·
-      <a href="#" onclick="openModal('terms');return false;">Terms</a>
-    </div>
-  </div>
-</footer>
-
-<!-- ============================================================
-     FLOATING BEE
-============================================================ -->
-<svg id="floating-bee" viewBox="0 0 80 80" fill="none" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" title="Get a quote">
-  <defs>
-    <radialGradient id="fbBodyGrad" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#E8C547"/><stop offset="100%" stop-color="#9A7A10"/></radialGradient>
-    <radialGradient id="fbHeadGrad" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#E8C547"/><stop offset="100%" stop-color="#C9A227"/></radialGradient>
-    <linearGradient id="fbWingGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="rgba(255,255,255,0.92)"/><stop offset="100%" stop-color="rgba(200,220,255,0.55)"/></linearGradient>
-  </defs>
-  <ellipse cx="19" cy="26" rx="17" ry="8.5" fill="url(#fbWingGrad)" transform="rotate(-28 19 26)"/>
-  <ellipse cx="61" cy="26" rx="17" ry="8.5" fill="url(#fbWingGrad)" transform="rotate(28 61 26)"/>
-  <ellipse cx="23" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.5)" transform="rotate(-15 23 36)"/>
-  <ellipse cx="57" cy="36" rx="10" ry="5" fill="rgba(255,255,255,0.5)" transform="rotate(15 57 36)"/>
-  <ellipse cx="40" cy="54" rx="13" ry="16" fill="url(#fbBodyGrad)"/>
-  <rect x="27.5" y="47" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
-  <rect x="27.5" y="54" width="25" height="4.5" rx="1.5" fill="#0D1B2E" opacity="0.72"/>
-  <ellipse cx="40" cy="26" rx="13" ry="14" fill="url(#fbHeadGrad)"/>
-  <ellipse cx="34" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
-  <ellipse cx="46" cy="24" rx="3.5" ry="3.5" fill="#0D1B2E"/>
-  <circle cx="35.2" cy="22.8" r="1.1" fill="white"/>
-  <circle cx="47.2" cy="22.8" r="1.1" fill="white"/>
-  <path d="M36 31 Q40 34 44 31" stroke="#0D1B2E" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.8"/>
-  <text x="29.5" y="56" font-size="9.5" fill="#0D1B2E" font-family="monospace" font-weight="bold" opacity="0.9">&lt;/&gt;</text>
-  <polygon points="40,70 37,76 43,76" fill="#7A5F0A"/>
-  <path d="M36 13 Q32 8 27 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-  <path d="M44 13 Q48 8 53 6" stroke="#5A4010" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-  <circle cx="27" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
-  <circle cx="53" cy="6" r="3" fill="#C9A227" stroke="#5A4010" stroke-width="0.8"/>
-</svg>
-
-<!-- ============================================================
-     PRIVACY MODAL
-============================================================ -->
-<div class="modal-overlay" id="privacyModal">
+<!-- =========================================================
+     MODALS (Privacy & Terms)
+========================================================= -->
+<div class="modal-overlay" id="modal-privacy">
   <div class="modal-box">
     <div class="modal-header">
       <div class="modal-title">Privacy Policy</div>
-      <div class="modal-close" onclick="closeModal('privacy')">✕</div>
+      <div class="modal-close" onclick="closeModal('privacy')">×</div>
     </div>
     <div class="modal-content">
-      <p><strong>Last Updated: 2025</strong></p>
-      <h3>1. Information We Collect</h3>
-      <p>When you fill out the contact form on this website, we collect your name, email address, phone number, and any details you voluntarily provide about your project. This information is used solely to respond to your inquiry.</p>
-      <h3>2. How We Use Your Information</h3>
-      <p>Your information is used to contact you about your website project and to provide a quote. We do not sell, share, or distribute your personal information to third parties.</p>
-      <h3>3. Data Storage</h3>
-      <p>Form submissions are processed through FormSpree, a secure third-party form service. Submissions are stored securely and only accessible to BeezerBuilt.</p>
-      <h3>4. Cookies</h3>
-      <p>This website may use essential cookies to ensure functionality. We do not use tracking cookies or advertising cookies.</p>
-      <h3>5. Your Rights</h3>
-      <p>You have the right to request deletion of your personal data at any time. Contact us through the contact form to make this request.</p>
+      <p>Your privacy is important to us. This Privacy Policy explains how BeezerBuilt collects, uses, and protects your information when you use our services or submit a quote request.</p>
+      <h3>Information We Collect</h3>
+      <p>We collect contact information (name, email, phone, business details) that you voluntarily provide when requesting a quote.</p>
+      <h3>How We Use Your Information</h3>
+      <p>We use your information solely to respond to your quote request, communicate about your project, and provide the requested web development services.</p>
+      <h3>Data Sharing</h3>
+      <p>We do not sell, rent, or share your personal information with third parties, except as necessary to provide the service (e.g., domain registrars, hosting providers) or as required by law.</p>
+      <h3>Your Rights</h3>
+      <p>You may request access to, correction of, or deletion of your personal data by contacting us.</p>
+      <p>Last updated: April 2026</p>
     </div>
   </div>
 </div>
 
-<!-- ============================================================
-     TERMS MODAL
-============================================================ -->
-<div class="modal-overlay" id="termsModal">
+<div class="modal-overlay" id="modal-terms">
   <div class="modal-box">
     <div class="modal-header">
-      <div class="modal-title">Terms & Conditions</div>
-      <div class="modal-close" onclick="closeModal('terms')">✕</div>
+      <div class="modal-title">Terms &amp; Conditions</div>
+      <div class="modal-close" onclick="closeModal('terms')">×</div>
     </div>
     <div class="modal-content">
-      <p><strong>Last Updated: 2025</strong></p>
-      <h3>1. Services</h3>
-      <p>BeezerBuilt provides custom web design, development, hosting, and maintenance services. The scope of each project is agreed upon before work begins.</p>
-      <h3>2. Payment Policy</h3>
-      <p>Payment is due only after the client is fully satisfied with the delivered website. No payment is collected upfront unless explicitly agreed upon for large projects requiring third-party costs.</p>
-      <h3>3. Client Responsibilities</h3>
-      <p>The client agrees to provide accurate information, timely feedback, and any necessary content needed to complete the project.</p>
-      <h3>4. Intellectual Property</h3>
-      <p>Upon full payment, the client receives full ownership of the website design and source code. BeezerBuilt retains no rights to the completed work.</p>
-      <h3>5. Maintenance & Support</h3>
-      <p>Bug fixes resulting from BeezerBuilt's work are provided free of charge. New features beyond the original scope may be quoted separately.</p>
-      <h3>6. Limitation of Liability</h3>
-      <p>BeezerBuilt is not liable for losses resulting from website downtime, third-party service outages, or client-provided content. Our liability is limited to the amount paid for services.</p>
-      <h3>7. Termination</h3>
-      <p>Either party may terminate the agreement with written notice. Any work completed up to termination may be invoiced proportionally.</p>
+      <p>By requesting a quote or engaging BeezerBuilt for web development services, you agree to the following terms:</p>
+      <h3>Payment</h3>
+      <p>No payment is required until you are 100% satisfied with the delivered website. Payment is due upon final approval and before site launch.</p>
+      <h3>Revisions</h3>
+      <p>Reasonable revisions are included during the build process. Major scope changes may require a revised quote.</p>
+      <h3>Support</h3>
+      <p>Free bug fixes are provided for the lifetime of the project. Ongoing maintenance is available as an optional add-on.</p>
+      <h3>Ownership</h3>
+      <p>Upon final payment, you receive full ownership and rights to the website, including source code and any custom designs created for you.</p>
+      <p>Last updated: April 2026</p>
     </div>
   </div>
 </div>
 
-<!-- ============================================================
+<!-- =========================================================
      JAVASCRIPT
-============================================================ -->
+========================================================= -->
 <script>
-  /* ---- LOADER ---- */
+  // Loader
   window.addEventListener('load', () => {
-    setTimeout(() => document.getElementById('loader').classList.add('hidden'), 3600);
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hidden');
+    }, 3800);
   });
 
-  /* ---- NAV ---- */
+  // Navbar scroll effect
   window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+    const nav = document.getElementById('navbar');
+    if (window.scrollY > 100) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
   });
+
+  // Tab switching
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-section').forEach(section => section.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+    const sectionEl = document.getElementById(`tab-${tabId}`);
+    if (sectionEl) sectionEl.classList.add('active');
+
+    const btnEl = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+    if (btnEl) btnEl.classList.add('active');
+
+    document.getElementById('mobileNav').classList.remove('open');
+  }
+
+  // Mobile nav toggle
   function toggleMobileNav() {
     document.getElementById('mobileNav').classList.toggle('open');
   }
 
-  /* ---- HERO PARTICLES ---- */
-  (function spawnParticles() {
-    const c = document.getElementById('particles');
-    if (!c) return;
-    for (let i = 0; i < 30; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.left = Math.random() * 100 + '%';
-      p.style.top  = Math.random() * 100 + '%';
-      p.style.animationDuration = (8 + Math.random() * 12) + 's';
-      p.style.animationDelay    = (Math.random() * 8) + 's';
-      p.style.width = p.style.height = (1 + Math.random() * 3) + 'px';
-      c.appendChild(p);
-    }
-  })();
+  // Multi-step form
+  let currentStep = 1;
+  const totalSteps = 5;
 
-  /* ---- SCROLL REVEAL ---- */
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 60);
-    });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  function showStep(step) {
+    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+    document.getElementById(`step${step}`).classList.add('active');
 
-  /* ============================================================
-     SANDBOX LAZY LOADER
-     sandbox.html must be in the same htdocs folder as index.html.
-     The iframe src is set to '' until the user clicks — zero load
-     cost until they actually want to use the builder.
-  ============================================================ */
-  function loadSandbox() {
-    const placeholder = document.getElementById('sandboxPlaceholder');
-    const iframeWrap  = document.getElementById('sandboxIframeWrap');
-    const iframe      = document.getElementById('sandboxIframe');
-
-    // Fade the teaser out
-    placeholder.style.transition = 'opacity .3s ease, transform .3s ease';
-    placeholder.style.opacity    = '0';
-    placeholder.style.transform  = 'scale(0.98)';
-
-    setTimeout(() => {
-      placeholder.style.display = 'none';
-
-      // Show iframe wrapper and set src (first time only)
-      iframeWrap.style.display  = 'block';
-      iframeWrap.style.opacity  = '0';
-      iframeWrap.style.transition = 'opacity .5s ease';
-
-      if (!iframe.getAttribute('data-loaded')) {
-        iframe.src = 'sandbox.html';
-        iframe.setAttribute('data-loaded', '1');
-      }
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => { iframeWrap.style.opacity = '1'; });
-      });
-    }, 320);
-  }
-
-  /* Also triggered from hero "Try Demo Builder" button and footer link */
-  function launchSandbox() {
-    document.getElementById('sandbox').scrollIntoView({ behavior: 'smooth' });
-    // Short delay to let scroll reach section, then load
-    setTimeout(() => {
-      if (!document.getElementById('sandboxIframeWrap').style.display ||
-           document.getElementById('sandboxIframeWrap').style.display === 'none') {
-        loadSandbox();
-      }
-    }, 600);
-  }
-
-  /* ---- MULTI-STEP FORM ---- */
-  let currentStep      = 1;
-  const totalSteps     = 5;
-  let consentGiven     = false;
-  let selectedSiteType = '';
-  let selectedTimeline = '';
-  let selectedTime     = '';
-  const checkedFeatures = new Set();
-
-  function updateStepIndicators(step) {
-    for (let i = 1; i <= totalSteps; i++) {
-      const ind    = document.getElementById('sind-' + i);
-      if (!ind) continue;
-      const circle = ind.querySelector('.step-circle');
+    document.querySelectorAll('.step-ind').forEach((ind, i) => {
       ind.classList.remove('active', 'done');
-      if (i < step)      { ind.classList.add('done');   circle.textContent = '✓'; }
-      else if (i === step){ ind.classList.add('active'); circle.textContent = i;   }
-      else                { circle.textContent = i; }
-    }
-  }
-
-  function nextStep(from) {
-    if (from === 1) {
-      const n = document.querySelector('#step1 input[name="name"]');
-      const e = document.querySelector('#step1 input[name="email"]');
-      const p = document.querySelector('#step1 input[name="phone"]');
-      if (!n.value.trim() || !e.value.trim() || !p.value.trim()) { alert('Please fill in your name, phone, and email.'); return; }
-    }
-    if (from === 2) {
-      const l = document.querySelector('#step2 input[name="location"]');
-      if (!l.value.trim()) { alert('Please enter your location.'); return; }
-      if (!selectedTimeline) { alert('Please select a timeline.'); return; }
-    }
-    if (from === 3 && !selectedSiteType) { alert('Please select a website type.'); return; }
-
-    document.getElementById('step' + from).classList.remove('active');
-    currentStep = from + 1;
-    document.getElementById('step' + currentStep).classList.add('active');
-    updateStepIndicators(currentStep);
-    document.getElementById('contact').scrollIntoView({ behavior:'smooth', block:'start' });
-  }
-
-  function prevStep(from) {
-    document.getElementById('step' + from).classList.remove('active');
-    currentStep = from - 1;
-    document.getElementById('step' + currentStep).classList.add('active');
-    updateStepIndicators(currentStep);
-    document.getElementById('contact').scrollIntoView({ behavior:'smooth', block:'start' });
-  }
-
-  function selectSiteType(el, type) {
-    document.querySelectorAll('.site-type-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedSiteType = type;
-    document.getElementById('hiddenSiteType').value = type;
-  }
-
-  function selectTimeline(el, val) {
-    document.querySelectorAll('.timeline-opt').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedTimeline = val;
-    document.getElementById('hiddenTimeline').value = val;
-  }
-
-  function selectTime(el, val) {
-    document.querySelectorAll('.time-opt').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedTime = val;
-    document.getElementById('hiddenContactTime').value = val;
-  }
-
-  function toggleFeatureCheck(el, name) {
-    el.classList.toggle('checked');
-    const chk = el.querySelector('.feature-checkbox');
-    if (el.classList.contains('checked')) { chk.textContent = '✓'; checkedFeatures.add(name); }
-    else                                  { chk.textContent = '';  checkedFeatures.delete(name); }
-    document.getElementById('hiddenFeatures').value = Array.from(checkedFeatures).join(', ');
-  }
-
-  function toggleConsent() {
-    consentGiven = !consentGiven;
-    document.getElementById('consentBox').classList.toggle('checked', consentGiven);
-    document.getElementById('consentChk').textContent = consentGiven ? '✓' : '';
-  }
-
-  document.getElementById('quoteForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    if (!consentGiven) { alert('Please check the consent box to continue.'); return; }
-    const btn = document.getElementById('submitBtn');
-    btn.textContent = 'Sending...';
-    btn.disabled = true;
-    try {
-      const res = await fetch(this.action, {
-        method: 'POST',
-        body: new FormData(this),
-        headers: { 'Accept': 'application/json' }
-      });
-      if (res.ok) {
-        this.style.display = 'none';
-        document.querySelector('.step-indicators').style.display = 'none';
-        document.getElementById('formSuccess').classList.add('show');
-      } else {
-        alert('Something went wrong. Please try again.');
-        btn.textContent = '🐝 Send My Request →';
-        btn.disabled = false;
-      }
-    } catch(err) {
-      alert('Network error. Please check your connection and try again.');
-      btn.textContent = '🐝 Send My Request →';
-      btn.disabled = false;
-    }
-  });
-
-  /* ---- MODALS ---- */
-  function openModal(type) {
-    document.getElementById(type + 'Modal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal(type) {
-    document.getElementById(type + 'Modal').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', function(e) {
-      if (e.target === this) { this.classList.remove('open'); document.body.style.overflow = ''; }
+      if (i + 1 < step) ind.classList.add('done');
+      if (i + 1 === step) ind.classList.add('active');
     });
-  });
+
+    currentStep = step;
+  }
+
+  function nextStep(current) {
+    if (current < totalSteps) showStep(current + 1);
+  }
+
+  function prevStep(current) {
+    if (current > 1) showStep(current - 1);
+  }
+
+  // Timeline selection
+  function selectTimeline(el, value) {
+    document.querySelectorAll('.timeline-opt').forEach(opt => opt.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('hiddenTimeline').value = value;
+  }
+
+  // Site type selection
+  function selectSiteType(el, value) {
+    document.querySelectorAll('.site-type-card').forEach(card => card.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('hiddenSiteType').value = value;
+  }
+
+  // Feature toggles
+  function toggleFeatureCheck(el, value) {
+    el.classList.toggle('checked');
+    const hidden = document.getElementById('hiddenFeatures');
+    let features = hidden.value ? hidden.value.split(', ') : [];
+    if (el.classList.contains('checked')) {
+      if (!features.includes(value)) features.push(value);
+    } else {
+      features = features.filter(f => f !== value);
+    }
+    hidden.value = features.join(', ');
+  }
+
+  // Contact time selection
+  function selectTime(el, value) {
+    document.querySelectorAll('.time-opt').forEach(opt => opt.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('hiddenContactTime').value = value;
+  }
+
+  // Consent checkbox
+  function toggleConsent() {
+    const box = document.getElementById('consentBox');
+    box.classList.toggle('checked');
+  }
+
+  // Modal functions
+  function openModal(type) {
+    document.getElementById(`modal-${type}`).classList.add('open');
+  }
+
+  function closeModal(type) {
+    document.getElementById(`modal-${type}`).classList.remove('open');
+  }
+
+  // Form submission
+  const form = document.getElementById('quoteForm');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Basic validation for consent
+      if (!document.getElementById('consentBox').classList.contains('checked')) {
+        alert("Please agree to the Privacy Policy and Terms & Conditions.");
+        return;
+      }
+
+      // Show success screen
+      document.querySelectorAll('.form-step').forEach(s => s.style.display = 'none');
+      document.getElementById('formSuccess').classList.add('show');
+
+      // You can uncomment the line below if you want the form to actually submit to Formspree
+      // this.submit();
+    });
+  }
+
+  // Scroll reveal animation
+  function handleScroll() {
+    const reveals = document.querySelectorAll('.reveal');
+    reveals.forEach(reveal => {
+      const windowHeight = window.innerHeight;
+      const elementTop = reveal.getBoundingClientRect().top;
+      const elementVisible = 150;
+
+      if (elementTop < windowHeight - elementVisible) {
+        reveal.classList.add('visible');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', handleScroll);
+  // Initial check
+  window.addEventListener('load', handleScroll);
+
+  // Hero particles (optional but nice)
+  function createParticles() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 60; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      particle.style.left = Math.random() * 100 + 'vw';
+      particle.style.animationDuration = (Math.random() * 8 + 6) + 's';
+      particle.style.animationDelay = '-' + Math.random() * 10 + 's';
+      container.appendChild(particle);
+    }
+  }
+  createParticles();
+
+  console.log('%c✅ BeezerBuilt website fully loaded and ready!', 'color:#C9A227; font-family:Bebas Neue; font-size:18px');
 </script>
+
 </body>
 </html>
