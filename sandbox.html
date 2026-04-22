@@ -8,10 +8,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-
-    /* ─────────────────────────────────────────────────────────
-       1. VARIABLES & RESET
-    ───────────────────────────────────────────────────────── */
+    /* =========================================================
+       VARIABLES & RESET
+    ========================================================= */
     :root {
       --navy:        #080E1A;
       --navy-mid:    #0F1C30;
@@ -22,73 +21,76 @@
       --gray:        #7A8FAD;
       --gray-light:  #B0C0D6;
     }
+
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       font-family: 'Outfit', sans-serif;
       background: var(--navy);
       color: var(--white);
       min-height: 100vh;
-      padding: 24px;
+      display: flex;
+      align-items: flex-start;
+      padding: 24px 20px;
     }
 
-    /* ─────────────────────────────────────────────────────────
-       2. SANDBOX OUTER LAYOUT
-    ───────────────────────────────────────────────────────── */
-    .sb-wrap { max-width: 1440px; margin: 0 auto; }
+    /* =========================================================
+       SANDBOX SHELL
+    ========================================================= */
+    .sandbox-container { width: 100%; max-width: 1400px; margin: 0 auto; }
 
-    .sb-disclaimer {
+    .sandbox-disclaimer {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       padding: 9px 18px;
       background: rgba(201,162,39,.08);
-      border: 1px solid rgba(201,162,39,.3);
+      border: 1px solid rgba(201,162,39,.28);
       border-radius: 4px;
       font-size: .82rem;
       color: var(--gold);
       margin-bottom: 22px;
     }
 
-    .sb-layout {
+    .sandbox-layout {
       display: grid;
       grid-template-columns: 290px 1fr;
-      gap: 22px;
+      gap: 20px;
       align-items: start;
     }
-    @media (max-width: 860px) { .sb-layout { grid-template-columns: 1fr; } }
 
-    /* ─────────────────────────────────────────────────────────
-       3. CONTROLS PANEL
-    ───────────────────────────────────────────────────────── */
-    .ctrl-panel {
+    /* =========================================================
+       CONTROLS PANEL
+    ========================================================= */
+    .sandbox-controls {
       background: var(--navy-card);
       border: 1px solid var(--navy-border);
-      border-radius: 10px;
-      padding: 22px;
+      border-radius: 8px;
+      padding: 20px;
       overflow-y: auto;
-      max-height: 820px;
+      max-height: calc(100vh - 120px);
       position: sticky;
-      top: 24px;
-      scrollbar-width: none;
-    }
-    .ctrl-panel::-webkit-scrollbar { display: none; }
-    .ctrl-panel h3 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.25rem;
-      letter-spacing: .05em;
-      color: var(--gold);
-      margin-bottom: 20px;
+      top: 20px;
     }
 
-    .ctrl-group { margin-bottom: 20px; }
+    .sandbox-controls h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.25rem;
+      letter-spacing: .06em;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+
+    .ctrl-group { margin-bottom: 18px; }
+
     .ctrl-group-title {
-      font-size: .7rem;
+      font-size: .68rem;
       font-weight: 700;
-      letter-spacing: .18em;
+      letter-spacing: .22em;
       text-transform: uppercase;
       color: var(--gray);
       margin-bottom: 9px;
-      padding-bottom: 5px;
+      padding-bottom: 6px;
       border-bottom: 1px solid var(--navy-border);
     }
 
@@ -97,7 +99,7 @@
       background: var(--navy-mid);
       border: 1.5px solid var(--navy-border);
       border-radius: 5px;
-      padding: 8px 12px;
+      padding: 7px 11px;
       color: var(--white);
       font-family: 'Outfit', sans-serif;
       font-size: .88rem;
@@ -106,54 +108,55 @@
     }
     .brand-input:focus { border-color: var(--gold); }
 
-    .ctrl-opts { display: flex; flex-wrap: wrap; gap: 6px; }
-    .ctrl-opt {
-      padding: 5px 12px;
+    .ctrl-options { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .ctrl-option {
+      padding: 5px 11px;
       border: 1.5px solid var(--navy-border);
       border-radius: 4px;
       font-size: .76rem;
       font-weight: 600;
       cursor: pointer;
       color: var(--gray);
-      transition: all .18s;
+      transition: all .15s;
       user-select: none;
     }
-    .ctrl-opt:hover { color: var(--gray-light); border-color: rgba(201,162,39,.4); }
-    .ctrl-opt.active { border-color: var(--gold); color: var(--gold); background: rgba(201,162,39,.1); }
+    .ctrl-option:hover { border-color: rgba(201,162,39,.45); color: var(--gray-light); }
+    .ctrl-option.active { border-color: var(--gold); color: var(--gold); background: rgba(201,162,39,.1); }
 
     .ctrl-toggle {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 5px 4px;
+      padding: 5px 3px;
       cursor: pointer;
+      user-select: none;
       border-radius: 4px;
       transition: background .15s;
-      user-select: none;
-      gap: 8px;
     }
     .ctrl-toggle:hover { background: rgba(255,255,255,.03); }
-    .ctrl-toggle-lbl { font-size: .86rem; font-weight: 500; }
+    .ctrl-toggle-label { font-size: .84rem; font-weight: 500; }
 
-    .tog-sw {
-      width: 38px; height: 20px;
-      border-radius: 10px;
+    .toggle-switch {
+      width: 38px;
+      height: 21px;
+      border-radius: 11px;
       background: var(--navy-border);
       position: relative;
       flex-shrink: 0;
       transition: background .2s;
     }
-    .tog-sw.on { background: var(--gold); }
-    .tog-sw::after {
+    .toggle-switch.on { background: var(--gold); }
+    .toggle-switch::after {
       content: '';
       position: absolute;
-      width: 14px; height: 14px;
+      width: 15px; height: 15px;
       border-radius: 50%;
       background: #fff;
       top: 3px; left: 3px;
       transition: transform .2s;
     }
-    .tog-sw.on::after { transform: translateX(18px); }
+    .toggle-switch.on::after { transform: translateX(17px); }
 
     #featureCount {
       font-size: .76rem;
@@ -161,23 +164,22 @@
       font-weight: 600;
       padding: 10px 0 0;
       border-top: 1px solid var(--navy-border);
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
-    /* ─────────────────────────────────────────────────────────
-       4. PREVIEW PANEL & TOPBAR
-    ───────────────────────────────────────────────────────── */
-    .pv-panel {
+    /* =========================================================
+       PREVIEW SHELL (browser chrome)
+    ========================================================= */
+    .sandbox-preview {
       background: var(--navy-card);
       border: 1px solid var(--navy-border);
-      border-radius: 10px;
+      border-radius: 8px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      height: 820px;
     }
 
-    .pv-topbar {
+    .preview-topbar {
       background: var(--navy-mid);
       padding: 9px 14px;
       display: flex;
@@ -186,12 +188,12 @@
       border-bottom: 1px solid var(--navy-border);
       flex-shrink: 0;
     }
-    .pv-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .pv-url {
+    .preview-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .preview-url {
       flex: 1;
       background: rgba(255,255,255,.05);
       border-radius: 4px;
-      padding: 3px 10px;
+      padding: 4px 12px;
       font-size: .72rem;
       color: var(--gray);
       margin: 0 10px;
@@ -200,1169 +202,1163 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .pv-dev-btn {
+    .dev-btn {
       cursor: pointer;
-      font-size: .78rem;
+      font-size: .8rem;
       padding: 3px 8px;
-      border-radius: 4px;
-      border: 1.5px solid;
-      transition: all .18s;
+      border-radius: 3px;
+      border: 1px solid var(--navy-border);
+      color: var(--gray);
       user-select: none;
-      line-height: 1;
+      transition: all .15s;
     }
+    .dev-btn.active { border-color: var(--gold); color: var(--gold); }
 
-    /* ─────────────────────────────────────────────────────────
-       5. PREVIEW FRAME & DEVICE MODES
-    ───────────────────────────────────────────────────────── */
-    .pv-frame {
+    .preview-frame {
       flex: 1;
       position: relative;
       overflow: hidden;
-      background: #09101e;
+      min-height: 620px;
     }
 
-    /* Mobile mode: frame becomes a phone stage */
-    .pv-frame.mobile {
-      background: #030609;
+    /* Mobile mode */
+    .preview-frame.mobile-mode {
+      background: #161616;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 20px 0;
+    }
+    .phone-shell {
+      display: none;
+      width: 215px;
+      border-radius: 28px;
+      border: 3px solid #383838;
+      box-shadow: 0 0 0 1px #222, 0 24px 60px rgba(0,0,0,.7);
+      background: #111;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .phone-shell-notch {
+      height: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .pv-frame.mobile #pvSite {
-      position: relative !important;
-      top: unset !important; right: unset !important;
-      bottom: unset !important; left: unset !important;
-      width: 390px !important;
-      height: 660px !important;
-      flex-shrink: 0;
-      border-radius: 26px !important;
-      overflow: hidden !important;
-      outline: 9px solid #1e1e1e;
-      box-shadow: 0 0 0 14px #111, 0 40px 100px rgba(0,0,0,.95);
+    .phone-shell-notch::after {
+      content: '';
+      width: 56px;
+      height: 5px;
+      background: #2a2a2a;
+      border-radius: 3px;
+    }
+    .phone-site-clip {
+      width: 215px;
+      height: 430px;
+      overflow: hidden;
+      position: relative;
+    }
+    #pvMobileSite {
+      transform: scale(0.558);
+      transform-origin: top left;
+      width: 385px;
+      pointer-events: none;
     }
 
-    /* ─────────────────────────────────────────────────────────
-       6. PREVIEW SITE — BASE STRUCTURE
-    ───────────────────────────────────────────────────────── */
-    #pvSite {
-      position: absolute;
-      inset: 0;
+    /* =========================================================
+       PREVIEW SITE — BASE
+    ========================================================= */
+    .pv-site {
+      width: 100%;
+      height: 100%;
+      min-height: 620px;
+      font-family: 'Outfit', sans-serif;
+      background: #0a0f1a;
+      color: #fff;
+      position: relative;
       overflow-y: auto;
       overflow-x: hidden;
       display: flex;
       flex-direction: column;
-      font-family: 'Outfit', sans-serif;
-      scrollbar-width: none;
-      transition: background .3s, color .3s, font-family .3s;
     }
-    #pvSite::-webkit-scrollbar { display: none; }
 
-    /* Navbar */
-    #pvNav {
+    /* Nav */
+    .pv-nav {
+      padding: 10px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .03em;
       position: sticky;
       top: 0;
       z-index: 20;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      flex-shrink: 0;
       transition: background .3s, border-color .3s;
     }
-    .nav-brand { font-weight: 800; font-size: .86rem; letter-spacing: .02em; transition: color .2s; }
-    .nav-links  { display: flex; gap: 10px; font-size: .68rem; opacity: .55; }
-    .nav-cta    { font-size: .63rem; font-weight: 700; padding: 4px 10px; cursor: pointer; transition: all .2s; }
-
-    /* Hero */
-    #pvHero {
-      padding: 32px 18px 24px;
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      flex-shrink: 0;
-      transition: all .3s;
-    }
-    .hero-h1  { font-size: 1.85rem; font-weight: 800; line-height: 1.05; transition: font-size .3s; }
-    .hero-sub { font-size: .78rem; opacity: .6; line-height: 1.6; max-width: 310px; }
-    .hero-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
-    .hero-btn { padding: 8px 16px; font-size: .76rem; font-weight: 700; cursor: pointer; transition: all .2s; white-space: nowrap; }
-
-    /* Stats bar */
-    #pvStats {
-      display: flex;
-      border-top: 1px solid rgba(255,255,255,.07);
-      border-bottom: 1px solid rgba(255,255,255,.07);
-      position: relative;
-      z-index: 1;
-      flex-shrink: 0;
-    }
-    .stat-cell { flex: 1; padding: 8px 4px; text-align: center; }
-    .stat-cell:not(:last-child) { border-right: 1px solid rgba(255,255,255,.07); }
-    .stat-num { font-size: .95rem; font-weight: 800; }
-    .stat-lbl { font-size: .5rem; opacity: .4; margin-top: 1px; letter-spacing: .05em; text-transform: uppercase; }
-
-    /* Section wrapper */
-    .pv-section { padding: 12px 16px; position: relative; z-index: 1; flex-shrink: 0; }
-    .pv-section-hd {
-      font-size: .6rem;
+    .pv-nav-links { display: flex; gap: 12px; opacity: .6; font-weight: 500; }
+    .pv-nav-cta {
+      font-size: .65rem;
       font-weight: 700;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      opacity: .4;
-      margin-bottom: 8px;
+      padding: 4px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      white-space: nowrap;
     }
 
-    /* ─────────────────────────────────────────────────────────
-       7. BACKGROUND LAYERS (video canvas + particles)
-    ───────────────────────────────────────────────────────── */
-    #pvVideoBg {
+    /* Video background */
+    .pv-video-bg {
       position: absolute;
       inset: 0;
       z-index: 0;
       display: none;
-      pointer-events: none;
+      overflow: hidden;
     }
-    #pvVideoCanvas { width: 100%; height: 100%; display: block; }
-    #pvVideoOverlay { position: absolute; inset: 0; background: rgba(0,0,0,.52); }
-    .pv-live-badge {
-      position: absolute;
-      top: 10px; right: 10px;
-      background: rgba(220,30,30,.85);
-      color: #fff;
-      font-size: .5rem;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 3px;
-      letter-spacing: .1em;
-      animation: liveBlink 2s step-end infinite;
+    .pv-video-bg.show { display: block; }
+    .pv-video-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: .4;
     }
-    @keyframes liveBlink { 0%,100%{opacity:1} 50%{opacity:.3} }
-
-    #pvParticles {
+    .pv-video-overlay {
       position: absolute;
       inset: 0;
-      z-index: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,.5) 0%, rgba(0,0,0,.15) 40%, rgba(0,0,0,.65) 100%);
+    }
+
+    /* Particles */
+    .pv-particles {
+      position: absolute;
+      inset: 0;
       pointer-events: none;
       overflow: hidden;
+      z-index: 1;
     }
     .pv-particle {
       position: absolute;
       border-radius: 50%;
       opacity: 0;
-      animation: particleRise linear infinite;
+      animation: pvFloat linear infinite;
     }
-    @keyframes particleRise {
-      0%  { transform:translateY(0) scale(1); opacity:0; }
-      8%  { opacity:.9; }
-      85% { opacity:.35; }
-      100%{ transform:translateY(-550px) scale(.35); opacity:0; }
+    @keyframes pvFloat {
+      0%   { transform: translateY(0)     scale(0);   opacity: 0; }
+      10%  { transform: translateY(-30px) scale(1);   opacity: .75; }
+      90%  { opacity: .3; }
+      100% { transform: translateY(-380px) scale(.4); opacity: 0; }
     }
 
-    /* ─────────────────────────────────────────────────────────
-       8. PREVIEW SECTIONS (all start hidden, JS reveals them)
-    ───────────────────────────────────────────────────────── */
+    /* Hero */
+    .pv-hero {
+      padding: 36px 20px 26px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+      position: relative;
+      z-index: 2;
+      transition: background .3s, text-align .2s;
+    }
+    .pv-h1 { font-size: 1.8rem; font-weight: 800; line-height: 1.1; }
+    .pv-tagline { font-size: .79rem; opacity: .65; line-height: 1.5; max-width: 280px; }
+    .pv-btn-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    .pv-btn {
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 4px;
+      font-size: .78rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-radius .2s;
+    }
 
-    /* — Gallery — */
-    #pvGallery   { display: none; }
-    .gallery-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
-    .gallery-item {
+    /* Stats bar */
+    .pv-stats {
+      display: flex;
+      border-top: 1px solid rgba(255,255,255,.08);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      position: relative;
+      z-index: 2;
+    }
+    .pv-stat {
+      flex: 1;
+      padding: 8px 4px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,.08);
+    }
+    .pv-stat:last-child { border-right: none; }
+    .pv-stat-num { font-size: 1rem; font-weight: 800; }
+    .pv-stat-label { font-size: .52rem; opacity: .44; margin-top: 1px; }
+
+    /* ---- Shared section wrapper ---- */
+    .pv-section {
+      display: none;
+      padding: 10px 16px 14px;
+      position: relative;
+      z-index: 2;
+    }
+    .pv-section.show { display: block; }
+    .pv-section-title {
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      opacity: .42;
+      margin-bottom: 8px;
+    }
+
+    /* Gallery */
+    .pv-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .pv-gallery-img {
       height: 66px;
       border-radius: 5px;
-      overflow: hidden;
-      position: relative;
-      cursor: pointer;
-    }
-    .gallery-bg {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 3px;
-    }
-    .gallery-icon  { font-size: 1.15rem; }
-    .gallery-label { font-size: .47rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; opacity: .75; }
-    .gallery-play  {
-      position: absolute; inset: 0;
-      background: rgba(0,0,0,0);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; opacity: 0; transition: all .22s;
-    }
-    .gallery-item:hover .gallery-play { background: rgba(0,0,0,.45); opacity: 1; }
-    .gallery-dur {
-      position: absolute; bottom: 3px; right: 4px;
-      font-size: .44rem; background: rgba(0,0,0,.75); color:#fff;
-      padding: 1px 4px; border-radius: 2px;
+      object-fit: cover;
+      width: 100%;
+      display: block;
+      background: rgba(255,255,255,.07);
     }
 
-    /* — Testimonials — */
-    #pvTestimonials { display: none; }
-    .tst-cards  { display: flex; gap: 7px; }
-    .tst-card   { flex:1; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); border-radius:6px; padding:9px; }
-    .tst-avatar { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.52rem; font-weight:800; color:#fff; margin-bottom:4px; }
-    .tst-stars  { font-size:.65rem; margin-bottom:3px; }
-    .tst-text   { font-size:.6rem; line-height:1.5; opacity:.78; }
-    .tst-author { font-size:.54rem; opacity:.38; margin-top:4px; }
+    /* Testimonials */
+    .pv-tst-grid { display: flex; gap: 6px; }
+    .pv-tst-card {
+      flex: 1;
+      background: rgba(255,255,255,.06);
+      border-radius: 5px;
+      padding: 8px;
+      font-size: .62rem;
+      line-height: 1.4;
+    }
+    .pv-tst-stars { margin-bottom: 3px; }
+    .pv-tst-quote { opacity: .82; font-style: italic; }
+    .pv-tst-author { opacity: .38; margin-top: 4px; font-size: .58rem; }
 
-    /* — Pricing — */
-    #pvPricing    { display: none; }
-    .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; }
-    .price-card   { background:rgba(255,255,255,.05); border:1.5px solid rgba(255,255,255,.08); border-radius:6px; padding:9px 8px; text-align:center; }
-    .price-badge  { font-size:.47rem; font-weight:700; letter-spacing:.06em; padding:2px 6px; border-radius:8px; background:rgba(255,255,255,.12); display:inline-block; margin-bottom:3px; }
-    .price-name   { font-size:.78rem; font-weight:800; margin-bottom:3px; }
-    .price-amt    { font-size:.9rem; font-weight:700; }
-    .price-period { font-size:.5rem; opacity:.4; font-weight:400; }
-    .price-feat   { font-size:.52rem; opacity:.5; margin-top:2px; }
+    /* Pricing */
+    .pv-pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+    }
+    .pv-price-card {
+      background: rgba(255,255,255,.05);
+      border: 1px solid transparent;
+      border-radius: 5px;
+      padding: 8px;
+      text-align: center;
+      font-size: .58rem;
+    }
+    .pv-price-name { font-weight: 800; font-size: .78rem; margin-bottom: 2px; }
+    .pv-price-amt { font-weight: 700; font-size: .82rem; margin-bottom: 2px; }
+    .pv-price-amt span { font-size: .5rem; opacity: .45; }
+    .pv-price-note { opacity: .42; }
 
-    /* — Contact Form — */
-    #pvForm      { display: none; }
-    .form-fields { display: flex; flex-direction: column; gap: 6px; }
-    .form-row    { display: flex; gap: 6px; }
-    .form-row .pv-input { flex: 1; }
+    /* Contact form */
+    .pv-form-inner { display: flex; flex-direction: column; gap: 6px; }
     .pv-input {
       background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.14);
       border-radius: 4px;
-      padding: 6px 9px;
-      font-size: .73rem;
+      padding: 6px 10px;
+      font-size: .72rem;
       color: inherit;
       font-family: inherit;
       outline: none;
       width: 100%;
-      transition: border-color .2s;
     }
-    .pv-input::placeholder { opacity: .4; }
-    .form-success { display:none; text-align:center; padding:16px; flex-direction:column; align-items:center; gap:5px; }
-    .form-success.show { display: flex; }
-    .form-success-icon  { font-size:1.5rem; }
-    .form-success-title { font-size:.78rem; font-weight:700; }
-    .form-success-sub   { font-size:.64rem; opacity:.5; }
 
-    /* — Newsletter — */
-    #pvNewsletter      { display: none; }
-    .newsletter-box    { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); border-radius:7px; padding:12px; text-align:center; }
-    .newsletter-title  { font-size:.7rem; font-weight:700; margin-bottom:2px; }
-    .newsletter-sub    { font-size:.6rem; opacity:.45; margin-bottom:7px; }
-    .newsletter-row    { display:flex; gap:5px; align-items:center; }
+    /* Newsletter */
+    .pv-newsletter-inner {
+      background: rgba(255,255,255,.05);
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+    }
+    .pv-newsletter-title { font-size: .7rem; font-weight: 700; margin-bottom: 7px; }
+    .pv-newsletter-row { display: flex; gap: 4px; }
 
-    /* — Store — */
-    #pvStore      { display: none; }
-    .store-grid   { display:grid; grid-template-columns:repeat(2,1fr); gap:7px; }
-    .product      { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:6px; overflow:hidden; cursor:pointer; transition:border-color .2s; }
-    .product:hover{ border-color:rgba(255,255,255,.22); }
-    .product-img  { height:58px; display:flex; align-items:center; justify-content:center; font-size:1.65rem; }
-    .product-info { padding:6px 8px; }
-    .product-name { font-size:.68rem; font-weight:700; margin-bottom:1px; }
-    .product-desc { font-size:.54rem; opacity:.44; margin-bottom:5px; }
-    .product-row  { display:flex; align-items:center; justify-content:space-between; }
-    .product-price{ font-size:.7rem; font-weight:700; }
-    .buy-btn      { font-size:.58rem; font-weight:700; padding:2px 7px; border-radius:3px; cursor:pointer; border:1px solid; }
+    /* Store */
+    .pv-store-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .pv-product {
+      background: rgba(255,255,255,.06);
+      border-radius: 6px;
+      padding: 8px;
+    }
+    .pv-product-img {
+      height: 58px;
+      border-radius: 4px;
+      object-fit: cover;
+      width: 100%;
+      display: block;
+      margin-bottom: 6px;
+      background: rgba(255,255,255,.07);
+    }
+    .pv-product-name { font-weight: 700; font-size: .72rem; margin-bottom: 2px; }
+    .pv-product-price { opacity: .58; font-size: .67rem; }
+    .pv-product-buy { margin-top: 5px; font-size: .68rem; font-weight: 700; cursor: pointer; }
 
-    /* — Map — */
-    #pvMap     { display: none; }
-    .map-shell { border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,.1); }
+    /* Map */
+    .pv-map-frame {
+      width: 100%;
+      height: 84px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: none;
+      display: block;
+    }
+    .pv-map-svg {
+      width: 100%;
+      height: 84px;
+      border-radius: 6px;
+      overflow: hidden;
+    }
 
-    /* — Countdown — */
-    #pvCountdown    { display: none; }
-    .countdown-box  { background:rgba(0,0,0,.3); border-radius:7px; padding:12px; text-align:center; }
-    .countdown-title{ font-size:.6rem; letter-spacing:.1em; text-transform:uppercase; opacity:.42; margin-bottom:6px; }
-    .countdown-nums { display:flex; gap:6px; justify-content:center; }
-    .cd-block       { background:rgba(0,0,0,.45); border-radius:5px; padding:6px 10px; min-width:44px; }
-    .cd-num         { font-size:1.05rem; font-weight:800; line-height:1; }
-    .cd-lbl         { font-size:.46rem; opacity:.38; margin-top:2px; letter-spacing:.08em; text-transform:uppercase; }
+    /* Countdown */
+    .pv-cd-inner {
+      background: rgba(0,0,0,.28);
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+    }
+    .pv-cd-label { font-size: .58rem; opacity: .4; margin-bottom: 6px; letter-spacing: .14em; text-transform: uppercase; }
+    .pv-cd-grid { display: flex; gap: 6px; justify-content: center; }
+    .pv-cd-unit {
+      background: rgba(0,0,0,.4);
+      border-radius: 4px;
+      padding: 5px 8px;
+      text-align: center;
+      min-width: 36px;
+    }
+    .pv-cd-num { font-size: .95rem; font-weight: 800; }
+    .pv-cd-sub { font-size: .48rem; opacity: .38; margin-top: 1px; }
 
-    /* — Chat widget — */
-    #pvChatBubble { display:none; position:absolute; bottom:12px; right:12px; z-index:30; }
-    .chat-panel   { position:absolute; bottom:52px; right:0; width:186px; background:#111d30; border:1px solid rgba(255,255,255,.1); border-radius:10px; overflow:hidden; display:none; box-shadow:0 8px 32px rgba(0,0,0,.65); }
-    .chat-panel.open { display: block; }
-    .chat-head    { padding:8px 10px; display:flex; align-items:center; gap:6px; border-bottom:1px solid rgba(255,255,255,.07); }
-    .chat-av      { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.52rem; font-weight:800; flex-shrink:0; }
-    .chat-av-name { font-weight:700; font-size:.64rem; }
-    .chat-av-sub  { font-size:.5rem; opacity:.42; }
-    .chat-online  { width:6px; height:6px; border-radius:50%; background:#22c55e; margin-left:auto; flex-shrink:0; }
-    .chat-msgs    { padding:8px; display:flex; flex-direction:column; gap:5px; }
-    .chat-msg     { font-size:.59rem; line-height:1.45; padding:5px 8px; border-radius:7px; max-width:86%; }
-    .chat-msg.bot { background:rgba(255,255,255,.08); align-self:flex-start; }
-    .chat-msg.usr { align-self:flex-end; color:#0d1b2e; font-weight:600; }
-    .chat-input-row { display:flex; gap:4px; padding:6px 8px; border-top:1px solid rgba(255,255,255,.07); }
-    .chat-input   { flex:1; background:rgba(255,255,255,.07); border:none; border-radius:4px; padding:4px 6px; font-size:.59rem; color:inherit; font-family:inherit; outline:none; }
-    .chat-send    { font-size:.62rem; font-weight:700; padding:4px 9px; border-radius:4px; cursor:pointer; }
-    .chat-btn     { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; cursor:pointer; box-shadow:0 4px 18px rgba(0,0,0,.55); transition:transform .2s; }
-    .chat-btn:hover { transform:scale(1.1); }
+    /* Chat widget */
+    #pvChat {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      z-index: 30;
+    }
+    .pv-chat-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,.5);
+      position: relative;
+    }
+    .pv-chat-popup {
+      position: absolute;
+      bottom: 52px;
+      right: 0;
+      background: #fff;
+      color: #111;
+      border-radius: 8px 8px 0 8px;
+      padding: 9px 11px;
+      font-size: .6rem;
+      width: 138px;
+      line-height: 1.45;
+      box-shadow: 0 6px 20px rgba(0,0,0,.32);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .2s, transform .2s;
+    }
+    .pv-chat-popup::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      right: 10px;
+      width: 0; height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid #fff;
+    }
+    .pv-chat-btn:hover .pv-chat-popup {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-    /* — Footer — */
-    #pvFooter {
-      padding: 7px 16px;
-      border-top: 1px solid rgba(255,255,255,.06);
+    /* Footer */
+    .pv-footer {
+      padding: 8px 16px;
+      border-top: 1px solid rgba(255,255,255,.07);
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-size: .58rem;
-      opacity: .3;
+      opacity: .36;
       margin-top: auto;
       position: relative;
-      z-index: 1;
-      flex-shrink: 0;
+      z-index: 2;
     }
 
+    /* =========================================================
+       LIGHT THEME OVERRIDES
+    ========================================================= */
+    .theme-light .pv-input { background: rgba(0,0,0,.07); border-color: rgba(0,0,0,.14); color: #111; }
+    .theme-light .pv-tst-card,
+    .theme-light .pv-price-card,
+    .theme-light .pv-product { background: rgba(0,0,0,.04); }
+    .theme-light .pv-newsletter-inner { background: rgba(0,0,0,.04); }
+    .theme-light .pv-cd-inner { background: rgba(0,0,0,.06); }
+    .theme-light .pv-cd-unit { background: rgba(0,0,0,.1); }
+    .theme-light .pv-stats { border-color: rgba(0,0,0,.08); }
+    .theme-light .pv-stat { border-color: rgba(0,0,0,.08); }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+    @media (max-width: 900px) {
+      .sandbox-layout { grid-template-columns: 1fr; }
+      .sandbox-controls { max-height: none; position: static; }
+    }
   </style>
 </head>
 <body>
-<div class="sb-wrap">
+<div class="sandbox-container">
 
-  <div class="sb-disclaimer">
-    ⚠️ <strong>Demo Mode Only</strong> — Nothing here is real or live. This is a visual preview of possibilities.
+  <div class="sandbox-disclaimer">
+    ⚠️ <strong>Demo Mode Only</strong> — Nothing here is real or live. This is just a preview of possibilities.
   </div>
 
-  <div class="sb-layout">
+  <div class="sandbox-layout">
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- =====================================================
          CONTROLS PANEL
-    ══════════════════════════════════════════════════ -->
-    <div class="ctrl-panel">
+    ====================================================== -->
+    <div class="sandbox-controls">
       <h3>🎛️ Customize Your Site</h3>
 
       <div class="ctrl-group">
         <div class="ctrl-group-title">Business Name</div>
-        <input class="brand-input" type="text" id="sbBrand" placeholder="YourBrand" oninput="setBrand(this.value)">
+        <input type="text" id="sbBrandInput" class="brand-input" placeholder="YourBrand"
+               oninput="setBrandName(this.value)">
       </div>
 
       <div class="ctrl-group">
         <div class="ctrl-group-title">Theme</div>
-        <div class="ctrl-opts" id="optTheme">
-          <div class="ctrl-opt active" data-value="dark"     onclick="setOpt(this,'theme')">Dark</div>
-          <div class="ctrl-opt"        data-value="light"    onclick="setOpt(this,'theme')">Light</div>
-          <div class="ctrl-opt"        data-value="midnight" onclick="setOpt(this,'theme')">Midnight</div>
+        <div class="ctrl-options" id="themeOptions">
+          <div class="ctrl-option active" data-theme="dark"     onclick="setTheme(this)">Dark</div>
+          <div class="ctrl-option"        data-theme="light"    onclick="setTheme(this)">Light</div>
+          <div class="ctrl-option"        data-theme="midnight" onclick="setTheme(this)">Midnight</div>
         </div>
       </div>
 
       <div class="ctrl-group">
-        <div class="ctrl-group-title">Accent Color</div>
-        <div class="ctrl-opts" id="optColor">
-          <div class="ctrl-opt active" data-value="#C9A227" onclick="setOpt(this,'color')" style="border-color:#C9A227;color:#C9A227;">Gold</div>
-          <div class="ctrl-opt"        data-value="#3B82F6" onclick="setOpt(this,'color')">Blue</div>
-          <div class="ctrl-opt"        data-value="#10B981" onclick="setOpt(this,'color')">Green</div>
-          <div class="ctrl-opt"        data-value="#EF4444" onclick="setOpt(this,'color')">Red</div>
-          <div class="ctrl-opt"        data-value="#8B5CF6" onclick="setOpt(this,'color')">Purple</div>
-          <div class="ctrl-opt"        data-value="#F97316" onclick="setOpt(this,'color')">Orange</div>
-          <div class="ctrl-opt"        data-value="#EC4899" onclick="setOpt(this,'color')">Pink</div>
+        <div class="ctrl-group-title">Color Accent</div>
+        <div class="ctrl-options" id="colorOptions">
+          <div class="ctrl-option active" data-color="#C9A227" onclick="setColor(this)" style="border-color:#C9A227;color:#C9A227;">Gold</div>
+          <div class="ctrl-option" data-color="#3B82F6"  onclick="setColor(this)">Blue</div>
+          <div class="ctrl-option" data-color="#10B981"  onclick="setColor(this)">Green</div>
+          <div class="ctrl-option" data-color="#EF4444"  onclick="setColor(this)">Red</div>
+          <div class="ctrl-option" data-color="#8B5CF6"  onclick="setColor(this)">Purple</div>
+          <div class="ctrl-option" data-color="#F97316"  onclick="setColor(this)">Orange</div>
+          <div class="ctrl-option" data-color="#EC4899"  onclick="setColor(this)">Pink</div>
         </div>
       </div>
 
       <div class="ctrl-group">
         <div class="ctrl-group-title">Hero Layout</div>
-        <div class="ctrl-opts" id="optLayout">
-          <div class="ctrl-opt active" data-value="centered" onclick="setOpt(this,'layout')">Centered</div>
-          <div class="ctrl-opt"        data-value="left"     onclick="setOpt(this,'layout')">Left-Split</div>
-          <div class="ctrl-opt"        data-value="bold"     onclick="setOpt(this,'layout')">Bold Full</div>
+        <div class="ctrl-options" id="layoutOptions">
+          <div class="ctrl-option active" data-layout="centered" onclick="setLayout(this)">Centered</div>
+          <div class="ctrl-option"        data-layout="left"     onclick="setLayout(this)">Left-Split</div>
+          <div class="ctrl-option"        data-layout="bold"     onclick="setLayout(this)">Bold Full</div>
         </div>
       </div>
 
       <div class="ctrl-group">
         <div class="ctrl-group-title">Button Style</div>
-        <div class="ctrl-opts" id="optBtn">
-          <div class="ctrl-opt active" data-value="square"  onclick="setOpt(this,'btnStyle')">Sharp</div>
-          <div class="ctrl-opt"        data-value="rounded" onclick="setOpt(this,'btnStyle')">Rounded</div>
-          <div class="ctrl-opt"        data-value="pill"    onclick="setOpt(this,'btnStyle')">Pill</div>
+        <div class="ctrl-options" id="btnStyleOptions">
+          <div class="ctrl-option active" data-btn="square"  onclick="setBtnStyle(this)">Sharp</div>
+          <div class="ctrl-option"        data-btn="rounded" onclick="setBtnStyle(this)">Rounded</div>
+          <div class="ctrl-option"        data-btn="pill"    onclick="setBtnStyle(this)">Pill</div>
         </div>
       </div>
 
       <div class="ctrl-group">
         <div class="ctrl-group-title">Font Style</div>
-        <div class="ctrl-opts" id="optFont">
-          <div class="ctrl-opt active" data-value="modern" onclick="setOpt(this,'font')">Modern</div>
-          <div class="ctrl-opt"        data-value="serif"  onclick="setOpt(this,'font')">Serif</div>
-          <div class="ctrl-opt"        data-value="mono"   onclick="setOpt(this,'font')">Tech</div>
+        <div class="ctrl-options" id="fontOptions">
+          <div class="ctrl-option active" data-font="modern" onclick="setFont(this)">Modern</div>
+          <div class="ctrl-option"        data-font="serif"  onclick="setFont(this)">Serif</div>
+          <div class="ctrl-option"        data-font="mono"   onclick="setFont(this)">Tech</div>
         </div>
       </div>
 
       <div class="ctrl-group">
         <div class="ctrl-group-title">Navigation Style</div>
-        <div class="ctrl-opts" id="optNav">
-          <div class="ctrl-opt active" data-value="glass"   onclick="setOpt(this,'navStyle')">Glass</div>
-          <div class="ctrl-opt"        data-value="minimal" onclick="setOpt(this,'navStyle')">Minimal</div>
-          <div class="ctrl-opt"        data-value="solid"   onclick="setOpt(this,'navStyle')">Solid</div>
+        <div class="ctrl-options" id="navStyleOptions">
+          <div class="ctrl-option active" onclick="setNavStyle(this,'modern')">Glass</div>
+          <div class="ctrl-option"        onclick="setNavStyle(this,'minimal')">Minimal</div>
+          <div class="ctrl-option"        onclick="setNavStyle(this,'bold')">Solid</div>
         </div>
       </div>
 
       <div class="ctrl-group">
         <div class="ctrl-group-title">Sections &amp; Features</div>
 
-        <div class="ctrl-toggle" onclick="toggleFeat('videoBg')">
-          <span class="ctrl-toggle-lbl">🎬 Video Background</span>
-          <div class="tog-sw" id="tog-videoBg"></div>
+        <div class="ctrl-toggle" onclick="toggleFeature('videoBackground')">
+          <span class="ctrl-toggle-label">🎬 Video Background</span>
+          <div class="toggle-switch" id="toggle-videoBackground"></div>
         </div>
-        <div class="ctrl-toggle" onclick="toggleFeat('particles')">
-          <span class="ctrl-toggle-lbl">✨ Particle Animations</span>
-          <div class="tog-sw on" id="tog-particles"></div>
+        <div class="ctrl-toggle" onclick="toggleFeature('animations')">
+          <span class="ctrl-toggle-label">✨ Particle Animations</span>
+          <div class="toggle-switch on" id="toggle-animations"></div>
         </div>
-        <div class="ctrl-toggle" onclick="toggleFeat('gallery')">
-          <span class="ctrl-toggle-lbl">🖼️ Portfolio Gallery</span>
-          <div class="tog-sw" id="tog-gallery"></div>
+        <div class="ctrl-toggle" onclick="toggleFeature('gallery')">
+          <span class="ctrl-toggle-label">🖼️ Image Gallery</span>
+          <div class="toggle-switch" id="toggle-gallery"></div>
         </div>
-        <div class="ctrl-toggle" onclick="toggleFeat('testimonials')">
-          <span class="ctrl-toggle-lbl">⭐ Testimonials</span>
-          <div class="tog-sw" id="tog-testimonials"></div>
+        <div class="ctrl-toggle" onclick="toggleFeature('contactForm')">
+          <span class="ctrl-toggle-label">📋 Contact Form</span>
+          <div class="toggle-switch" id="toggle-contactForm"></div>
         </div>
-        <div class="ctrl-toggle" onclick="toggleFeat('pricing')">
-          <span class="ctrl-toggle-lbl">💰 Pricing Table</span>
-          <div class="tog-sw" id="tog-pricing"></div>
+        <div class="ctrl-toggle" onclick="toggleFeature('store')">
+          <span class="ctrl-toggle-label">🛒 Online Store</span>
+          <div class="toggle-switch" id="toggle-store"></div>
         </div>
-        <div class="ctrl-toggle" onclick="toggleFeat('contactForm')">
-          <span class="ctrl-toggle-lbl">📋 Contact Form</span>
-          <div class="tog-sw" id="tog-contactForm"></div>
+        <div class="ctrl-toggle" onclick="toggleFeature('testimonials')">
+          <span class="ctrl-toggle-label">⭐ Testimonials</span>
+          <div class="toggle-switch" id="toggle-testimonials"></div>
         </div>
-        <div class="ctrl-toggle" onclick="toggleFeat('store')">
-          <span class="ctrl-toggle-lbl">🛒 Online Store</span>
-          <div class="tog-sw" id="tog-store"></div>
+        <div class="ctrl-toggle" onclick="toggleFeature('pricing')">
+          <span class="ctrl-toggle-label">💰 Pricing Table</span>
+          <div class="toggle-switch" id="toggle-pricing"></div>
         </div>
-        <div class="ctrl-toggle" onclick="toggleFeat('newsletter')">
-          <span class="ctrl-toggle-lbl">📧 Newsletter Signup</span>
-          <div class="tog-sw" id="tog-newsletter"></div>
+        <div class="ctrl-toggle" onclick="toggleFeature('chatWidget')">
+          <span class="ctrl-toggle-label">💬 Chat Widget</span>
+          <div class="toggle-switch" id="toggle-chatWidget"></div>
         </div>
-        <div class="ctrl-toggle" onclick="toggleFeat('mapEmbed')">
-          <span class="ctrl-toggle-lbl">🗺️ Map / Location</span>
-          <div class="tog-sw" id="tog-mapEmbed"></div>
+        <div class="ctrl-toggle" onclick="toggleFeature('mapEmbed')">
+          <span class="ctrl-toggle-label">🗺️ Map / Location</span>
+          <div class="toggle-switch" id="toggle-mapEmbed"></div>
         </div>
-        <div class="ctrl-toggle" onclick="toggleFeat('countdown')">
-          <span class="ctrl-toggle-lbl">⏳ Countdown Timer</span>
-          <div class="tog-sw" id="tog-countdown"></div>
+        <div class="ctrl-toggle" onclick="toggleFeature('newsletter')">
+          <span class="ctrl-toggle-label">📧 Newsletter Signup</span>
+          <div class="toggle-switch" id="toggle-newsletter"></div>
         </div>
-        <div class="ctrl-toggle" onclick="toggleFeat('chatWidget')">
-          <span class="ctrl-toggle-lbl">💬 Live Chat Widget</span>
-          <div class="tog-sw" id="tog-chatWidget"></div>
+        <div class="ctrl-toggle" onclick="toggleFeature('countdown')">
+          <span class="ctrl-toggle-label">⏳ Countdown Timer</span>
+          <div class="toggle-switch" id="toggle-countdown"></div>
         </div>
       </div>
 
       <div id="featureCount">1 feature active</div>
-    </div><!-- /ctrl-panel -->
+    </div>
 
-    <!-- ══════════════════════════════════════════════════
-         PREVIEW PANEL
-    ══════════════════════════════════════════════════ -->
-    <div class="pv-panel">
+    <!-- =====================================================
+         LIVE PREVIEW
+    ====================================================== -->
+    <div class="sandbox-preview">
 
       <!-- Browser chrome topbar -->
-      <div class="pv-topbar">
-        <div class="pv-dot" style="background:#FF5F57;"></div>
-        <div class="pv-dot" style="background:#FEBC2E;"></div>
-        <div class="pv-dot" style="background:#28C840;"></div>
-        <div class="pv-url" id="pvUrl">🔒 yourbrand.com</div>
-        <div style="display:flex;gap:6px;margin-left:auto;">
-          <div class="pv-dev-btn" id="devDesktop" onclick="setDevice('desktop')"
-               style="border-color:var(--gold);color:var(--gold);" title="Desktop view">🖥</div>
-          <div class="pv-dev-btn" id="devMobile"  onclick="setDevice('mobile')"
-               style="border-color:var(--navy-border);color:var(--gray);" title="Mobile view">📱</div>
+      <div class="preview-topbar">
+        <div class="preview-dot" style="background:#FF5F57;"></div>
+        <div class="preview-dot" style="background:#FEBC2E;"></div>
+        <div class="preview-dot" style="background:#28C840;"></div>
+        <div class="preview-url" id="pvUrl">🔒 yourbrand.com</div>
+        <div style="display:flex;gap:5px;margin-left:auto;">
+          <div id="pvDevDesktop" class="dev-btn active" onclick="setPvDevice('desktop')" title="Desktop">🖥</div>
+          <div id="pvDevMobile"  class="dev-btn"        onclick="setPvDevice('mobile')"  title="Mobile">📱</div>
         </div>
       </div>
 
-      <!-- Preview frame -->
-      <div class="pv-frame" id="pvFrame">
+      <!-- Frame -->
+      <div class="preview-frame" id="pvFrame">
 
-        <!-- ─── LIVE PREVIEW SITE ─── -->
-        <div id="pvSite">
+        <!-- Phone shell (mobile view only) -->
+        <div class="phone-shell" id="phoneShell">
+          <div class="phone-shell-notch"></div>
+          <div class="phone-site-clip">
+            <div id="pvMobileSite"></div>
+          </div>
+        </div>
 
-          <!-- Video background layer -->
-          <div id="pvVideoBg">
-            <canvas id="pvVideoCanvas"></canvas>
-            <div id="pvVideoOverlay"></div>
-            <div class="pv-live-badge">● LIVE</div>
+        <!-- Desktop preview site -->
+        <div class="pv-site" id="pvSite">
+
+          <!-- Video background -->
+          <div class="pv-video-bg" id="pvVideo">
+            <video autoplay muted loop playsinline>
+              <source src="https://assets.mixkit.co/videos/preview/754/754-small.mp4" type="video/mp4">
+            </video>
+            <div class="pv-video-overlay"></div>
           </div>
 
-          <!-- Particle layer -->
-          <div id="pvParticles"></div>
+          <!-- Particles -->
+          <div class="pv-particles" id="pvParticles"></div>
 
           <!-- Navbar -->
-          <nav id="pvNav">
-            <div class="nav-brand" id="pvNavBrand">YourBrand</div>
-            <div class="nav-links">
+          <nav class="pv-nav" id="pvNav" style="background:rgba(8,14,26,.82);backdrop-filter:blur(10px);">
+            <strong id="pvNavBrand" style="color:#C9A227;font-size:.9rem;">YourBrand</strong>
+            <div class="pv-nav-links">
               <span>Home</span><span>About</span><span>Services</span><span>Contact</span>
             </div>
-            <div class="nav-cta" id="pvNavCta">Get Quote</div>
+            <div class="pv-nav-cta" id="pvNavCta" style="background:#C9A227;color:#0D1B2E;">Get Quote</div>
           </nav>
 
           <!-- Hero -->
-          <section id="pvHero">
-            <div class="hero-h1" id="pvH1">Your Website<br><span id="pvAccent">Starts Here.</span></div>
-            <p class="hero-sub">Beautiful, fast, and custom-built for your business — no templates, no compromise.</p>
-            <div class="hero-btns">
-              <div class="hero-btn" id="pvBtnA">Get Started →</div>
-              <div class="hero-btn" id="pvBtnB">See Our Work</div>
+          <div class="pv-hero" id="pvHero">
+            <div class="pv-h1" id="pvH1">
+              Your Website<br>
+              <span id="pvAccentText" style="color:#C9A227;">Starts Here</span>
             </div>
-          </section>
-
-          <!-- Stats bar -->
-          <div id="pvStats">
-            <div class="stat-cell">
-              <div class="stat-num" id="pvStat1">200+</div>
-              <div class="stat-lbl">Projects Delivered</div>
-            </div>
-            <div class="stat-cell">
-              <div class="stat-num" id="pvStat2">98%</div>
-              <div class="stat-lbl">Client Satisfaction</div>
-            </div>
-            <div class="stat-cell">
-              <div class="stat-num" id="pvStat3">24hr</div>
-              <div class="stat-lbl">Response Time</div>
+            <p class="pv-tagline">Beautiful, fast, and custom-built for your business.</p>
+            <div class="pv-btn-row">
+              <div class="pv-btn" id="pvBtn"  style="background:#C9A227;color:#0D1B2E;">Get Started →</div>
+              <div class="pv-btn" id="pvBtn2" style="border:1.5px solid #C9A227;color:#C9A227;background:transparent;">Learn More</div>
             </div>
           </div>
 
-          <!-- Portfolio Gallery -->
-          <section id="pvGallery" class="pv-section">
-            <div class="pv-section-hd">Portfolio Showcase</div>
-            <div class="gallery-grid">
-              <div class="gallery-item">
-                <div class="gallery-bg" style="background:linear-gradient(135deg,#1d0644,#4e1a9a);">
-                  <span class="gallery-icon">🛍️</span>
-                  <span class="gallery-label">E-Commerce</span>
-                </div>
-                <div class="gallery-play">▶</div>
-                <div class="gallery-dur">0:52</div>
-              </div>
-              <div class="gallery-item">
-                <div class="gallery-bg" style="background:linear-gradient(135deg,#001f1f,#005050);">
-                  <span class="gallery-icon">🍽️</span>
-                  <span class="gallery-label">Restaurant</span>
-                </div>
-                <div class="gallery-play">▶</div>
-                <div class="gallery-dur">1:04</div>
-              </div>
-              <div class="gallery-item">
-                <div class="gallery-bg" style="background:linear-gradient(135deg,#1c1600,#4a3c00);">
-                  <span class="gallery-icon">⚖️</span>
-                  <span class="gallery-label">Law Firm</span>
-                </div>
-                <div class="gallery-play">▶</div>
-                <div class="gallery-dur">0:38</div>
-              </div>
-              <div class="gallery-item">
-                <div class="gallery-bg" style="background:linear-gradient(135deg,#001430,#003070);">
-                  <span class="gallery-icon">🏥</span>
-                  <span class="gallery-label">Medical</span>
-                </div>
-                <div class="gallery-play">▶</div>
-                <div class="gallery-dur">0:47</div>
-              </div>
-              <div class="gallery-item">
-                <div class="gallery-bg" style="background:linear-gradient(135deg,#1a0800,#422000);">
-                  <span class="gallery-icon">🏗️</span>
-                  <span class="gallery-label">Construction</span>
-                </div>
-                <div class="gallery-play">▶</div>
-                <div class="gallery-dur">1:12</div>
-              </div>
-              <div class="gallery-item">
-                <div class="gallery-bg" style="background:linear-gradient(135deg,#100018,#2c004a);">
-                  <span class="gallery-icon">💆</span>
-                  <span class="gallery-label">Spa &amp; Wellness</span>
-                </div>
-                <div class="gallery-play">▶</div>
-                <div class="gallery-dur">0:59</div>
-              </div>
+          <!-- Stats bar -->
+          <div class="pv-stats">
+            <div class="pv-stat">
+              <div class="pv-stat-num" id="pvStat1" style="color:#C9A227;">200+</div>
+              <div class="pv-stat-label">Projects</div>
             </div>
-          </section>
+            <div class="pv-stat">
+              <div class="pv-stat-num" id="pvStat2" style="color:#C9A227;">98%</div>
+              <div class="pv-stat-label">Satisfied</div>
+            </div>
+            <div class="pv-stat">
+              <div class="pv-stat-num" id="pvStat3" style="color:#C9A227;">24hr</div>
+              <div class="pv-stat-label">Response</div>
+            </div>
+          </div>
 
-          <!-- Testimonials -->
-          <section id="pvTestimonials" class="pv-section">
-            <div class="pv-section-hd">What Clients Say</div>
-            <div class="tst-cards">
-              <div class="tst-card">
-                <div class="tst-avatar" id="pvAv1">SM</div>
-                <div class="tst-stars"  id="pvStars1">★★★★★</div>
-                <div class="tst-text">"Absolutely transformed our online presence. Sales up 40% in two months!"</div>
-                <div class="tst-author">— Sarah M., CEO of FreshMart</div>
-              </div>
-              <div class="tst-card">
-                <div class="tst-avatar" id="pvAv2">JK</div>
-                <div class="tst-stars"  id="pvStars2">★★★★★</div>
-                <div class="tst-text">"Fast, professional, worth every penny. My site launched in under a week."</div>
-                <div class="tst-author">— James K., Founder of Kinetics</div>
-              </div>
+          <!-- GALLERY -->
+          <div class="pv-section" id="pvGallery">
+            <div class="pv-section-title">Our Work</div>
+            <div class="pv-gallery-grid">
+              <img class="pv-gallery-img" src="https://picsum.photos/seed/g1bz/240/80" alt="">
+              <img class="pv-gallery-img" src="https://picsum.photos/seed/g2bz/240/80" alt="">
+              <img class="pv-gallery-img" src="https://picsum.photos/seed/g3bz/240/80" alt="">
+              <img class="pv-gallery-img" src="https://picsum.photos/seed/g4bz/240/80" alt="">
+              <img class="pv-gallery-img" src="https://picsum.photos/seed/g5bz/240/80" alt="">
+              <img class="pv-gallery-img" src="https://picsum.photos/seed/g6bz/240/80" alt="">
             </div>
-          </section>
+          </div>
 
-          <!-- Pricing -->
-          <section id="pvPricing" class="pv-section">
-            <div class="pv-section-hd">Pricing Plans</div>
-            <div class="pricing-grid">
-              <div class="price-card">
-                <div class="price-name">Starter</div>
-                <div class="price-amt" id="pvPrice1">$29<span class="price-period">/mo</span></div>
-                <div class="price-feat">5 Pages · Basic SEO</div>
-                <div class="price-feat">Email Support</div>
+          <!-- TESTIMONIALS -->
+          <div class="pv-section" id="pvTestimonials">
+            <div class="pv-section-title">What Clients Say</div>
+            <div class="pv-tst-grid">
+              <div class="pv-tst-card">
+                <div class="pv-tst-stars" id="pvTstColor1" style="color:#C9A227;">★★★★★</div>
+                <div class="pv-tst-quote">"Transformed our online presence completely!"</div>
+                <div class="pv-tst-author">— Sarah M., CEO</div>
               </div>
-              <div class="price-card" id="pvPriceFeat">
-                <div class="price-badge">MOST POPULAR</div>
-                <div class="price-name">Pro</div>
-                <div class="price-amt" id="pvPrice2">$79<span class="price-period">/mo</span></div>
-                <div class="price-feat">15 Pages · Full SEO</div>
-                <div class="price-feat">Priority Support ✓</div>
-              </div>
-              <div class="price-card">
-                <div class="price-name">Elite</div>
-                <div class="price-amt" id="pvPrice3">$199<span class="price-period">/mo</span></div>
-                <div class="price-feat">Unlimited Pages</div>
-                <div class="price-feat">Dedicated Manager</div>
+              <div class="pv-tst-card">
+                <div class="pv-tst-stars" id="pvTstColor2" style="color:#C9A227;">★★★★★</div>
+                <div class="pv-tst-quote">"Fast, professional, worth every penny."</div>
+                <div class="pv-tst-author">— James K., Founder</div>
               </div>
             </div>
-          </section>
+          </div>
 
-          <!-- Contact Form -->
-          <section id="pvForm" class="pv-section">
-            <div class="pv-section-hd">Send Us a Message</div>
-            <div class="form-fields" id="pvFormFields">
-              <div class="form-row">
-                <input class="pv-input" placeholder="First Name" readonly>
-                <input class="pv-input" placeholder="Last Name" readonly>
+          <!-- PRICING -->
+          <div class="pv-section" id="pvPricing">
+            <div class="pv-section-title">Pricing Plans</div>
+            <div class="pv-pricing-grid">
+              <div class="pv-price-card">
+                <div class="pv-price-name">Starter</div>
+                <div class="pv-price-amt" id="pvPriceColor1" style="color:#C9A227;">$29<span>/mo</span></div>
+                <div class="pv-price-note">Basic features</div>
               </div>
-              <input class="pv-input" placeholder="Email Address" readonly>
-              <input class="pv-input" placeholder="Phone (optional)" readonly>
-              <textarea class="pv-input" placeholder="Tell us about your project..." readonly style="height:44px;resize:none;"></textarea>
-              <div class="hero-btn" id="pvFormBtn" onclick="submitForm()"
-                   style="align-self:flex-start;font-size:.72rem;padding:7px 14px;">Send Message →</div>
+              <div class="pv-price-card" id="pvPricingHighlight" style="background:rgba(201,162,39,.14);border-color:#C9A227;">
+                <div class="pv-price-name">Pro</div>
+                <div class="pv-price-amt" id="pvPriceColor2" style="color:#C9A227;">$79<span>/mo</span></div>
+                <div class="pv-price-note">Most popular ✓</div>
+              </div>
+              <div class="pv-price-card">
+                <div class="pv-price-name">Elite</div>
+                <div class="pv-price-amt" id="pvPriceColor3" style="color:#C9A227;">$199<span>/mo</span></div>
+                <div class="pv-price-note">Full package</div>
+              </div>
             </div>
-            <div class="form-success" id="pvFormSuccess">
-              <div class="form-success-icon">✅</div>
-              <div class="form-success-title">Message Sent!</div>
-              <div class="form-success-sub">We'll be in touch within 24 hours.</div>
-            </div>
-          </section>
+          </div>
 
-          <!-- Newsletter -->
-          <section id="pvNewsletter" class="pv-section">
-            <div class="newsletter-box">
-              <div class="newsletter-title">📧 Stay in the Loop</div>
-              <div class="newsletter-sub">Tips, offers, and updates — zero spam.</div>
-              <div class="newsletter-row">
+          <!-- CONTACT FORM -->
+          <div class="pv-section" id="pvForm">
+            <div class="pv-section-title">Contact Us</div>
+            <div class="pv-form-inner">
+              <input class="pv-input" placeholder="Your Name" readonly>
+              <input class="pv-input" placeholder="Your Email" readonly>
+              <textarea class="pv-input" placeholder="Message..." readonly
+                        style="height:42px;resize:none;"></textarea>
+              <div class="pv-btn" id="pvFormBtn"
+                   style="background:#C9A227;color:#0D1B2E;font-size:.74rem;padding:6px 16px;width:fit-content;">
+                Send Message
+              </div>
+            </div>
+          </div>
+
+          <!-- NEWSLETTER -->
+          <div class="pv-section" id="pvNewsletter">
+            <div class="pv-newsletter-inner">
+              <div class="pv-newsletter-title">📧 Stay in the Loop</div>
+              <div class="pv-newsletter-row">
                 <input class="pv-input" placeholder="your@email.com" readonly style="flex:1;">
-                <div class="hero-btn" id="pvNewsBtn" onclick="subscribeNewsletter()"
-                     style="font-size:.62rem;padding:5px 10px;white-space:nowrap;margin-left:5px;">Subscribe</div>
-              </div>
-              <div id="pvNewsOk" style="display:none;font-size:.62rem;opacity:.65;margin-top:5px;text-align:left;">
-                🎉 You're subscribed! Welcome aboard.
+                <div class="pv-btn pv-news-btn" id="pvNewsBtn"
+                     style="background:#C9A227;color:#0D1B2E;font-size:.64rem;padding:6px 10px;">
+                  Subscribe
+                </div>
               </div>
             </div>
-          </section>
+          </div>
 
-          <!-- Online Store -->
-          <section id="pvStore" class="pv-section">
-            <div class="pv-section-hd">Shop Our Products</div>
-            <div class="store-grid">
-              <div class="product">
-                <div class="product-img" style="background:linear-gradient(135deg,#0d0d26,#1e1e5c);">🎧</div>
-                <div class="product-info">
-                  <div class="product-name">Wireless Pro Headphones</div>
-                  <div class="product-desc">Noise-cancelling · 30hr battery</div>
-                  <div class="product-row">
-                    <div class="product-price" id="pvProductPrice1">$89.99</div>
-                    <div class="buy-btn" id="pvBuy1">Add →</div>
-                  </div>
-                </div>
+          <!-- STORE -->
+          <div class="pv-section" id="pvStore">
+            <div class="pv-section-title">Shop</div>
+            <div class="pv-store-grid">
+              <div class="pv-product">
+                <img class="pv-product-img" src="https://picsum.photos/seed/s1bz/200/100" alt="">
+                <div class="pv-product-name">Signature Tee</div>
+                <div class="pv-product-price">$29.99</div>
+                <div class="pv-product-buy" id="pvBuyBtn1" style="color:#C9A227;">Buy Now →</div>
               </div>
-              <div class="product">
-                <div class="product-img" style="background:linear-gradient(135deg,#001a10,#004028);">⌚</div>
-                <div class="product-info">
-                  <div class="product-name">Smart Watch Pro</div>
-                  <div class="product-desc">Health tracking · GPS · 5-day</div>
-                  <div class="product-row">
-                    <div class="product-price" id="pvProductPrice2">$199.00</div>
-                    <div class="buy-btn" id="pvBuy2">Add →</div>
-                  </div>
-                </div>
+              <div class="pv-product">
+                <img class="pv-product-img" src="https://picsum.photos/seed/s2bz/200/100" alt="">
+                <div class="pv-product-name">Premium Kit</div>
+                <div class="pv-product-price">$49.99</div>
+                <div class="pv-product-buy" id="pvBuyBtn2" style="color:#C9A227;">Buy Now →</div>
               </div>
-              <div class="product">
-                <div class="product-img" style="background:linear-gradient(135deg,#1e0c00,#4a1f00);">👜</div>
-                <div class="product-info">
-                  <div class="product-name">Leather Carry Wallet</div>
-                  <div class="product-desc">Full-grain · RFID blocking</div>
-                  <div class="product-row">
-                    <div class="product-price" id="pvProductPrice3">$45.00</div>
-                    <div class="buy-btn" id="pvBuy3">Add →</div>
-                  </div>
-                </div>
+              <div class="pv-product">
+                <img class="pv-product-img" src="https://picsum.photos/seed/s3bz/200/100" alt="">
+                <div class="pv-product-name">Starter Pack</div>
+                <div class="pv-product-price">$19.99</div>
+                <div class="pv-product-buy" id="pvBuyBtn3" style="color:#C9A227;">Buy Now →</div>
               </div>
-              <div class="product">
-                <div class="product-img" style="background:linear-gradient(135deg,#110018,#2d0044);">🕶️</div>
-                <div class="product-info">
-                  <div class="product-name">Polarized Sunglasses</div>
-                  <div class="product-desc">UV400 · Titanium frame</div>
-                  <div class="product-row">
-                    <div class="product-price" id="pvProductPrice4">$129.00</div>
-                    <div class="buy-btn" id="pvBuy4">Add →</div>
-                  </div>
-                </div>
+              <div class="pv-product">
+                <img class="pv-product-img" src="https://picsum.photos/seed/s4bz/200/100" alt="">
+                <div class="pv-product-name">Elite Bundle</div>
+                <div class="pv-product-price">$89.99</div>
+                <div class="pv-product-buy" id="pvBuyBtn4" style="color:#C9A227;">Buy Now →</div>
               </div>
             </div>
-          </section>
+          </div>
 
-          <!-- Map -->
-          <section id="pvMap" class="pv-section">
-            <div class="pv-section-hd">Find Us</div>
-            <div class="map-shell">
-              <svg width="100%" height="88" viewBox="0 0 500 88" xmlns="http://www.w3.org/2000/svg">
-                <rect width="500" height="88" fill="#1a2e1a"/>
-                <!-- Street grid -->
-                <rect x="0"   y="28" width="500" height="10" fill="#253625"/>
-                <rect x="0"   y="57" width="500" height="8"  fill="#253625"/>
-                <rect x="75"  y="0"  width="8"   height="88" fill="#253625"/>
-                <rect x="195" y="0"  width="10"  height="88" fill="#253625"/>
-                <rect x="340" y="0"  width="8"   height="88" fill="#253625"/>
-                <rect x="445" y="0"  width="6"   height="88" fill="#253625"/>
-                <!-- Building blocks -->
-                <rect x="83"  y="4"  width="107" height="21" fill="#213221" rx="1"/>
-                <rect x="205" y="4"  width="130" height="21" fill="#213221" rx="1"/>
-                <rect x="348" y="4"  width="92"  height="21" fill="#213221" rx="1"/>
-                <rect x="5"   y="65" width="65"  height="18" fill="#213221" rx="1"/>
-                <rect x="205" y="65" width="130" height="18" fill="#2b402b" rx="1"/>
-                <rect x="348" y="65" width="92"  height="18" fill="#213221" rx="1"/>
-                <!-- Location pin -->
-                <circle cx="250" cy="33" r="9"   fill="#C9A227" id="pvMapPin"/>
-                <circle cx="250" cy="33" r="3.5" fill="#fff"/>
-                <line x1="250" y1="41" x2="250" y2="50" stroke="#C9A227" stroke-width="1.5" id="pvMapPinLine"/>
-                <!-- Address label -->
-                <rect x="262" y="26" width="128" height="15" fill="rgba(0,0,0,.7)" rx="2"/>
-                <text x="267" y="37" fill="rgba(255,255,255,.8)" font-size="7.5" font-family="sans-serif">📍 123 Main St, Downtown</text>
-              </svg>
-            </div>
-          </section>
+          <!-- MAP -->
+          <div class="pv-section" id="pvMap">
+            <div class="pv-section-title">Our Location</div>
+            <!-- SVG map placeholder — looks clean, no external request needed -->
+            <svg class="pv-map-svg" viewBox="0 0 400 84" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="84" fill="#1a2a1e" rx="6"/>
+              <!-- Grid lines -->
+              <line x1="0" y1="28" x2="400" y2="28" stroke="#2a3a2e" stroke-width="1"/>
+              <line x1="0" y1="56" x2="400" y2="56" stroke="#2a3a2e" stroke-width="1"/>
+              <line x1="100" y1="0" x2="100" y2="84" stroke="#2a3a2e" stroke-width="1"/>
+              <line x1="200" y1="0" x2="200" y2="84" stroke="#2a3a2e" stroke-width="1"/>
+              <line x1="300" y1="0" x2="300" y2="84" stroke="#2a3a2e" stroke-width="1"/>
+              <!-- Roads -->
+              <path d="M0,42 Q80,38 160,44 Q260,52 400,40" stroke="#2e4a36" stroke-width="6" fill="none"/>
+              <path d="M0,60 Q120,55 200,62 Q300,70 400,58" stroke="#2e4a36" stroke-width="4" fill="none"/>
+              <path d="M150,0 Q160,30 155,84" stroke="#2e4a36" stroke-width="5" fill="none"/>
+              <path d="M280,0 Q270,40 278,84" stroke="#2e4a36" stroke-width="4" fill="none"/>
+              <!-- Blocks -->
+              <rect x="20"  y="10" width="30" height="14" rx="2" fill="#243a28" opacity=".8"/>
+              <rect x="60"  y="6"  width="24" height="18" rx="2" fill="#243a28" opacity=".8"/>
+              <rect x="115" y="10" width="20" height="12" rx="2" fill="#243a28" opacity=".7"/>
+              <rect x="210" y="8"  width="28" height="14" rx="2" fill="#243a28" opacity=".8"/>
+              <rect x="310" y="6"  width="22" height="16" rx="2" fill="#243a28" opacity=".7"/>
+              <rect x="350" y="10" width="30" height="12" rx="2" fill="#243a28" opacity=".8"/>
+              <rect x="20"  y="62" width="26" height="14" rx="2" fill="#243a28" opacity=".7"/>
+              <rect x="115" y="64" width="22" height="14" rx="2" fill="#243a28" opacity=".7"/>
+              <rect x="210" y="65" width="28" height="12" rx="2" fill="#243a28" opacity=".8"/>
+              <!-- Marker -->
+              <circle cx="200" cy="42" r="7" fill="#C9A227" opacity=".9"/>
+              <circle cx="200" cy="42" r="3" fill="#fff"/>
+              <circle cx="200" cy="42" r="14" fill="#C9A227" opacity=".15"/>
+              <text x="212" y="38" font-family="sans-serif" font-size="7" fill="#C9A227" opacity=".9">Your Location</text>
+            </svg>
+          </div>
 
-          <!-- Countdown -->
-          <section id="pvCountdown" class="pv-section">
-            <div class="countdown-box">
-              <div class="countdown-title">🚀 Grand Opening Countdown</div>
-              <div class="countdown-nums">
-                <div class="cd-block"><div class="cd-num" id="pvCdDays">14</div><div class="cd-lbl">Days</div></div>
-                <div class="cd-block"><div class="cd-num" id="pvCdHrs">06</div><div class="cd-lbl">Hours</div></div>
-                <div class="cd-block"><div class="cd-num" id="pvCdMin">32</div><div class="cd-lbl">Min</div></div>
-                <div class="cd-block"><div class="cd-num" id="pvCdSec">59</div><div class="cd-lbl">Sec</div></div>
+          <!-- COUNTDOWN -->
+          <div class="pv-section" id="pvCountdown">
+            <div class="pv-cd-inner">
+              <div class="pv-cd-label">Launch / Event Countdown</div>
+              <div class="pv-cd-grid">
+                <div class="pv-cd-unit"><div class="pv-cd-num" id="pvCdDays">14</div><div class="pv-cd-sub">days</div></div>
+                <div class="pv-cd-unit"><div class="pv-cd-num" id="pvCdHrs">06</div><div class="pv-cd-sub">hrs</div></div>
+                <div class="pv-cd-unit"><div class="pv-cd-num" id="pvCdMin">32</div><div class="pv-cd-sub">min</div></div>
+                <div class="pv-cd-unit"><div class="pv-cd-num" id="pvCdSec">59</div><div class="pv-cd-sub">sec</div></div>
               </div>
             </div>
-          </section>
+          </div>
 
-          <!-- Chat widget -->
-          <div id="pvChatBubble">
-            <div class="chat-panel" id="pvChatPanel">
-              <div class="chat-head" id="pvChatHead">
-                <div class="chat-av" id="pvChatAv">BB</div>
-                <div>
-                  <div class="chat-av-name" id="pvChatName">BeezerBuilt Chat</div>
-                  <div class="chat-av-sub">Typically replies instantly</div>
-                </div>
-                <div class="chat-online"></div>
-              </div>
-              <div class="chat-msgs">
-                <div class="chat-msg bot">👋 Hi! How can we help you today?</div>
-                <div class="chat-msg bot">We're here Mon–Fri, 9am–6pm.</div>
-                <div class="chat-msg usr" id="pvChatReply" style="display:none;">I'd love to get a quote!</div>
-              </div>
-              <div class="chat-input-row">
-                <input class="chat-input" placeholder="Type a message…" id="pvChatIn">
-                <div class="chat-send" id="pvChatSend" onclick="sendChat()">→</div>
+          <!-- CHAT WIDGET -->
+          <div id="pvChat" style="display:none;">
+            <div class="pv-chat-btn" id="pvChatBtn" style="background:#C9A227;color:#0D1B2E;">
+              💬
+              <div class="pv-chat-popup">
+                <strong>Hi there! 👋</strong><br>
+                Need help? We reply in minutes.
               </div>
             </div>
-            <div class="chat-btn" id="pvChatBtn" onclick="toggleChat()">💬</div>
           </div>
 
           <!-- Footer -->
-          <footer id="pvFooter">
+          <div class="pv-footer">
             <span id="pvFooterBrand">YourBrand</span>
-            <span>© 2025 · Privacy · Terms · Contact</span>
-          </footer>
+            <span>© 2025 · Privacy · Terms</span>
+          </div>
 
-        </div><!-- /pvSite -->
-      </div><!-- /pv-frame -->
-    </div><!-- /pv-panel -->
+        </div><!-- /pv-site -->
+      </div><!-- /preview-frame -->
+    </div><!-- /sandbox-preview -->
 
-  </div><!-- /sb-layout -->
-</div><!-- /sb-wrap -->
+  </div><!-- /sandbox-layout -->
+</div><!-- /sandbox-container -->
 
 <script>
 (function () {
   'use strict';
 
-  /* ══ STATE ═══════════════════════════════════════════════════════════════ */
-
+  /* =========================================================
+     STATE
+  ========================================================= */
   const state = {
-    theme:        'dark',
-    color:        '#C9A227',
-    brand:        'YourBrand',
-    layout:       'centered',
-    btnStyle:     'square',
-    font:         'modern',
-    navStyle:     'glass',
-    // toggleable features
-    videoBg:      false,
-    particles:    true,
-    gallery:      false,
-    testimonials: false,
-    pricing:      false,
-    contactForm:  false,
-    store:        false,
-    newsletter:   false,
-    mapEmbed:     false,
-    countdown:    false,
-    chatWidget:   false,
+    theme:           'dark',
+    color:           '#C9A227',
+    videoBackground: false,
+    animations:      true,
+    gallery:         false,
+    contactForm:     false,
+    store:           false,
+    testimonials:    false,
+    pricing:         false,
+    chatWidget:      false,
+    mapEmbed:        false,
+    newsletter:      false,
+    countdown:       false,
+    navStyle:        'modern',
+    layout:          'centered',
+    btnStyle:        'square',
+    font:            'modern',
+    brandName:       'YourBrand',
+    device:          'desktop'
   };
 
-  const THEMES = {
-    dark:     { bg:'#09101e', navBg:'rgba(8,14,26,.84)',  text:'#fff',    inputBg:'rgba(255,255,255,.07)', inputBd:'rgba(255,255,255,.12)' },
-    light:    { bg:'#f1f5fb', navBg:'rgba(255,255,255,.9)', text:'#111', inputBg:'rgba(0,0,0,.05)',       inputBd:'rgba(0,0,0,.15)' },
-    midnight: { bg:'#03060d', navBg:'rgba(3,6,13,.88)',   text:'#e2e8f8', inputBg:'rgba(255,255,255,.05)', inputBd:'rgba(255,255,255,.1)' },
-  };
-  const FONTS  = { modern:"'Outfit', sans-serif", serif:'Georgia, serif', mono:"'Courier New', monospace" };
-  const RADII  = { square:'3px', rounded:'8px', pill:'50px' };
-  const FEATS  = ['videoBg','particles','gallery','testimonials','pricing','contactForm','store','newsletter','mapEmbed','countdown','chatWidget'];
+  // Section IDs that use .pv-section / .show class
+  const CLASS_SECTIONS = ['pvGallery','pvTestimonials','pvPricing','pvForm',
+                          'pvNewsletter','pvStore','pvMap','pvCountdown'];
 
-  /* ══ VIDEO CANVAS — cinematic bokeh animation ════════════════════════════ */
-
-  let videoRAF = null;
-
-  function startVideoCanvas() {
-    const canvas = $('pvVideoCanvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-
-    // Size canvas to its rendered dimensions
-    canvas.width  = canvas.offsetWidth  || canvas.parentElement.offsetWidth  || 800;
-    canvas.height = canvas.offsetHeight || canvas.parentElement.offsetHeight || 600;
-
-    // Build bokeh light array
-    const N = 55, lights = [];
-    for (let i = 0; i < N; i++) lights.push(mkLight(canvas.width, canvas.height));
-
-    function mkLight(w, h) {
-      return {
-        x:     Math.random() * w,
-        y:     Math.random() * h,
-        r:     2 + Math.random() * 20,
-        speed: 0.05 + Math.random() * 0.28,
-        color: Math.random() > 0.55 ? state.color : (Math.random() > 0.5 ? '#fff' : '#4499ff'),
-        phase: Math.random() * Math.PI * 2,
-      };
-    }
-
-    function frame(t) {
-      const w = canvas.width, h = canvas.height;
-
-      // Dark gradient base
-      const bg = ctx.createLinearGradient(0, 0, w, h);
-      bg.addColorStop(0, '#030810');
-      bg.addColorStop(1, '#070f1e');
-      ctx.fillStyle = bg;
-      ctx.fillRect(0, 0, w, h);
-
-      // Bokeh circles
-      lights.forEach(l => {
-        const g = ctx.createRadialGradient(l.x, l.y, 0, l.x, l.y, l.r);
-        g.addColorStop(0,   l.color + 'bb');
-        g.addColorStop(0.4, l.color + '44');
-        g.addColorStop(1,   'transparent');
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(l.x, l.y, l.r, 0, Math.PI * 2);
-        ctx.fill();
-        // Drift upward with gentle horizontal sway
-        l.y -= l.speed;
-        l.x += Math.sin(t * 0.0007 + l.phase) * 0.35;
-        if (l.y + l.r < 0) { l.y = h + l.r; l.x = Math.random() * w; }
-      });
-
-      // Scanlines — cinematic texture
-      ctx.fillStyle = 'rgba(0,0,0,0.03)';
-      for (let y = 0; y < h; y += 3) ctx.fillRect(0, y, w, 1);
-
-      // Vignette
-      const vig = ctx.createRadialGradient(w/2, h/2, h*0.22, w/2, h/2, h*0.88);
-      vig.addColorStop(0, 'rgba(0,0,0,0)');
-      vig.addColorStop(1, 'rgba(0,0,0,0.7)');
-      ctx.fillStyle = vig;
-      ctx.fillRect(0, 0, w, h);
-
-      videoRAF = requestAnimationFrame(frame);
-    }
-
-    if (videoRAF) cancelAnimationFrame(videoRAF);
-    videoRAF = requestAnimationFrame(frame);
-  }
-
-  function stopVideoCanvas() {
-    if (videoRAF) { cancelAnimationFrame(videoRAF); videoRAF = null; }
-  }
-
-  /* ══ COUNTDOWN ═══════════════════════════════════════════════════════════ */
-
-  let cdTimer = null;
+  /* =========================================================
+     COUNTDOWN
+  ========================================================= */
+  let cdInterval = null;
 
   function startCountdown() {
-    if (cdTimer) return;
-    cdTimer = setInterval(() => {
-      if (!state.countdown) { clearInterval(cdTimer); cdTimer = null; return; }
-      let s = +$('pvCdSec').textContent, m = +$('pvCdMin').textContent;
-      let h = +$('pvCdHrs').textContent, d = +$('pvCdDays').textContent;
+    if (cdInterval) return;
+    cdInterval = setInterval(() => {
+      if (!state.countdown) { clearInterval(cdInterval); cdInterval = null; return; }
+      const g = id => parseInt(document.getElementById(id).textContent, 10);
+      const s2 = (id, v) => { document.getElementById(id).textContent = String(v).padStart(2,'0'); };
+      let s = g('pvCdSec'), m = g('pvCdMin'), h = g('pvCdHrs'), d = g('pvCdDays');
       if (--s < 0) { s = 59; if (--m < 0) { m = 59; if (--h < 0) { h = 23; if (--d < 0) d = 0; } } }
-      $('pvCdSec').textContent  = pad(s);
-      $('pvCdMin').textContent  = pad(m);
-      $('pvCdHrs').textContent  = pad(h);
-      $('pvCdDays').textContent = pad(d);
+      s2('pvCdSec',s); s2('pvCdMin',m); s2('pvCdHrs',h); s2('pvCdDays',d);
     }, 1000);
   }
 
-  function stopCountdown() {
-    if (cdTimer) { clearInterval(cdTimer); cdTimer = null; }
+  /* =========================================================
+     FEATURE COUNT
+  ========================================================= */
+  function updateFeatureCount() {
+    const keys = ['videoBackground','animations','gallery','contactForm','store',
+                  'testimonials','pricing','chatWidget','mapEmbed','newsletter','countdown'];
+    const n = keys.filter(k => state[k]).length;
+    const el = document.getElementById('featureCount');
+    if (el) el.textContent = n + ' feature' + (n !== 1 ? 's' : '') + ' active';
   }
 
-  /* ══ INTERACTIVE WIDGET CALLBACKS (global) ═══════════════════════════════ */
+  /* =========================================================
+     HELPERS
+  ========================================================= */
+  function paint(ids, prop, val) {
+    ids.forEach(id => { const el = document.getElementById(id); if (el) el.style[prop] = val; });
+  }
 
-  window.toggleChat = function () {
-    $('pvChatPanel').classList.toggle('open');
-  };
-
-  window.sendChat = function () {
-    const inp = $('pvChatIn');
-    if (inp.value.trim()) {
-      const r = $('pvChatReply');
-      r.textContent = inp.value.trim();
-      r.style.display = '';
-      inp.value = '';
-    }
-  };
-
-  window.submitForm = function () {
-    $('pvFormFields').style.display = 'none';
-    $('pvFormSuccess').classList.add('show');
-    setTimeout(() => {
-      $('pvFormFields').style.display = '';
-      $('pvFormSuccess').classList.remove('show');
-    }, 3200);
-  };
-
-  window.subscribeNewsletter = function () {
-    $('pvNewsOk').style.display = '';
-    setTimeout(() => { $('pvNewsOk').style.display = 'none'; }, 3000);
-  };
-
-  /* ══ APPLY PREVIEW — master render function ══════════════════════════════ */
-
+  /* =========================================================
+     APPLY PREVIEW
+  ========================================================= */
   function applyPreview() {
+    const site = document.getElementById('pvSite');
     const c = state.color;
+
+    /* --- Theme --- */
+    const THEMES = {
+      dark:     { bg:'#0a0f1a', nav:'rgba(8,14,26,.85)',  text:'#fff' },
+      light:    { bg:'#f4f6fa', nav:'rgba(255,255,255,.95)', text:'#111' },
+      midnight: { bg:'#050810', nav:'rgba(5,8,16,.9)',     text:'#e8ecf5' }
+    };
     const t = THEMES[state.theme] || THEMES.dark;
+    site.style.background = t.bg;
+    site.style.color = t.text;
+    site.className = 'pv-site theme-' + state.theme;
+
+    /* --- Font --- */
+    const FONTS = {
+      modern: "'Outfit',sans-serif",
+      serif:  "'Georgia',serif",
+      mono:   "'Courier New',monospace"
+    };
+    site.style.fontFamily = FONTS[state.font] || FONTS.modern;
+
+    /* --- Brand name & URL --- */
+    const brand = state.brandName || 'YourBrand';
+    paint(['pvNavBrand','pvFooterBrand'], 'textContent', brand); // won't work this way
+    ['pvNavBrand','pvFooterBrand'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = brand;
+    });
+    const urlEl = document.getElementById('pvUrl');
+    if (urlEl) urlEl.textContent = '🔒 ' + brand.toLowerCase().replace(/\s+/g,'') + '.com';
+
+    /* --- Accent color propagation --- */
+    paint(['pvAccentText','pvNavBrand'], 'color', c);
+    paint(['pvStat1','pvStat2','pvStat3'], 'color', c);
+    paint(['pvTstColor1','pvTstColor2'], 'color', c);
+    paint(['pvPriceColor1','pvPriceColor2','pvPriceColor3'], 'color', c);
+    paint(['pvBuyBtn1','pvBuyBtn2','pvBuyBtn3','pvBuyBtn4'], 'color', c);
+
+    const ph = document.getElementById('pvPricingHighlight');
+    if (ph) { ph.style.background = c + '1c'; ph.style.borderColor = c; }
+
+    const chatBtn = document.getElementById('pvChatBtn');
+    if (chatBtn) { chatBtn.style.background = c; chatBtn.style.color = '#0D1B2E'; }
+
+    /* --- Button radius --- */
+    const RADII = { square:'3px', rounded:'8px', pill:'50px' };
     const r = RADII[state.btnStyle] || '3px';
-    const brand = state.brand || 'YourBrand';
-    const site  = $('pvSite');
 
-    // ── Site-level ──
-    site.style.background = state.videoBg ? 'transparent' : t.bg;
-    site.style.color      = t.text;
-    site.style.fontFamily = FONTS[state.font];
+    const pvBtn = document.getElementById('pvBtn');
+    pvBtn.style.background = c; pvBtn.style.color = '#0D1B2E'; pvBtn.style.borderRadius = r;
 
-    // ── Brand text ──
-    setText('pvNavBrand',    brand);
-    setText('pvFooterBrand', brand);
-    setText('pvChatName',    brand + ' Chat');
-    setText('pvChatAv',      brand.slice(0, 2).toUpperCase());
-    $('pvUrl').textContent = '🔒 ' + brand.toLowerCase().replace(/\s+/g, '') + '.com';
+    const pvBtn2 = document.getElementById('pvBtn2');
+    pvBtn2.style.border = '1.5px solid ' + c;
+    pvBtn2.style.color = c;
+    pvBtn2.style.background = 'transparent';
+    pvBtn2.style.borderRadius = r;
 
-    // ── Accent color on stat numbers, prices, stars ──
-    ['pvStat1','pvStat2','pvStat3',
-     'pvPrice1','pvPrice2','pvPrice3',
-     'pvProductPrice1','pvProductPrice2','pvProductPrice3','pvProductPrice4',
-     'pvStars1','pvStars2',
-     'pvAccent'].forEach(id => { if ($(id)) $(id).style.color = c; });
-    $('pvNavBrand').style.color = c;
-
-    // ── Testimonial avatars ──
-    [$('pvAv1'), $('pvAv2')].forEach(el => { if (el) el.style.background = c; });
-
-    // ── Buttons ──
-    styleBtn('pvBtnA',    'solid',   c, r);
-    styleBtn('pvBtnB',    'outline', c, r);
-    styleBtn('pvNavCta',  'solid',   c, r);
-    styleBtn('pvFormBtn', 'solid',   c, r);
-    styleBtn('pvNewsBtn', 'solid',   c, r);
-
-    // Buy buttons (border + color only, no bg)
-    ['pvBuy1','pvBuy2','pvBuy3','pvBuy4'].forEach(id => {
-      const el = $(id);
-      if (el) { el.style.color = c; el.style.borderColor = c; el.style.borderRadius = r; }
+    ['pvNavCta','pvFormBtn','pvNewsBtn'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.background = c;
+      el.style.color = '#0D1B2E';
+      el.style.borderRadius = r;
     });
 
-    // Chat send button + avatar
-    Object.assign($('pvChatSend').style, { background: c, color: '#0D1B2E', borderRadius: r });
-    $('pvChatAv').style.background = c;
+    /* --- Video background --- */
+    document.getElementById('pvVideo').classList.toggle('show', state.videoBackground);
 
-    // ── Pricing highlight card ──
-    const pf = $('pvPriceFeat');
-    if (pf) { pf.style.background = c + '18'; pf.style.borderColor = c; }
-
-    // ── Map pin ──
-    const pin  = $('pvMapPin'),  pinLn = $('pvMapPinLine');
-    if (pin)  pin.setAttribute('fill', c);
-    if (pinLn) pinLn.setAttribute('stroke', c);
-
-    // ── Chat head accent ──
-    Object.assign($('pvChatHead').style, { background: c + '1e', borderBottom: '1px solid ' + c + '35' });
-    $('pvChatReply').style.background = c;
-
-    // ── Input field colors ──
-    site.querySelectorAll('.pv-input').forEach(el => {
-      el.style.background  = t.inputBg;
-      el.style.borderColor = t.inputBd;
-      el.style.color       = t.text;
-    });
-
-    // ── Navigation style ──
-    applyNavStyle(c, t, r);
-
-    // ── Hero layout ──
-    applyHeroLayout(c);
-
-    // ── Video background ──
-    if (state.videoBg) {
-      $('pvVideoBg').style.display = 'block';
-      startVideoCanvas();
-    } else {
-      $('pvVideoBg').style.display = 'none';
-      stopVideoCanvas();
-    }
-
-    // ── Particles ──
-    const pc = $('pvParticles');
+    /* --- Particles --- */
+    const pc = document.getElementById('pvParticles');
     pc.innerHTML = '';
-    if (state.particles) {
-      for (let i = 0; i < 14; i++) {
+    if (state.animations) {
+      for (let i = 0; i < 18; i++) {
         const p = document.createElement('div');
         p.className = 'pv-particle';
-        const sz = 3 + Math.random() * 3;
+        const sz = (2 + Math.random() * 3).toFixed(1) + 'px';
         p.style.cssText = [
-          `left:${Math.random()*100}%`,
-          `bottom:${Math.random()*10}px`,
-          `width:${sz}px`,
-          `height:${sz}px`,
-          `background:${c}`,
-          `animation-duration:${4 + Math.random()*6}s`,
-          `animation-delay:${Math.random()*6}s`,
+          'left:'              + (Math.random() * 95) + '%',
+          'bottom:0',
+          'width:'             + sz,
+          'height:'            + sz,
+          'background:'        + c,
+          'animation-duration:' + (3 + Math.random() * 5).toFixed(1) + 's',
+          'animation-delay:'   + (Math.random() * 6).toFixed(1) + 's'
         ].join(';');
         pc.appendChild(p);
       }
     }
 
-    // ── Section visibility ──
-    showSec('pvGallery',      state.gallery);
-    showSec('pvTestimonials', state.testimonials);
-    showSec('pvPricing',      state.pricing);
-    showSec('pvForm',         state.contactForm);
-    showSec('pvStore',        state.store);
-    showSec('pvNewsletter',   state.newsletter);
-    showSec('pvMap',          state.mapEmbed);
-    showSec('pvCountdown',    state.countdown);
-    showSec('pvChatBubble',   state.chatWidget);
-
-    state.countdown ? startCountdown() : stopCountdown();
-
-    // ── Feature count ──
-    const n = FEATS.filter(k => state[k]).length;
-    $('featureCount').textContent = n + ' feature' + (n !== 1 ? 's' : '') + ' active';
-  }
-
-  /* ── Nav style sub-routine ── */
-  function applyNavStyle(c, t, r) {
-    const nav    = $('pvNav');
-    const brand  = $('pvNavBrand');
-    const cta    = $('pvNavCta');
-    if (state.navStyle === 'solid') {
-      Object.assign(nav.style, { background: c, backdropFilter: 'none', borderBottomColor: 'transparent' });
-      brand.style.color = '#0D1B2E';
-      if (cta) Object.assign(cta.style, { background: '#0D1B2E', color: c, borderRadius: r });
-    } else if (state.navStyle === 'minimal') {
-      Object.assign(nav.style, { background: 'transparent', backdropFilter: 'none', borderBottomColor: c + '44' });
-      brand.style.color = c;
-      if (cta) Object.assign(cta.style, { background: c, color: '#0D1B2E', borderRadius: r });
-    } else { // glass
-      Object.assign(nav.style, { background: t.navBg, backdropFilter: 'blur(10px)', borderBottomColor: 'rgba(255,255,255,.08)' });
-      brand.style.color = c;
-      if (cta) Object.assign(cta.style, { background: c, color: '#0D1B2E', borderRadius: r });
-    }
-  }
-
-  /* ── Hero layout sub-routine ── */
-  function applyHeroLayout(c) {
-    const hero = $('pvHero'), h1 = $('pvH1');
+    /* --- Hero layout --- */
+    const hero = document.getElementById('pvHero');
+    const h1   = document.getElementById('pvH1');
+    const btnRow = hero.querySelector('.pv-btn-row');
     if (state.layout === 'left') {
-      Object.assign(hero.style, { textAlign:'left', alignItems:'flex-start', background:'' });
-      h1.style.fontSize = '1.6rem';
+      hero.style.textAlign = 'left';
+      hero.style.alignItems = 'flex-start';
+      hero.style.background = '';
+      h1.style.fontSize = '1.55rem';
+      if (btnRow) btnRow.style.justifyContent = 'flex-start';
     } else if (state.layout === 'bold') {
-      Object.assign(hero.style, { textAlign:'center', alignItems:'center', background: c + '12' });
-      h1.style.fontSize = '2.05rem';
+      hero.style.textAlign = 'center';
+      hero.style.alignItems = 'center';
+      hero.style.background = c + '14';
+      h1.style.fontSize = '2rem';
+      if (btnRow) btnRow.style.justifyContent = 'center';
     } else {
-      Object.assign(hero.style, { textAlign:'center', alignItems:'center', background:'' });
-      h1.style.fontSize = '1.85rem';
+      hero.style.textAlign = 'center';
+      hero.style.alignItems = 'center';
+      hero.style.background = '';
+      h1.style.fontSize = '1.8rem';
+      if (btnRow) btnRow.style.justifyContent = 'center';
     }
+
+    /* --- Nav style --- */
+    const nav      = document.getElementById('pvNav');
+    const navBrand = document.getElementById('pvNavBrand');
+    const navCta   = document.getElementById('pvNavCta');
+    if (state.navStyle === 'bold') {
+      nav.style.background     = c;
+      nav.style.backdropFilter = 'none';
+      nav.style.borderBottom   = 'none';
+      navBrand.style.color = '#0D1B2E';
+      if (navCta) { navCta.style.background = '#0D1B2E'; navCta.style.color = c; }
+    } else if (state.navStyle === 'minimal') {
+      nav.style.background     = 'transparent';
+      nav.style.backdropFilter = 'none';
+      nav.style.borderBottom   = '1px solid ' + c + '44';
+      navBrand.style.color = c;
+      if (navCta) { navCta.style.background = c; navCta.style.color = '#0D1B2E'; }
+    } else { /* glass */
+      nav.style.background     = t.nav;
+      nav.style.backdropFilter = 'blur(10px)';
+      nav.style.borderBottom   = '1px solid rgba(255,255,255,.08)';
+      navBrand.style.color = c;
+      if (navCta) { navCta.style.background = c; navCta.style.color = '#0D1B2E'; }
+    }
+
+    /* --- Section visibility (all use .pv-section + .show) --- */
+    const sectionMap = {
+      pvGallery:      state.gallery,
+      pvTestimonials: state.testimonials,
+      pvPricing:      state.pricing,
+      pvForm:         state.contactForm,
+      pvNewsletter:   state.newsletter,
+      pvStore:        state.store,
+      pvMap:          state.mapEmbed,
+      pvCountdown:    state.countdown
+    };
+    for (const [id, on] of Object.entries(sectionMap)) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('show', on);
+    }
+
+    /* Chat widget uses absolute positioning, keep display toggle */
+    const chatEl = document.getElementById('pvChat');
+    if (chatEl) chatEl.style.display = state.chatWidget ? 'block' : 'none';
+
+    if (state.countdown) startCountdown();
+
+    updateFeatureCount();
+
+    /* Re-sync mobile view */
+    if (state.device === 'mobile') refreshMobile();
   }
 
-  /* ══ PUBLIC API (called by HTML event handlers) ══════════════════════════ */
+  /* =========================================================
+     MOBILE PREVIEW
+  ========================================================= */
+  function refreshMobile() {
+    const pvSite    = document.getElementById('pvSite');
+    const mSite     = document.getElementById('pvMobileSite');
+    if (!mSite) return;
+    const clone = pvSite.cloneNode(true);
+    // strip id from clone to avoid duplicate IDs in DOM
+    clone.removeAttribute('id');
+    clone.style.transform = '';
+    clone.style.width = '385px';
+    mSite.innerHTML = '';
+    mSite.appendChild(clone);
+  }
 
-  window.setOpt = function (el, key) {
-    el.closest('.ctrl-opts').querySelectorAll('.ctrl-opt').forEach(o => o.classList.remove('active'));
+  /* =========================================================
+     DEVICE SWITCHER
+  ========================================================= */
+  window.setPvDevice = function (device) {
+    state.device = device;
+    const pvSite    = document.getElementById('pvSite');
+    const phoneShell = document.getElementById('phoneShell');
+    const deskBtn   = document.getElementById('pvDevDesktop');
+    const mobBtn    = document.getElementById('pvDevMobile');
+
+    if (device === 'mobile') {
+      pvSite.style.display    = 'none';
+      phoneShell.style.display = 'block';
+      refreshMobile();
+      deskBtn.classList.remove('active'); mobBtn.classList.add('active');
+    } else {
+      pvSite.style.display    = '';
+      phoneShell.style.display = 'none';
+      deskBtn.classList.add('active'); mobBtn.classList.remove('active');
+    }
+  };
+
+  /* =========================================================
+     CONTROL SETTERS
+  ========================================================= */
+  function selectOnly(groupId, el) {
+    document.querySelectorAll('#' + groupId + ' .ctrl-option')
+      .forEach(o => o.classList.remove('active'));
     el.classList.add('active');
-    state[key] = el.dataset.value;
+  }
+
+  window.setTheme = function (el) {
+    selectOnly('themeOptions', el);
+    state.theme = el.dataset.theme;
     applyPreview();
   };
 
-  window.setBrand = function (val) {
-    state.brand = val.trim() || 'YourBrand';
+  window.setColor = function (el) {
+    selectOnly('colorOptions', el);
+    state.color = el.dataset.color;
     applyPreview();
   };
 
-  window.toggleFeat = function (key) {
+  window.setLayout = function (el) {
+    selectOnly('layoutOptions', el);
+    state.layout = el.dataset.layout;
+    applyPreview();
+  };
+
+  window.setBtnStyle = function (el) {
+    selectOnly('btnStyleOptions', el);
+    state.btnStyle = el.dataset.btn;
+    applyPreview();
+  };
+
+  window.setFont = function (el) {
+    selectOnly('fontOptions', el);
+    state.font = el.dataset.font;
+    applyPreview();
+  };
+
+  window.setBrandName = function (val) {
+    state.brandName = val || 'YourBrand';
+    applyPreview();
+  };
+
+  window.toggleFeature = function (key) {
     state[key] = !state[key];
-    const sw = $('tog-' + key);
+    const sw = document.getElementById('toggle-' + key);
     if (sw) sw.classList.toggle('on', state[key]);
     applyPreview();
   };
 
-  window.setDevice = function (device) {
-    const frame = $('pvFrame');
-    const bD = $('devDesktop'), bM = $('devMobile');
-    if (device === 'mobile') {
-      frame.classList.add('mobile');
-      bD.style.borderColor = 'var(--navy-border)'; bD.style.color = 'var(--gray)';
-      bM.style.borderColor = 'var(--gold)';         bM.style.color = 'var(--gold)';
-    } else {
-      frame.classList.remove('mobile');
-      bD.style.borderColor = 'var(--gold)';         bD.style.color = 'var(--gold)';
-      bM.style.borderColor = 'var(--navy-border)';  bM.style.color = 'var(--gray)';
-    }
-    // Re-init canvas after layout reflow so dimensions are correct
-    if (state.videoBg) setTimeout(startVideoCanvas, 60);
+  window.setNavStyle = function (el, style) {
+    selectOnly('navStyleOptions', el);
+    state.navStyle = style;
+    applyPreview();
   };
 
-  /* ══ HELPERS ═════════════════════════════════════════════════════════════ */
-
-  function $(id) { return document.getElementById(id); }
-
-  function setText(id, txt) { const el = $(id); if (el) el.textContent = txt; }
-
-  function pad(n) { return String(n).padStart(2, '0'); }
-
-  function showSec(id, on) {
-    const el = $(id);
-    if (el) el.style.display = on ? 'block' : 'none';
-  }
-
-  function styleBtn(id, type, c, r) {
-    const el = $(id);
-    if (!el) return;
-    el.style.borderRadius = r;
-    if (type === 'solid') {
-      Object.assign(el.style, { background: c, color: '#0D1B2E', border: 'none' });
-    } else {
-      Object.assign(el.style, { background: 'transparent', color: c, border: '1.5px solid ' + c });
-    }
-  }
-
-  /* ══ INIT ════════════════════════════════════════════════════════════════ */
+  /* =========================================================
+     INIT
+  ========================================================= */
   applyPreview();
 
 })();
